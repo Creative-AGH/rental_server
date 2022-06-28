@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,7 +33,15 @@ public class Account {
     @NotEmpty
     private String surname;
     @OneToMany
-    List<Item> borrowedItems;
+    List<Item> borrowedItems=new ArrayList<>();
+    @NotEmpty
+    @NotNull
+    private String password;
+
+    private boolean isVerified =false;
+    @ManyToMany
+    List<Role> roles;
+
 
 
 }
