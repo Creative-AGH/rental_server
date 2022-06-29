@@ -13,7 +13,6 @@ import java.util.Set;
 public class Category {
     @Id
     @Column(unique = true)
-    @GeneratedValue
     private String id;
     @NotNull
     @NotEmpty

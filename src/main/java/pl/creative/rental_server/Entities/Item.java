@@ -5,6 +5,8 @@ import org.springframework.lang.Nullable;
 import pl.creative.rental_server.Entities.urls.UrlToItem;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +20,10 @@ public class Item {
     @Id
     @Column(unique = true)
     private String id;
+
+    @NotNull
+    @NotEmpty
+    private String name;
 
     @ManyToOne
     @Nullable
