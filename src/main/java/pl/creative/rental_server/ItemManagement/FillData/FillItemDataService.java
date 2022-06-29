@@ -18,7 +18,7 @@ public class FillItemDataService {
 
 
     @Transactional
-    public void addItem(FillItemDto dto, Category categoryId) {
+    public void addItem(FillItemDto dto, String categoryId) {
         Item item = fillItemMapper.mapItemDtoToItem(dto);
 
         String uuid;

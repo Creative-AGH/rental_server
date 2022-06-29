@@ -14,7 +14,7 @@ public class FillItemDataController {
     private final FillItemDataService fillItemDataService;
 
     @PostMapping("/add/{categoryId}/item")
-    ResponseEntity<?> addItem(@RequestBody FillItemDto dto, @PathVariable Category categoryId) {
+    ResponseEntity<?> addItem(@RequestBody FillItemDto dto, @PathVariable String categoryId) {
         fillItemDataService.addItem(dto, categoryId);
         return ResponseEntity.ok().build();
     }
