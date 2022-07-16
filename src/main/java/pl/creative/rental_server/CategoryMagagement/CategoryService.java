@@ -21,13 +21,13 @@ public class CategoryService {
 
     @Transactional
     public GetCategoryDto addCategory(FillCategoryDto dto) {
-        Category category = categoryMapper.mapFillCategoryDtoToCategory(dto);
+        Category categoryToSave = categoryMapper.mapFillCategoryDtoToCategory(dto);
         String uuid;
         do {
             uuid = UUID.randomUUID().toString();
         } while (categoryRepository.findById(uuid).isPresent());
-        category.setId(uuid);
-        Category savedCategory = categoryRepository.save(category);
+        categoryToSave.setId(uuid);
+        Category savedCategory = categoryRepository.save(categoryToSave);
         return categoryMapper.mapCategoryToGetCategoryDto(savedCategory);
     }
 

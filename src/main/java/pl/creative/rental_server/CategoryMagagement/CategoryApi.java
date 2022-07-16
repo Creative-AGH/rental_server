@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.creative.rental_server.CategoryMagagement.dto.FillCategoryDto;
 import pl.creative.rental_server.CategoryMagagement.dto.GetCategoryDto;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/category")
@@ -15,6 +16,6 @@ public interface CategoryApi {
     List<GetCategoryDto> getCategories();
 
     @PostMapping
-    ResponseEntity<GetCategoryDto> addCategory(@RequestBody FillCategoryDto fillCategoryDto);
+    ResponseEntity<GetCategoryDto> addCategory(@Valid @RequestBody FillCategoryDto fillCategoryDto);
 
 }
