@@ -9,6 +9,8 @@ import pl.creative.rental_server.CategoryMagagement.dto.GetCategoryDto;
 import pl.creative.rental_server.Entities.Category;
 import pl.creative.rental_server.Repository.CategoryRepository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,4 +31,12 @@ public class CategoryService {
         return categoryMapper.mapCategoryToGetCategoryDto(savedCategory);
     }
 
+    public List<GetCategoryDto> getCategories() {
+        List<GetCategoryDto> listOfGetCategoryDto = new ArrayList<>();
+        Iterable<Category> categories = categoryRepository.findAll();
+        for (Category category : categories) {
+            listOfGetCategoryDto.add(categoryMapper.mapCategoryToGetCategoryDto(category));
+        }
+        return listOfGetCategoryDto;
+    }
 }
