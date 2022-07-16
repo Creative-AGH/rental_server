@@ -2,9 +2,11 @@ package pl.creative.rental_server.Entities;
 
 import lombok.Data;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,12 +16,9 @@ public class Category {
     @Id
     @Column(unique = true)
     private String id;
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "Name may not be empty or null")
     private String name;
-    @NotNull
-    @NotEmpty
     private String description;
     @ManyToMany
-    Set<Item> items=new HashSet<>();
+    Set<Item> items = new HashSet<>();
 }
