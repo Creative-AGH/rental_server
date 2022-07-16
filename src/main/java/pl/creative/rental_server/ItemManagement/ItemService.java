@@ -10,6 +10,8 @@ import pl.creative.rental_server.ItemManagement.dto.ItemMapper;
 import pl.creative.rental_server.Repository.ItemRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,5 +33,15 @@ public class ItemService {
         Item savedItem = itemRepository.save(itemToSave);
         return itemMapper.mapItemToGetItemDto(savedItem);
         //TODO upload files to ingur or other service
+    }
+
+    public List<GetItemDto> getItems() {
+        List<GetItemDto> listOfGetItemDto = new ArrayList<>();
+        Iterable<Item> items = itemRepository.findAll();
+        for (Item item : items) {
+            listOfGetItemDto.add(itemMapper.mapItemToGetItemDto(item));
+        }
+
+        return listOfGetItemDto;
     }
 }
