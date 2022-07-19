@@ -1,11 +1,10 @@
-package pl.creative.rental_server.CategoryMagagement;
+package pl.creative.rental_server.ItemTemplateManagement;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import pl.creative.rental_server.CategoryMagagement.dto.ItemTemplateMapper;
-import pl.creative.rental_server.CategoryMagagement.dto.FillItemTemplateDto;
-import pl.creative.rental_server.CategoryMagagement.dto.GetItemTemplateDto;
+import pl.creative.rental_server.ItemTemplateManagement.dto.ItemTemplateMapper;
+import pl.creative.rental_server.ItemTemplateManagement.dto.FillItemTemplateDto;
+import pl.creative.rental_server.ItemTemplateManagement.dto.GetItemTemplateDto;
 import pl.creative.rental_server.Entities.ItemTemplate;
 import pl.creative.rental_server.Repository.ItemTemplateRepository;
 

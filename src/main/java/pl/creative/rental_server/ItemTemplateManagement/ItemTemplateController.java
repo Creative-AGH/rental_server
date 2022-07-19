@@ -1,12 +1,12 @@
-package pl.creative.rental_server.CategoryMagagement;
+package pl.creative.rental_server.ItemTemplateManagement;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.creative.rental_server.CategoryMagagement.dto.FillItemTemplateDto;
-import pl.creative.rental_server.CategoryMagagement.dto.GetItemTemplateDto;
+import pl.creative.rental_server.ItemTemplateManagement.dto.FillItemTemplateDto;
+import pl.creative.rental_server.ItemTemplateManagement.dto.GetItemTemplateDto;
 
 import java.net.URI;
 import java.util.List;

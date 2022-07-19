@@ -1,4 +1,4 @@
-package pl.creative.rental_server.CategoryMagagement.dto;
+package pl.creative.rental_server.ItemTemplateManagement.dto;
 
 import lombok.Data;
 
