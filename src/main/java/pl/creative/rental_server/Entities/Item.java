@@ -2,7 +2,6 @@ package pl.creative.rental_server.Entities;
 
 import lombok.Data;
 import org.springframework.lang.Nullable;
-import pl.creative.rental_server.Entities.urls.UrlToItem;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

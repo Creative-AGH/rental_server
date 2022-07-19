@@ -1,6 +1,7 @@
 package pl.creative.rental_server.Entities;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -11,11 +12,11 @@ import java.util.Set;
 @Data
 public class Place {
     @Id
-    @Column(unique = true)
+    @UniqueElements
     private String id;
     @NotNull
     @NotEmpty
-    @Column(unique = true)
+    @UniqueElements
     private String name;
     @NotNull
     @NotEmpty
