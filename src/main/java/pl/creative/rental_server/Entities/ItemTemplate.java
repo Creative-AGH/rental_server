@@ -21,6 +21,6 @@ public class ItemTemplate {
     @NotBlank(message = "Name may not be empty or null")
     private String name;
     private String description;
-    @ManyToMany
+    @ManyToMany(mappedBy = "categories")
     Set<Item> items = new HashSet<>();
 }
