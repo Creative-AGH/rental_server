@@ -16,16 +16,16 @@ import java.util.List;
 public class ItemTemplateController implements ItemTemplateApi {
     private final ItemTemplateService itemTemplateService;
     @Override
-    public List<GetItemTemplateDto> getCategories(){
-        return itemTemplateService.getCategories();
+    public List<GetItemTemplateDto> getItemTemplates(){
+        return itemTemplateService.getItemTemplates();
     }
     @Override
-    public ResponseEntity<GetItemTemplateDto> addCategory(@RequestBody FillItemTemplateDto fillItemTemplateDto) {
-        GetItemTemplateDto savedCategory = itemTemplateService.addCategory(fillItemTemplateDto);
+    public ResponseEntity<GetItemTemplateDto> addItemTemplates(@RequestBody FillItemTemplateDto fillItemTemplateDto) {
+        GetItemTemplateDto savedItemTemplate = itemTemplateService.addItemTemplate(fillItemTemplateDto);
         URI savedCategoryUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedCategory.getId())
+                .buildAndExpand(savedItemTemplate.getId())
                 .toUri();
-        return ResponseEntity.created(savedCategoryUri).body(savedCategory);
+        return ResponseEntity.created(savedCategoryUri).body(savedItemTemplate);
     }
 }

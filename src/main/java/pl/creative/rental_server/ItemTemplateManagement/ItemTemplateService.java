@@ -19,7 +19,7 @@ public class ItemTemplateService {
     private final ItemTemplateMapper itemTemplateMapper;
 
 
-    public GetItemTemplateDto addCategory(FillItemTemplateDto dto) {
+    public GetItemTemplateDto addItemTemplate(FillItemTemplateDto dto) {
         ItemTemplate itemTemplate = itemTemplateMapper.mapFillItemTemplateDtoToItemTemplate(dto);
         String uuid;
         do {
@@ -30,7 +30,7 @@ public class ItemTemplateService {
         return itemTemplateMapper.mapItemTemplateToGetItemTemplateDto(itemTemplate);
     }
 
-    public List<GetItemTemplateDto> getCategories() {
+    public List<GetItemTemplateDto> getItemTemplates() {
         List<GetItemTemplateDto> listOfGetItemTemplateDto = new ArrayList<>();
         Iterable<ItemTemplate> categories = itemTemplateRepository.findAll();
         for (ItemTemplate itemTemplate : categories) {

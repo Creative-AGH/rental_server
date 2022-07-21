@@ -1,4 +1,4 @@
-package pl.creative.rental_server.AreaManagement.CreateArea;
+package pl.creative.rental_server.AreaManagement;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import pl.creative.rental_server.Repository.AreaRepository;
 
 @Service
 @RequiredArgsConstructor
-public class CreateAreaService {
+public class AreaService {
 
     private final AreaRepository areaRepository;
     private final RandomIdHandler randomIdHandler;

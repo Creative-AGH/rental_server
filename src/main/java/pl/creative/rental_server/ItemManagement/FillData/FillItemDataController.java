@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class FillItemDataController {
     private final FillItemDataService fillItemDataService;
 
-    @PostMapping("/add/{categoryId}/item")
-    ResponseEntity<?> addItem(@RequestBody FillItemDto dto, @PathVariable String categoryId) {
-        fillItemDataService.addItem(dto, categoryId);
+    @PostMapping("/add/{itemTemplateId}/item")
+    ResponseEntity<?> addItem(@RequestBody FillItemDto dto, @PathVariable String itemTemplateId) {
+        fillItemDataService.addItem(dto, itemTemplateId);
         return ResponseEntity.ok().build();
     }
 

@@ -13,9 +13,9 @@ import java.util.List;
 public interface ItemTemplateApi {
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    List<GetItemTemplateDto> getCategories();
+    List<GetItemTemplateDto> getItemTemplates();
 
     @PostMapping
-    ResponseEntity<GetItemTemplateDto> addCategory(@RequestBody @Valid FillItemTemplateDto fillItemTemplateDto);
+    ResponseEntity<GetItemTemplateDto> addItemTemplates(@RequestBody @Valid FillItemTemplateDto fillItemTemplateDto);
 
 }
