@@ -26,8 +26,8 @@ public class Item {
     @Nullable
     Account borrowedBy;
     @ManyToMany
-    @JoinTable(name = "category_item") //the owner of relation
-    private List<Category> categories = new ArrayList<>();
+//    @JoinTable(name = "category_item") //the owner of relation FIXME ( DO NOT COMPILE WITH IT )
+    private List<TypeOfItem> categories = new ArrayList<>();
     @Enumerated
     StatusOfItem statusOfItem;
     @PastOrPresent

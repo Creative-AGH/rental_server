@@ -1,7 +1,7 @@
 package pl.creative.rental_server.ItemManagement.dto;
 
 import lombok.Data;
-import pl.creative.rental_server.CategoryMagagement.dto.GetCategoryDto;
+import pl.creative.rental_server.ItemTemplateManagement.dto.GetItemTemplateDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,5 +12,5 @@ public class GetItemDto {
     private String name;
     //    private StatusOfItem statusOfItem;
     private LocalDateTime dateOfCreate;
-    private List<GetCategoryDto> categories;
+    private List<GetItemTemplateDto> categories; //FIXME One item template => For many Items not Many Itemtemplates for Many items
 }

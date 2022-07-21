@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.creative.rental_server.Entities.Item;
+import pl.creative.rental_server.Handlers.RandomIdHandler;
 import pl.creative.rental_server.ItemManagement.dto.FillItemDto;
 import pl.creative.rental_server.ItemManagement.dto.GetItemDto;
 import pl.creative.rental_server.ItemManagement.dto.ItemMapper;
@@ -19,15 +20,12 @@ import java.util.UUID;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
-
+    private final RandomIdHandler randomIdHandler;
 
     @Transactional
     public GetItemDto addItem(FillItemDto fillItemDto) {
         Item itemToSave = itemMapper.mapFillItemDtoToItem(fillItemDto);
-        String uuid;
-        do {
-            uuid = UUID.randomUUID().toString();
-        } while (itemRepository.findById(uuid).isPresent());
+        String uuid= randomIdHandler.generateUniqueIdFromTable(itemRepository);
         itemToSave.setId(uuid);
         itemToSave.setDateOfCreate(LocalDateTime.now());
         Item savedItem = itemRepository.save(itemToSave);
