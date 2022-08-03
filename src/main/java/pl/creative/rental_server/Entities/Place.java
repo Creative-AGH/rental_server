@@ -22,7 +22,7 @@ public class Place {
     @NotEmpty
     private String description;
 
-    @ManyToMany
+    @ManyToMany //TODO here have to be @OneToMany
     private Set<Item> items;
 
 
