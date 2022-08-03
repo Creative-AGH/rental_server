@@ -11,10 +11,12 @@ import java.util.List;
 
 @RequestMapping("/item")
 public interface ItemApi {
+
+    @PostMapping
+    ResponseEntity<GetItemDto> addItem(@RequestBody @Valid FillItemDto fillItemDto);
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     List<GetItemDto> getItems();
 
-    @PostMapping
-    ResponseEntity<GetItemDto> addItem(@Valid @RequestBody FillItemDto fillItemDto);
 }

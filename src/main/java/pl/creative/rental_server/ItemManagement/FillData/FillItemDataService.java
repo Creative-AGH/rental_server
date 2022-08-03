@@ -15,11 +15,12 @@ public class FillItemDataService {
     private final RandomIdHandler randomIdHandler;
 
 
-    public void addItem(FillItemDto dto, String ItemTemplateId) {
-        Item item = fillItemMapper.mapItemDtoToItem(dto);
+    public void addItem(FillItemDto fillItemDto, String ItemTemplateId) {
+        Item item = fillItemMapper.mapItemDtoToItem(fillItemDto);
         String uuid = randomIdHandler.generateUniqueIdFromTable(itemRepository);
         item.setId(uuid);
-
+        //put item to template
+        //put template to item
         // TODO upload files to ingur or other service
 
         itemRepository.save(item);

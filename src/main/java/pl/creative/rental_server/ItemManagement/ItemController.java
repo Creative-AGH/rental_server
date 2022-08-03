@@ -17,11 +17,6 @@ public class ItemController implements ItemApi {
     private final ItemService itemService;
 
     @Override
-    public List<GetItemDto> getItems() {
-        return itemService.getItems();
-    }
-
-    @Override
     public ResponseEntity<GetItemDto> addItem(@RequestBody FillItemDto fillItemDto) {
         GetItemDto savedItem = itemService.addItem(fillItemDto);
         URI savedBookUri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -30,4 +25,11 @@ public class ItemController implements ItemApi {
                 .toUri();
         return ResponseEntity.created(savedBookUri).body(savedItem);
     }
+
+    @Override
+    public List<GetItemDto> getItems() {
+        return itemService.getItems();
+    }
+
+
 }
