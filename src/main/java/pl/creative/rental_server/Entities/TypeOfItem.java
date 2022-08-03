@@ -1,31 +1,33 @@
 package pl.creative.rental_server.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Data
+@Table(name = "typeOfItem")
 public class TypeOfItem {
     @Id
-    @GeneratedValue
     @NotNull
     @NotEmpty
     @Column(unique = true)
-    private String id;
+    private String id; //This id is generated in TypeOfItemService class
     @NotNull
     @NotEmpty
-    @Column(unique = true)
+    @Column(unique = true) //who is checking it, when will it throw an exception?
+    // we can get all names in service while adding new type and check it
     private String nameOfType;
-    @NotNull
-    @NotEmpty
-
     private String description;
-    @OneToMany(fetch = FetchType.EAGER)
-    List<Item>  itemsCreatedFromThisType;
+    @ManyToMany(mappedBy = "typesOfItem")
+    private List<Item> itemsCreatedFromThisType = new ArrayList<>();
 
-
+    public List<Item> getItems() {
+        return itemsCreatedFromThisType;
+    }
 
 }
