@@ -22,7 +22,7 @@ public class ItemTemplate {
     private String templateName;
     private String templateDescription;
     @OneToMany //one template can have many items, but item can have only one template
-    List<Item> items = new ArrayList<>(); 
+    List<Item> items = new ArrayList<>();
 
 
 }
