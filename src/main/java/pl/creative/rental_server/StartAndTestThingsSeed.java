@@ -2,15 +2,15 @@ package pl.creative.rental_server;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.creative.rental_server.Entities.Area;
-import pl.creative.rental_server.Entities.Item;
-import pl.creative.rental_server.Entities.Place;
-import pl.creative.rental_server.Entities.TypeOfItem;
-import pl.creative.rental_server.Handlers.RandomIdHandler;
-import pl.creative.rental_server.Repository.AreaRepository;
-import pl.creative.rental_server.Repository.ItemRepository;
-import pl.creative.rental_server.Repository.PlaceRepository;
-import pl.creative.rental_server.Repository.TypeOfItemRepository;
+import pl.creative.rental_server.entities.Area;
+import pl.creative.rental_server.entities.Item;
+import pl.creative.rental_server.entities.Place;
+import pl.creative.rental_server.entities.TypeOfItem;
+import pl.creative.rental_server.handlers.RandomIdHandler;
+import pl.creative.rental_server.repository.AreaRepository;
+import pl.creative.rental_server.repository.ItemRepository;
+import pl.creative.rental_server.repository.PlaceRepository;
+import pl.creative.rental_server.repository.TypeOfItemRepository;
 
 import java.util.Optional;
 
