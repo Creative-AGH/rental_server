@@ -1,7 +1,9 @@
 package pl.creative.rental_server.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "typeOfItem")
 public class TypeOfItem {
     @Id
@@ -25,6 +29,12 @@ public class TypeOfItem {
     private String description;
     @ManyToMany(mappedBy = "typesOfItem")
     private List<Item> itemsCreatedFromThisType = new ArrayList<>();
+
+    public TypeOfItem(String id, String nameOfType, String description) {
+        this.id = id;
+        this.nameOfType = nameOfType;
+        this.description = description;
+    }
 
     public List<Item> getItems() {
         return itemsCreatedFromThisType;

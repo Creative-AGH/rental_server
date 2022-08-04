@@ -11,10 +11,8 @@ import pl.creative.rental_server.Repository.AreaRepository;
 public class AreaService {
 
     private final AreaRepository areaRepository;
-    private final RandomIdHandler randomIdHandler;
     public void createArea() {//If we would like to provide some informations with that area make version with DTO
-        String id=randomIdHandler.generateUniqueIdFromTable(areaRepository);
-        areaRepository.save(new Area(id));
+        areaRepository.save(new Area(0));
 
     }
 }

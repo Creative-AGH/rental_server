@@ -13,15 +13,16 @@ import java.util.List;
 @Data
 public class Area {
     @Id
-    private String id;
-
+    private Integer id;
+    @OneToMany
+    private List<Item> unusedItems=new ArrayList<>();
     @OneToMany
     List<Place> places= new ArrayList<>();
     public void addPlace(Place place)
     {
         places.add(place);
     }
-    public Area(String id) {
+    public Area(Integer id) {
         this.id = id;
     }
 }

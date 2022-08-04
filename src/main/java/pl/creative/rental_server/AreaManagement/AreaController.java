@@ -10,6 +10,7 @@ public class AreaController implements AreaApi {
 
     private final AreaService areaService;
     @Override
+    @Deprecated
     public ResponseEntity<?> createNewArea() {//If we would like to provide some informations with that area make version with DTO
         areaService.createArea();
         return ResponseEntity.ok().build();

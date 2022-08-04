@@ -23,12 +23,10 @@ import java.util.List;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @UniqueElements
     private Long id;
     @NotNull
     @NotEmpty
     @Email
-    @UniqueElements
     private String email;
     @NotNull
     @NotEmpty
