@@ -33,7 +33,7 @@ public class Item {
     @JoinTable(name = "category_item") //the owner of relation
     private List<Category> categories = new ArrayList<>();
 //    @Enumerated(EnumType.STRING) //it is not necessary because we do that in other way
-    StatusOfItem statusOfItem; //TODO it is next step
+    StatusOfItem statusOfItem;
     @PastOrPresent
     private LocalDateTime dateOfCreation;
 
