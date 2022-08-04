@@ -13,30 +13,30 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "typeOfItem")
-public class TypeOfItem {
+@Table(name = "category")
+public class Category {
     @Id
     @NotNull
     @NotEmpty
     @Column(unique = true)
-    private String id; //This id is generated in TypeOfItemService class
+    private String id; //This id is generated in CategoryService class
     @NotNull
     @NotEmpty
     @Column(unique = true) //who is checking it, when will it throw an exception?
     // we can get all names in service while adding new type and check it
-    private String nameOfType;
+    private String categoryName;
     private String description;
-    @ManyToMany(mappedBy = "typesOfItem")
-    private List<Item> itemsCreatedFromThisType = new ArrayList<>();
+    @ManyToMany(mappedBy = "categories")
+    private List<Item> itemsCreatedFromThisCategory = new ArrayList<>();
 
-    public TypeOfItem(String id, String nameOfType, String description) {
+    public Category(String id, String categoryName, String description) {
         this.id = id;
-        this.nameOfType = nameOfType;
+        this.categoryName = categoryName;
         this.description = description;
     }
 
     public List<Item> getItems() {
-        return itemsCreatedFromThisType;
+        return itemsCreatedFromThisCategory;
     }
 
 }

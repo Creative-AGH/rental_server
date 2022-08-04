@@ -16,8 +16,8 @@ public class FillItemDto {
     @NotBlank(message = "Name can not be null or empty") //check if trimmed string has more than 0 digits
     @Size(max = 255, message = "Name of the item must be shorter than {max} signs")
     private String name;
-    @NotNull(message = "List of types of item id may not be null")
-    private List<String> typesOfItemId;
+    @NotNull(message = "List of category of item id may not be null")
+    private List<String> categoriesId;
 //    @Enumerated
 //    private StatusOfItem statusOfItem;
 

@@ -29,8 +29,8 @@ public class Item {
 //    @Nullable
 //    Account borrowedBy;
     @ManyToMany
-    @JoinTable(name = "typeOfItem_item") //the owner of relation
-    private List<TypeOfItem> typesOfItem = new ArrayList<>();
+    @JoinTable(name = "category_item") //the owner of relation
+    private List<Category> categories = new ArrayList<>();
     //    @Enumerated
 //    StatusOfItem statusOfItem; //TODO it is next step
 //    @PastOrPresent
@@ -53,12 +53,12 @@ public class Item {
 //    @OneToMany
 //    List<UrlToItem> urlsToItem = new ArrayList<>(); //FIXME we dont know if we will have another external service to use
 
-    public void addTypeOfItemToTypeOfItemIds(TypeOfItem typeOfItem) {
-        typesOfItem.add(typeOfItem);
+    public void addCategoryToCategoryIds(Category category) {
+        categories.add(category);
     }
 
-    public List<TypeOfItem> getTypesOfItem() {
-        return typesOfItem;
+    public List<Category> getCategory() {
+        return categories;
     }
 
 

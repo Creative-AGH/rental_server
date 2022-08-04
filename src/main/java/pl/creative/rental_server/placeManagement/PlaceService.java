@@ -4,22 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.creative.rental_server.entities.Area;
-import pl.creative.rental_server.entities.Item;
 import pl.creative.rental_server.entities.Place;
 import pl.creative.rental_server.placeManagement.dto.EditPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.InnerPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.InputPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.PlaceMapper;
-import pl.creative.rental_server.exception.PlaceNotFound;
+import pl.creative.rental_server.exception.notFound.PlaceNotFound;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.repository.AreaRepository;
 import pl.creative.rental_server.repository.ItemRepository;
 import pl.creative.rental_server.repository.PlaceRepository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +40,7 @@ public class PlaceService {
     }
 
 
-    public EditPlaceDto editPlace(InnerPlaceDto innerPlaceDto) throws PlaceNotFound {
+    public EditPlaceDto editPlace(InnerPlaceDto innerPlaceDto) {
         Optional<Place> placeOptional = placeRepository.findById(innerPlaceDto.getPlaceId());
         if (placeOptional.isPresent()) {
             Place place = placeOptional.get();

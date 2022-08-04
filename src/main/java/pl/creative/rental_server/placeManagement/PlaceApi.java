@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import pl.creative.rental_server.placeManagement.dto.EditPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.InputPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.PlaceIdDto;
-import pl.creative.rental_server.exception.PlaceNotFound;
+import pl.creative.rental_server.exception.notFound.PlaceNotFound;
 
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
@@ -15,11 +15,11 @@ import java.lang.reflect.InvocationTargetException;
 public interface PlaceApi {
     @PostMapping("/moderator/place/create")
     @ApiOperation(value = "Creates place and return ID of created Place")
-    ResponseEntity<PlaceIdDto> createPlace(@Valid InputPlaceDto dto) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException;
+    ResponseEntity<PlaceIdDto> createPlace(@Valid InputPlaceDto dto);
 
     @ApiOperation(value = "Updates existing place place and return updatedPlace")
     @PostMapping("/moderator/{placeId}/update")
-    ResponseEntity<EditPlaceDto> updatePlace(@Valid InputPlaceDto dto, @PathVariable String placeId) throws PlaceNotFound;
+    ResponseEntity<EditPlaceDto> updatePlace(@Valid InputPlaceDto dto, @PathVariable String placeId);
 
     @ApiOperation(value = "Delete place based on given ID")
     @PostMapping("/moderator/{placeId}/delete")

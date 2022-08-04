@@ -8,6 +8,6 @@ import pl.creative.rental_server.entities.Item;
 public interface ItemMapper {
     Item mapFillItemDtoToItem(FillItemDto fillItemDto);
 
-    @Mapping(source = "typesOfItem", target = "typesOfItem")
+    @Mapping(source = "categories", target = "categories")
     GetItemDto mapItemToGetItemDto(Item item);
 }

@@ -7,7 +7,7 @@ import pl.creative.rental_server.placeManagement.dto.EditPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.InputPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.PlaceIdDto;
 import pl.creative.rental_server.placeManagement.dto.PlaceMapper;
-import pl.creative.rental_server.exception.PlaceNotFound;
+import pl.creative.rental_server.exception.notFound.PlaceNotFound;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class PlaceController implements PlaceApi {
     }
 
     @Override
-    public ResponseEntity<EditPlaceDto> updatePlace(InputPlaceDto dto, String placeId) throws PlaceNotFound {
+    public ResponseEntity<EditPlaceDto> updatePlace(InputPlaceDto dto, String placeId) {
 
         EditPlaceDto editPlaceDto = placeService.editPlace(placeMapper.mapInputPlaceDtoToInnerPlaceDto(dto, placeId));
         return ResponseEntity.ok(editPlaceDto);
