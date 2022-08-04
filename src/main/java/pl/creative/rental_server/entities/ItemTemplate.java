@@ -5,7 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +22,7 @@ public class ItemTemplate {
     private String templateName;
     private String templateDescription;
     @OneToMany //one template can have many items, but item can have only one template
-    Set<Item> items = new HashSet<>(); //TODO change this set to list for consistency
+    List<Item> items = new ArrayList<>(); 
 
 
 }

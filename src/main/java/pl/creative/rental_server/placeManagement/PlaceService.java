@@ -17,6 +17,7 @@ import pl.creative.rental_server.repository.ItemRepository;
 import pl.creative.rental_server.repository.PlaceRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -38,21 +39,28 @@ public class PlaceService {
         areaRepository.findById(0).ifPresent(e -> e.addPlace(place));// Area with id 0 is
         itemRepository.save(new Item("12", "xDName"));
         itemRepository.save(new Item("123", "xDName"));
-        place.setItems(Set.of(new Item("12", "xDName"), new Item("123", "xDName")));
+        place.setItems(List.of(new Item("12", "xDName"), new Item("123", "xDName")));
         placeRepository.save(place);
         log.info("Created and saved place {}", place);
         return place.getId();
     }
 
+
     public EditPlaceDto editPlace(InnerPlaceDto innerPlaceDto) throws PlaceNotFound {
         Optional<Place> placeOptional = placeRepository.findById(innerPlaceDto.getPlaceId());
         if (placeOptional.isPresent()) {
             Place place = placeOptional.get();
-            placeRepository.delete(place);
-            Place editedPlace = placeMapper.mapInnerPlaceDtoToPlace(innerPlaceDto);
+            Area area = areaRepository.findById(0).get();
+            area.getPlaces().remove(place);
 
+            Place editedPlace = placeMapper.mapInnerPlaceDtoToPlace(innerPlaceDto);
+            log.info("Editing place {} to {}", place, editedPlace);
+            placeRepository.delete(place);
             placeRepository.save(editedPlace);
-            log.info("Edited succesfully place {} to {}", place, editedPlace);
+            area.addPlace(editedPlace);
+            areaRepository.save(area);
+
+
             return placeMapper.mapPlaceToEditPlaceDto(editedPlace);
         } else {
             log.error("Place with id {} not exists", innerPlaceDto.getPlaceId());
