@@ -37,9 +37,6 @@ public class PlaceService {
         String id = randomIdHandler.generateUniqueIdFromTable(placeRepository);
         place.setId(id);
         areaRepository.findById(0).ifPresent(e -> e.addPlace(place));// Area with id 0 is
-        itemRepository.save(new Item("12", "xDName"));
-        itemRepository.save(new Item("123", "xDName"));
-        place.setItems(List.of(new Item("12", "xDName"), new Item("123", "xDName")));
         placeRepository.save(place);
         log.info("Created and saved place {}", place);
         return place.getId();
@@ -59,8 +56,6 @@ public class PlaceService {
             placeRepository.save(editedPlace);
             area.addPlace(editedPlace);
             areaRepository.save(area);
-
-
             return placeMapper.mapPlaceToEditPlaceDto(editedPlace);
         } else {
             log.error("Place with id {} not exists", innerPlaceDto.getPlaceId());
