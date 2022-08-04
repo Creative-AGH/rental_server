@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,9 @@ public class Item {
     @ManyToMany
     @JoinTable(name = "category_item") //the owner of relation
     private List<Category> categories = new ArrayList<>();
-    //    @Enumerated
-//    StatusOfItem statusOfItem; //TODO it is next step
-//    @PastOrPresent
+//    @Enumerated(EnumType.STRING) //it is not necessary because we do that in other way
+    StatusOfItem statusOfItem; //TODO it is next step
+    @PastOrPresent
     private LocalDateTime dateOfCreation;
 
     @ManyToOne

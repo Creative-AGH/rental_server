@@ -2,6 +2,7 @@ package pl.creative.rental_server.itemManagement.dto;
 
 import lombok.Data;
 
+import pl.creative.rental_server.entities.StatusOfItem;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -18,7 +19,7 @@ public class FillItemDto {
     private String name;
     @NotNull(message = "List of category of item id may not be null")
     private List<String> categoriesId;
-//    @Enumerated
-//    private StatusOfItem statusOfItem;
+    //@Enumerated(EnumType.STRING) //it is not necessary because we do that in other way
+    private StatusOfItem statusOfItem;
 
 }
