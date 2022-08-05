@@ -31,5 +31,11 @@ public class ItemController implements ItemApi {
         return itemService.getItems();
     }
 
+    @Override
+    public ResponseEntity<GetItemDto> replaceItem(FillItemDto fillItemDto) {
+        itemService.replaceItem(fillItemDto);
+        return null;
+    }
+
 
 }

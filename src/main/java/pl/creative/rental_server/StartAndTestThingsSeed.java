@@ -24,6 +24,7 @@ public class StartAndTestThingsSeed {
     private final RandomIdHandler randomIdHandler;
 
     public void fillData() {
+        createPlace();
         createArea();
         createTestCategory();//TODO REMOVE ALL TEST DATA BEFORE PRODUCTION
         createTestItem();
@@ -31,9 +32,18 @@ public class StartAndTestThingsSeed {
     }
 
     private void createTestPlace() {
-        if (placeRepository.count() == 0) {
+        if (placeRepository.count() <=1) { //<=1 because we create one place with id 0
             placeRepository.save(new Place("place1", "placeName1", "placeDescription1"));
+            placeRepository.save(new Place("string", "placeNameString", "placeDescriptionString"));
             placeRepository.save(new Place("place2", "placeName2", "placeDescription2"));
+        }
+    }
+
+    private void createPlace() {
+        Optional<Place> optional = placeRepository.findById("0"); // Initial abstractPlace
+        if (optional.isEmpty()) {
+            placeRepository.save(new Place("0","emptyAbstractPlace","This place contains items," +
+                    " which have not assigned place (item without place)"));
         }
     }
 
@@ -47,6 +57,7 @@ public class StartAndTestThingsSeed {
     private void createTestCategory() {
         if (categoryRepository.count() == 0) {
             categoryRepository.save(new Category("category1", "categoryName1", "categoryDescription1"));
+            categoryRepository.save(new Category("string", "categoryNameString", "categoryDescriptionString"));
             categoryRepository.save(new Category("category2", "categoryName2", "categoryDescription2"));
         }
     }
@@ -54,6 +65,7 @@ public class StartAndTestThingsSeed {
     private void createTestItem() {
         if (itemRepository.count() == 0) {
             itemRepository.save(new Item("item1", "itemName1"));
+            itemRepository.save(new Item("string", "itemNameString"));
             itemRepository.save(new Item("item2", "itemName2"));
             itemRepository.save(new Item("item3", "itemName3"));
             itemRepository.save(new Item("item4", "itemName4"));

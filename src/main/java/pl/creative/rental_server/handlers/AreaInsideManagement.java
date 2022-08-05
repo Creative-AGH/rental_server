@@ -24,20 +24,20 @@ public class AreaInsideManagement {
         areaRepository.save(area);
         log.info("Successfully added place {} to area",place);
     }
-    public void addUnusedItem(Item item)
-    {
-        area.getItemsWithoutPlace().add(item);
-        areaRepository.save(area);
-        log.info("Successfully added not used item {} to area",item);
-    }
+//    public void addUnusedItem(Item item)
+//    {
+//        area.getItemsWithoutPlace().add(item);
+//        areaRepository.save(area);
+//        log.info("Successfully added not used item {} to area",item);
+//    }
 
-    public Item detachUnusedItemFromArea(Item item)
-    {
-        area.getItemsWithoutPlace().remove(item);
-        areaRepository.save(area);
-        log.info("Detached item {} from area ",item);
-        return item;
-    }
+//    public Item detachUnusedItemFromArea(Item item)
+//    {
+//        area.getItemsWithoutPlace().remove(item);
+//        areaRepository.save(area);
+//        log.info("Detached item {} from area ",item);
+//        return item;
+//    }
     public Place detachPlaceFromArea(Place place)
     {
         area.getPlaces().remove(place);

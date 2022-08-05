@@ -1,28 +1,34 @@
 package pl.creative.rental_server.placeManagement;
 
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import pl.creative.rental_server.itemManagement.dto.FillItemDto;
+import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 import pl.creative.rental_server.placeManagement.dto.EditPlaceDto;
+import pl.creative.rental_server.placeManagement.dto.GetPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.InputPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.PlaceIdDto;
-import pl.creative.rental_server.exception.notFound.PlaceNotFound;
 
 import javax.validation.Valid;
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public interface PlaceApi {
     @PostMapping("/moderator/place/create")
     @ApiOperation(value = "Creates place and return ID of created Place")
-    ResponseEntity<PlaceIdDto> createPlace(@Valid InputPlaceDto dto);
+    ResponseEntity<PlaceIdDto> addPlace(@RequestBody @Valid InputPlaceDto dto);
 
-    @ApiOperation(value = "Updates existing place place and return updatedPlace")
-    @PostMapping("/moderator/{placeId}/update")
-    ResponseEntity<EditPlaceDto> updatePlace(@Valid InputPlaceDto dto, @PathVariable String placeId);
+    @GetMapping("/moderator/places")
+    @ResponseStatus(HttpStatus.OK)
+    List<GetPlaceDto> getPlaces();
 
-    @ApiOperation(value = "Delete place based on given ID")
-    @PostMapping("/moderator/{placeId}/delete")
+    @ApiOperation(value = "Updates existing place and return updatedPlace")
+    @PutMapping("/moderator/{placeId}/update")
+    ResponseEntity<EditPlaceDto> replacePlace(@RequestBody @Valid InputPlaceDto dto, @PathVariable String placeId);
+
+    @ApiOperation(value = "Deletes place based on given ID")
+    @DeleteMapping("/moderator/{placeId}/delete")
     ResponseEntity<?> deletePlace(@PathVariable String placeId);
 
 }

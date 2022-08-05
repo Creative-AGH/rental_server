@@ -5,17 +5,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.creative.rental_server.entities.Item;
+import pl.creative.rental_server.entities.Place;
+import pl.creative.rental_server.entities.StatusOfItem;
 import pl.creative.rental_server.exception.notFound.CategoryNotFound;
+import pl.creative.rental_server.exception.notFound.PlaceNotFound;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
 import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 import pl.creative.rental_server.itemManagement.dto.ItemMapper;
 import pl.creative.rental_server.repository.ItemRepository;
 import pl.creative.rental_server.repository.CategoryRepository;
+import pl.creative.rental_server.repository.PlaceRepository;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +30,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
     private final CategoryRepository categoryRepository;
+    private final PlaceRepository placeRepository;
     private final RandomIdHandler randomIdHandler;
 
     @Transactional
@@ -40,8 +47,14 @@ public class ItemService {
                     }
             );
         }
+        placeRepository.findById(fillItemDto.getPlaceId()).ifPresentOrElse(itemToSave::addPlaceToPlace,
+                () -> {
+                    log.error("Place with id {} is not exists", fillItemDto.getPlaceId());
+                    throw new PlaceNotFound("Place with id " + fillItemDto.getPlaceId() + " is not exists");
+                }
+        );
         Item savedItem = itemRepository.save(itemToSave);
-        log.info("Created and saved item {}", savedItem);
+//        log.info("Created and saved item {}", savedItem); //logger problem
         return itemMapper.mapItemToGetItemDto(savedItem);
     }
 
@@ -53,4 +66,45 @@ public class ItemService {
         }
         return listOfGetItemDto;
     }
+
+    public void replaceItem(FillItemDto fillItemDto) {
+        //TODO
+    }
+
+    @Transactional
+    public void changePlaceOfItem(String itemId, String placeId){
+        Optional<Item> itemOptional = itemRepository.findById(itemId);
+        Optional<Place> placeOptional = placeRepository.findById(placeId);
+        if(itemOptional.isPresent() && placeOptional.isPresent()){
+            Item item = itemOptional.get();
+            log.info("Editing place of item from {} to {}", item.getPlace().getId(), placeId);
+
+            Item newItem = new Item();
+            newItem.setId(item.getId());
+            newItem.setName(item.getName());
+            newItem.setCategories(item.getCategories());
+            newItem.setStatusOfItem(item.getStatusOfItem());
+
+            Place newPlace = new Place();
+            newPlace.setId(placeId); //new placeId
+            newPlace.setName(item.getPlace().getName());
+            newPlace.setDescription(item.getPlace().getDescription());
+            newPlace.setItems(item.getPlace().getItems());
+
+            newItem.setPlace(newPlace); //newPlace for newItem
+
+            itemRepository.delete(item);
+            itemRepository.save(newItem);
+//            log.info("Successfully edited place of item from item {} to newItem {}", item, newItem); //logger problem
+        }else{
+            log.error("Can not change place of the item because such id does exist");
+            throw new PlaceNotFound("Can not change place of the item because such id does exist");
+        }
+    }
+//    private String name;
+//    @NotNull(message = "List of category of item id may not be null")
+//    private List<String> categoriesId;
+//    //@Enumerated(EnumType.STRING) //it is not necessary because we do that in other way
+//    private StatusOfItem statusOfItem;
+//    private String placeId;
 }

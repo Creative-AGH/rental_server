@@ -9,12 +9,14 @@ public interface PlaceMapper {
 
     Place mapInputPlaceDtoToPlace(InputPlaceDto inputPlaceDto);
 
+    GetPlaceDto mapPlaceToGetPlaceDto(Place place);
+
     InnerPlaceDto mapInputPlaceDtoToInnerPlaceDto(InputPlaceDto inputPlaceDto, String placeId);
 
     @Mapping(source = "placeId", target = "id")
-    @Mapping(source = "inputPlaceDto.description", target = "description")
+    @Mapping(source = "inputPlaceDto.description", target = "description") //InnerPlaceDto has inside inputPlaceDto
     @Mapping(source = "inputPlaceDto.name", target = "name")
-    Place mapInnerPlaceDtoToPlace(InnerPlaceDto dto);
+    Place mapInnerPlaceDtoToPlace(InnerPlaceDto innerPlaceDto);
 
-    EditPlaceDto mapPlaceToEditPlaceDto(Place editPlaceDto);
+    EditPlaceDto mapPlaceToEditPlaceDto(Place place);
 }

@@ -19,4 +19,7 @@ public interface ItemApi {
     @ResponseStatus(HttpStatus.OK)
     List<GetItemDto> getItems();
 
+    @PutMapping
+    ResponseEntity<GetItemDto> replaceItem(@RequestBody @Valid FillItemDto fillItemDto);
+
 }

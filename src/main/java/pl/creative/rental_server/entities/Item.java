@@ -41,16 +41,17 @@ public class Item {
     @JoinColumn(name = "itemTemplate_id") //the owner of relation
     private ItemTemplate itemTemplate;
 
+    @ManyToOne //the item can have only one place
+    @JoinColumn(name = "place_id") //the owner of relation
+    Place place;
+
     public Item(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-
-//    @ManyToMany //TODO here have to be @ManyToOne
-//    Set<Place> places = new HashSet<>(); //TODO Adam implements this functionality
 //    @OneToMany
-//    Set<RentHistory> history = new HashSet<>(); //FIXME we dont know if we do that with aspect concept of programming
+//    List<RentHistory> history = new ArrayList<>(); //FIXME we dont know if we do that with aspect concept of programming
 //    @OneToMany
 //    List<UrlToItem> urlsToItem = new ArrayList<>(); //FIXME we dont know if we will have another external service to use
 
@@ -58,9 +59,17 @@ public class Item {
         categories.add(category);
     }
 
+    public void addPlaceToPlace(Place place){
+        this.place=place;
+    }
+
     public List<Category> getCategory() {
         return categories;
     }
+
+//    public void changePlaceOfItem(String placeId){
+//        place.setId(placeId);
+//    }
 
 
 }

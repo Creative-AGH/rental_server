@@ -3,6 +3,8 @@ package pl.creative.rental_server.itemManagement.dto;
 import lombok.Data;
 
 import pl.creative.rental_server.entities.StatusOfItem;
+import pl.creative.rental_server.placeManagement.dto.InputPlaceDto;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -21,5 +23,6 @@ public class FillItemDto {
     private List<String> categoriesId;
     //@Enumerated(EnumType.STRING) //it is not necessary because we do that in other way
     private StatusOfItem statusOfItem;
+    private String placeId;
 
 }
