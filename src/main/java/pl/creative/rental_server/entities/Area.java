@@ -14,7 +14,7 @@ public class Area {
     @Id
     private Integer id;
     @OneToMany
-    private List<Item> unusedItems=new ArrayList<>();
+    private List<Item> ItemsWithoutPlace =new ArrayList<>();
     @OneToMany
     List<Place> places= new ArrayList<>();
     public void addPlace(Place place)
