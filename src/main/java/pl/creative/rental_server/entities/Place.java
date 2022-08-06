@@ -27,8 +27,8 @@ public class Place {
     @NotEmpty
     private String description;
 
-    @OneToMany(mappedBy = "place") //one place can have many items
 //    @ToString.Exclude
+    @OneToMany(mappedBy = "place") //one place can have many items
     private List<Item> items = new ArrayList<>();
 
     public Place(String id, String name, String description) {

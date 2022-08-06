@@ -2,6 +2,7 @@ package pl.creative.rental_server.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -22,8 +23,7 @@ public class Item {
     @Column(unique = true)
     private String id;
     @NotNull
-    @NotEmpty//who is checking it, when will it throw an exception?
-    // we can get all names in service while adding new type and check it
+    @NotEmpty
     private String name;
 
     //    @ManyToOne
@@ -41,6 +41,7 @@ public class Item {
     @JoinColumn(name = "itemTemplate_id") //the owner of relation
     private ItemTemplate itemTemplate;
 
+//    @ToString.Exclude
     @ManyToOne //the item can have only one place
     @JoinColumn(name = "place_id") //the owner of relation
     Place place;
@@ -67,9 +68,6 @@ public class Item {
         return categories;
     }
 
-//    public void changePlaceOfItem(String placeId){
-//        place.setId(placeId);
-//    }
 
 
 }

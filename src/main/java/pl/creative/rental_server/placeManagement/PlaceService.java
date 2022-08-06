@@ -31,14 +31,14 @@ public class PlaceService {
     private final AreaInsideManagement areaInsideManagement;
 
     @Transactional
-    public PlaceIdDto createPlace(InputPlaceDto inputPlaceDto) {
+    public GetPlaceDto addPlace(InputPlaceDto inputPlaceDto) {
         Place place = placeMapper.mapInputPlaceDtoToPlace(inputPlaceDto);
         String id = randomIdHandler.generateUniqueIdFromTable(placeRepository);
         place.setId(id);
-        placeRepository.save(place);
+        Place savedPlace = placeRepository.save(place);
         areaInsideManagement.addPlace(place);// Area with id 0 is
         log.info("Created and saved place",place);
-        return new PlaceIdDto(place.getId());
+        return placeMapper.mapPlaceToGetPlaceDto(savedPlace);
     }
 
     public List<GetPlaceDto> getPlaces(){
@@ -48,29 +48,6 @@ public class PlaceService {
             listOfGetPlaceDto.add(placeMapper.mapPlaceToGetPlaceDto(place));
         }
         return listOfGetPlaceDto;
-    }
-
-    //FIXME we can not update a place when the place has items
-    //Is this functionality even necessary?
-    @Transactional
-    public EditPlaceDto updatePlace(InputPlaceDto dto, String placeId) {
-        InnerPlaceDto innerPlaceDto = placeMapper.mapInputPlaceDtoToInnerPlaceDto(dto, placeId);
-        Optional<Place> placeOptional = placeRepository.findById(innerPlaceDto.getPlaceId());
-        if (placeOptional.isPresent()) {
-            Place place = placeOptional.get();
-//            areaInsideManagement.detachPlaceFromArea(place);
-
-            Place editedPlace = placeMapper.mapInnerPlaceDtoToPlace(innerPlaceDto);
-            log.info("Editing place {} to {}", place, editedPlace);
-            placeRepository.delete(place);
-            placeRepository.save(editedPlace);
-//            areaInsideManagement.addPlace(place);
-            log.info("Successfully edited place {} to {}", place, editedPlace);
-            return placeMapper.mapPlaceToEditPlaceDto(editedPlace);
-        } else {
-            log.error("Place with id {} does not exists", innerPlaceDto.getPlaceId());
-            throw new PlaceNotFound(String.format("Place with id %s not found", innerPlaceDto.getPlaceId()));
-        }
     }
 
     @Transactional
@@ -86,19 +63,23 @@ public class PlaceService {
     public void removePlace(Place place) {
         List<Item> items = place.getItems();
         for (Item item : items) {
-            itemService.changePlaceOfItem(item.getId(),"0"); //changing place to "abstractPlace"
+            itemService.changePlaceOfItem(item.getId(),"0"); //changing place of items to "abstractPlace"
         }
-//        log.info("Deleting {} ", place); //logger problem
         placeRepository.delete(place);
-//        log.info("Restoring items from {} and make it unused {}", place, place.getItems());
-//        place.getItems().forEach(areaInsideManagement::addUnusedItem);
-//        place.getItems().forEach(Item::changePlaceOfItem("0"));
-//        place.setItems(null);
-//        areaInsideManagement.detachPlaceFromArea(place);
-//        placeRepository.save(place);
-//        log.info("Deleting {} ", place);
-//        placeRepository.delete(place);
-
     }
 
+    @Transactional
+    public EditPlaceDto updatePlace(InputPlaceDto inputPlaceDto, String placeId) {
+        Optional<Place> place = placeRepository.findById(placeId);
+        if(place.isPresent()){
+            String placeName = inputPlaceDto.getName();
+            String placeDescription = inputPlaceDto.getDescription();
+            placeRepository.updatePlace(placeId, placeName, placeDescription);
+            return new EditPlaceDto(placeId,placeName,placeDescription);
+        }else{
+            log.error("Place with id {} does not exists", placeId);
+            throw new PlaceNotFound(String.format("Place with such id %s does not exist", placeId));
+        }
+
+    }
 }
