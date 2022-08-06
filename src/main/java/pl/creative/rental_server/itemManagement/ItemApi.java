@@ -29,4 +29,8 @@ public interface ItemApi {
     @ResponseStatus(HttpStatus.OK)
     List<GetItemDto> getItemsByStatusOfItem(@RequestParam StatusOfItem statusOfItem);
 
+    @PutMapping("/moderator//{itemId}")
+    ResponseEntity<GetItemDto> updateStatusOfItem(@PathVariable String itemId,
+                                                  @RequestParam StatusOfItem newStatusOfItem);
+
 }

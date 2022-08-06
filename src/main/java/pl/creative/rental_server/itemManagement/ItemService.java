@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import pl.creative.rental_server.entities.Item;
 import pl.creative.rental_server.entities.Place;
 import pl.creative.rental_server.entities.StatusOfItem;
 import pl.creative.rental_server.exception.notFound.CategoryNotFound;
+import pl.creative.rental_server.exception.notFound.ItemNotFound;
 import pl.creative.rental_server.exception.notFound.PlaceNotFound;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
@@ -100,6 +100,19 @@ public class ItemService {
         return itemRepository.getItemsByStatusOfItem(statusOfItem).stream()
                 .map(itemMapper::mapItemToGetItemDto)
                 .toList();
+    }
+
+    public GetItemDto updateStatusOfItem(String itemId, StatusOfItem newStatusOfItem) {
+        Optional<Item> itemOptional = itemRepository.findById(itemId);
+        if (itemOptional.isPresent()) {
+            itemRepository.updateStatusOfItem(itemId, newStatusOfItem);
+            GetItemDto getItemDto = itemMapper.mapItemToGetItemDto(itemOptional.get());
+            getItemDto.setStatusOfItem(newStatusOfItem);
+            return getItemDto;
+        } else {
+            log.error("Item with id {} does not exists", itemId);
+            throw new ItemNotFound(String.format("Item with such id %s does not exist", itemId));
+        }
     }
 
     //TODO changeCategoriesOfItem
