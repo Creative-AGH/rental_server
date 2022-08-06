@@ -3,8 +3,10 @@ package pl.creative.rental_server.itemManagement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.creative.rental_server.entities.StatusOfItem;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
 import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 
@@ -37,5 +39,9 @@ public class ItemController implements ItemApi {
         return null;
     }
 
+    @Override
+    public List<GetItemDto> getItemsByStatusOfItem(StatusOfItem statusOfItem) {
+        return itemService.getItemsByStatusOfItem(statusOfItem);
+    }
 
 }

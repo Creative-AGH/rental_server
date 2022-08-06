@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.creative.rental_server.entities.Item;
 import pl.creative.rental_server.entities.Place;
+import pl.creative.rental_server.entities.StatusOfItem;
 import pl.creative.rental_server.exception.notFound.CategoryNotFound;
 import pl.creative.rental_server.exception.notFound.PlaceNotFound;
 import pl.creative.rental_server.handlers.RandomIdHandler;
@@ -66,7 +68,7 @@ public class ItemService {
     }
 
     public void replaceItem(FillItemDto fillItemDto) {
-        //TODO
+        //TODO is it necessary? we can use changeCategoriesOfItem and changePlaceOfItem
     }
 
     @Transactional
@@ -93,5 +95,14 @@ public class ItemService {
             throw new PlaceNotFound("Can not change place of the item because such id does exist");
         }
     }
+
+    public List<GetItemDto> getItemsByStatusOfItem(StatusOfItem statusOfItem) {
+        return itemRepository.getItemsByStatusOfItem(statusOfItem).stream()
+                .map(itemMapper::mapItemToGetItemDto)
+                .toList();
+    }
+
+    //TODO changeCategoriesOfItem
+    //
 
 }

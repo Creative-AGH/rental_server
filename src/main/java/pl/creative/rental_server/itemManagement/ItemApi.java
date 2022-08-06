@@ -1,8 +1,10 @@
 package pl.creative.rental_server.itemManagement;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.creative.rental_server.entities.StatusOfItem;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
 import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 
@@ -21,5 +23,10 @@ public interface ItemApi {
 
     @PutMapping
     ResponseEntity<GetItemDto> replaceItem(@RequestBody @Valid FillItemDto fillItemDto);
+
+    @ApiOperation(value = "Return all items according to given status of item")
+    @GetMapping("/moderator/items")
+    @ResponseStatus(HttpStatus.OK)
+    List<GetItemDto> getItemsByStatusOfItem(@RequestParam StatusOfItem statusOfItem);
 
 }
