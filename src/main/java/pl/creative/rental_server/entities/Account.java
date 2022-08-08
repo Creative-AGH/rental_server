@@ -45,6 +45,13 @@ public class Account {
     @ManyToMany
     List<Role> roles;
 
+    public Account(Long id, String email, String name, String surname, String password) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+    }
 
 
 }

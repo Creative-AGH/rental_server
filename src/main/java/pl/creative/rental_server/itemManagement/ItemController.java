@@ -3,7 +3,6 @@ package pl.creative.rental_server.itemManagement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.creative.rental_server.entities.StatusOfItem;
@@ -52,6 +51,12 @@ public class ItemController implements ItemApi {
                 .buildAndExpand(updatedItem.getId())
                 .toUri();
         return ResponseEntity.created(updatedItemUri).body(updatedItem);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteItem(String itemId) {
+        itemService.deleteItem(itemId);
+        return ResponseEntity.noContent().build();
     }
 
 }

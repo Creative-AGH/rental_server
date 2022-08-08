@@ -1,6 +1,7 @@
 package pl.creative.rental_server.itemManagement.dto;
 
 import lombok.Data;
+import pl.creative.rental_server.accountManagement.dto.GetAccountDto;
 import pl.creative.rental_server.categoryManagement.dto.GetCategoryDto;
 import pl.creative.rental_server.entities.StatusOfItem;
 import pl.creative.rental_server.placeManagement.dto.GetPlaceDto;
@@ -16,6 +17,7 @@ public class GetItemDto {
     private List<GetCategoryDto> categories;
     private StatusOfItem statusOfItem;
     private GetPlaceDto place;
+    private GetAccountDto borrowedBy;
 
     //private List<GetItemTemplateDto> categories; //FIXME One item template => For many Items not Many Itemtemplates for Many items
 }

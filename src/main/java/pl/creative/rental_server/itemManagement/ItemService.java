@@ -115,6 +115,20 @@ public class ItemService {
         }
     }
 
+    @Transactional
+    public void deleteItem(String itemId) {
+        itemRepository.findById(itemId).ifPresentOrElse(this::removeItem,
+                () -> {
+                    log.error("You can't delete item with {} id because does not exist", itemId);
+                    throw new PlaceNotFound(String.format("You can't delete item with %s id because does not exist", itemId));
+                }
+        );
+    }
+
+    private void removeItem(Item item) {
+        itemRepository.delete(item);
+    }
+
     //TODO changeCategoriesOfItem
     //
 

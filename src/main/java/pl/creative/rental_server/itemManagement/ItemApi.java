@@ -33,4 +33,9 @@ public interface ItemApi {
     ResponseEntity<GetItemDto> updateStatusOfItem(@PathVariable String itemId,
                                                   @RequestParam StatusOfItem newStatusOfItem);
 
+    @DeleteMapping("/{itemId}")
+    ResponseEntity<?> deleteItem(@PathVariable String itemId);
+
+
+
 }

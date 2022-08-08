@@ -2,15 +2,9 @@ package pl.creative.rental_server;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.creative.rental_server.entities.Area;
-import pl.creative.rental_server.entities.Category;
-import pl.creative.rental_server.entities.Item;
-import pl.creative.rental_server.entities.Place;
+import pl.creative.rental_server.entities.*;
 import pl.creative.rental_server.handlers.RandomIdHandler;
-import pl.creative.rental_server.repository.AreaRepository;
-import pl.creative.rental_server.repository.ItemRepository;
-import pl.creative.rental_server.repository.PlaceRepository;
-import pl.creative.rental_server.repository.CategoryRepository;
+import pl.creative.rental_server.repository.*;
 
 import java.util.Optional;
 
@@ -22,8 +16,10 @@ public class StartAndTestThingsSeed {
     private final PlaceRepository placeRepository;
     private final CategoryRepository categoryRepository;
     private final RandomIdHandler randomIdHandler;
+    private final AccountRepository accountRepository;
 
     public void fillData() {
+        createTestAccount();
         createPlace();
         createArea();
         createTestCategory();//TODO REMOVE ALL TEST DATA BEFORE PRODUCTION
@@ -69,6 +65,14 @@ public class StartAndTestThingsSeed {
             itemRepository.save(new Item("item2", "itemName2"));
             itemRepository.save(new Item("item3", "itemName3"));
             itemRepository.save(new Item("item4", "itemName4"));
+        }
+    }
+
+    private void createTestAccount(){
+        if(accountRepository.count() == 0){
+            accountRepository.save(new Account(1L,"accountName1@gmial.com","name1","surname1","password1"));
+            accountRepository.save(new Account(2L,"accountName2@gmial.com","name2","surname2","password2"));
+            accountRepository.save(new Account(3L,"accountName3@gmial.com","name3","surname3","password3"));
         }
     }
 

@@ -1,5 +1,6 @@
 package pl.creative.rental_server.entities;
 
+import com.sun.istack.Nullable;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -26,9 +27,9 @@ public class Item {
     @NotEmpty
     private String name;
 
-    //    @ManyToOne
-//    @Nullable
-//    Account borrowedBy;
+    @ManyToOne
+    @Nullable
+    Account borrowedBy; //if the item is not borrowed then the account is null
     @ManyToMany
     @JoinTable(name = "category_item") //the owner of relation
     private List<Category> categories = new ArrayList<>();
@@ -37,14 +38,14 @@ public class Item {
     @PastOrPresent
     private LocalDateTime dateOfCreation;
 
-    @ManyToOne
-    @JoinColumn(name = "itemTemplate_id") //the owner of relation
-    private ItemTemplate itemTemplate;
+//    @ManyToOne
+//    @JoinColumn(name = "itemTemplate_id") //the owner of relation
+//    private ItemTemplate itemTemplate;
 
 //    @ToString.Exclude
     @ManyToOne //the item can have only one place
-    @JoinColumn(name = "place_id") //the owner of relation
-    Place place;
+    @JoinColumn(name = "place_id") //the owner of relation //Item table has a record "place_id"
+    Place place; //if the item is borrowed the place is null //if item is returned the place is "abstractPlace" with id 0
 
     public Item(String id, String name) {
         this.id = id;
