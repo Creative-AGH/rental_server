@@ -29,13 +29,16 @@ public interface ItemApi {
     @ResponseStatus(HttpStatus.OK)
     List<GetItemDto> getItemsByStatusOfItem(@RequestParam StatusOfItem statusOfItem);
 
-    @PutMapping("/moderator//{itemId}")
+    @PutMapping("/moderator/{itemId}")
     ResponseEntity<GetItemDto> updateStatusOfItem(@PathVariable String itemId,
                                                   @RequestParam StatusOfItem newStatusOfItem);
 
     @DeleteMapping("/{itemId}")
     ResponseEntity<?> deleteItem(@PathVariable String itemId);
 
-
+    @ApiOperation(value = "Return all borrowed items")
+    @GetMapping("/moderator/items/borrowed")
+    @ResponseStatus(HttpStatus.OK)
+    List<GetItemDto> getBorrowedItems(@RequestParam boolean borrowed);
 
 }

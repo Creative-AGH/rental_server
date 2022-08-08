@@ -59,4 +59,11 @@ public class ItemController implements ItemApi {
         return ResponseEntity.noContent().build();
     }
 
+    @Override
+    public List<GetItemDto> getBorrowedItems(boolean state) {
+        if(state)
+            return itemService.getBorrowedItems();
+        return itemService.getNotBorrowedItems();
+    }
+
 }

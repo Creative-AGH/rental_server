@@ -13,6 +13,11 @@ public interface ItemRepository extends PagingAndSortingRepository<Item, String>
     @Query("SELECT item FROM Item item WHERE item.statusOfItem = :statusOfItem")
     List<Item> getItemsByStatusOfItem(StatusOfItem statusOfItem);
 
+//    @Query("SELECT item FROM Item item WHERE item.borrowedBy IS NOT NULL")
+    List<Item> getAllByBorrowedByIsNotNull();
+
+    List<Item> getAllByBorrowedByIsNull();
+
     @Query("UPDATE Item item SET item.statusOfItem = :statusOfItem WHERE item.id = :itemId")
     @Modifying
     @Transactional

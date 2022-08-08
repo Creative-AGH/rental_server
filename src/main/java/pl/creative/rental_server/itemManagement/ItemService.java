@@ -129,6 +129,14 @@ public class ItemService {
         itemRepository.delete(item);
     }
 
+    public List<GetItemDto> getBorrowedItems() {
+        return itemRepository.getAllByBorrowedByIsNotNull().stream().map(itemMapper::mapItemToGetItemDto).toList();
+    }
+
+    public List<GetItemDto> getNotBorrowedItems() {
+        return itemRepository.getAllByBorrowedByIsNull().stream().map(itemMapper::mapItemToGetItemDto).toList();
+    }
+
     //TODO changeCategoriesOfItem
     //
 
