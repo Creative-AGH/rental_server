@@ -16,6 +16,6 @@ public interface ItemTemplateApi {
     List<GetItemTemplateDto> getItemTemplates();
 
     @PostMapping
-    ResponseEntity<GetItemTemplateDto> addItemTemplates(@RequestBody @Valid FillItemTemplateDto fillItemTemplateDto);
+    ResponseEntity<GetItemTemplateDto> addItemTemplate(@RequestBody @Valid FillItemTemplateDto fillItemTemplateDto);
 
 }

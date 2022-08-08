@@ -20,7 +20,7 @@ public class ItemTemplateController implements ItemTemplateApi {
         return itemTemplateService.getItemTemplates();
     }
     @Override
-    public ResponseEntity<GetItemTemplateDto> addItemTemplates(@RequestBody FillItemTemplateDto fillItemTemplateDto) {
+    public ResponseEntity<GetItemTemplateDto> addItemTemplate(@RequestBody FillItemTemplateDto fillItemTemplateDto) {
         GetItemTemplateDto savedItemTemplate = itemTemplateService.addItemTemplate(fillItemTemplateDto);
         URI savedCategoryUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
