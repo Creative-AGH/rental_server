@@ -54,8 +54,9 @@ public class Item {
         this.name = name;
     }
 
-//    @OneToMany
-//    List<RentHistory> history = new ArrayList<>(); //FIXME we dont know if we do that with aspect concept of programming
+    @OneToMany(mappedBy = "item") //one item can have many of histories
+    List<RentHistory> history = new ArrayList<>(); //FIXME we dont know if we do that with aspect concept of programming
+
 //    @OneToMany
 //    List<UrlToItem> urlsToItem = new ArrayList<>(); //FIXME we dont know if we will have another external service to use
 

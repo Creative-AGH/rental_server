@@ -11,6 +11,7 @@ import pl.creative.rental_server.exception.notFound.AccountNotFound;
 import pl.creative.rental_server.exception.notFound.BorrowerException;
 import pl.creative.rental_server.exception.notFound.ItemNotFound;
 import pl.creative.rental_server.exception.notFound.NotFoundException;
+import pl.creative.rental_server.rentHistoryManagement.RentHistoryService;
 import pl.creative.rental_server.repository.AccountRepository;
 import pl.creative.rental_server.repository.ItemRepository;
 import pl.creative.rental_server.repository.PlaceRepository;
@@ -26,6 +27,7 @@ public class RentItemByModeratorService {
     private final ItemRepository itemRepository;
     private final AccountRepository accountRepository;
     private final PlaceRepository placeRepository;
+    private final RentHistoryService rentHistoryService;
 
     @Transactional
     public void rentItem(Long accountId, String itemId) {
@@ -40,6 +42,7 @@ public class RentItemByModeratorService {
             itemOptional.map(Item::getPlace).map(x -> x.getItems().remove(itemOptional.get()));
             itemOptional.ifPresent(x -> x.setBorrowedBy(accountOptional.get()));
             itemOptional.ifPresent(x -> x.setPlace(null));
+            rentHistoryService.addRentHistory(accountId, itemId);
         } else {
             if (itemOptional.isEmpty() && accountOptional.isEmpty()) {
                 log.error("Item with id {} does not exist", itemId);
@@ -62,9 +65,11 @@ public class RentItemByModeratorService {
                 log.error("Can not return item with id {} because this item is not borrowed by anyone", itemId);
                 throw new BorrowerException(String.format("Can not return item with id %s because this item is not borrowed by anyone", itemId));
             }
+            Long oldBorrowerId = x.getBorrowedBy().getId();
             x.setBorrowedBy(null);
             Optional<Place> abstractPlaceOptional = placeRepository.findById("0");
             abstractPlaceOptional.ifPresent(x::setPlace);
+            rentHistoryService.addRentHistory(oldBorrowerId, itemId);
         }, () -> {
             log.error("Can not return item because item with id {} does not exist", itemId);
             throw new ItemNotFound(String.format("Can not return item with id %s does not exist", itemId));
