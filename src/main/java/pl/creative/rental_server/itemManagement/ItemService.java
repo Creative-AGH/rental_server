@@ -72,7 +72,7 @@ public class ItemService {
     }
 
     @Transactional
-    public void changePlaceOfItem(String itemId, String newPlaceId) {
+    public GetItemDto changePlaceOfItem(String itemId, String newPlaceId) {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         Optional<Place> placeOptional = placeRepository.findById(newPlaceId);
         if (itemOptional.isPresent() && placeOptional.isPresent()) {
@@ -88,7 +88,8 @@ public class ItemService {
 
 //            log.info("Editing place of item from item {} to newItem {}", item, newItem); //logger problem
             itemRepository.delete(item);
-            itemRepository.save(newItem);
+            Item savedItem = itemRepository.save(newItem);
+            return itemMapper.mapItemToGetItemDto(savedItem);
 
         } else {
             log.error("Can not change place of the item because such id does exist");

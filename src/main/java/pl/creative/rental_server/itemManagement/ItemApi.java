@@ -41,4 +41,7 @@ public interface ItemApi {
     @ResponseStatus(HttpStatus.OK)
     List<GetItemDto> getBorrowedItems(@RequestParam boolean borrowed);
 
+    @PatchMapping("/moderator/{itemId}/{newPlaceId}/changePlaceOfItem")
+    ResponseEntity<?> changePlaceOfItem(@PathVariable String itemId, @PathVariable String newPlaceId);
+
 }

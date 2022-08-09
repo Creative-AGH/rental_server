@@ -66,4 +66,14 @@ public class ItemController implements ItemApi {
         return itemService.getNotBorrowedItems();
     }
 
+    @Override
+    public ResponseEntity<?> changePlaceOfItem(String itemId, String newPlaceId) {
+        GetItemDto updatedItem = itemService.changePlaceOfItem(itemId, newPlaceId);
+        URI updatedItemUri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(updatedItem.getId())
+                .toUri();
+        return ResponseEntity.created(updatedItemUri).body(updatedItem);
+    }
+
 }
