@@ -120,7 +120,7 @@ public class ItemService {
     }
 
     @Transactional
-    public void deleteItem(String itemId) {
+    public void deleteItem(String itemId) { //FIXME we can not delete item which has the rentHistory
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isPresent()){
             Item item = optionalItem.get();
