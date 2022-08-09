@@ -47,4 +47,7 @@ public interface ItemApi {
     @PatchMapping("/moderator/{itemId}/{newPlaceId}/changePlaceOfItem")
     ResponseEntity<?> changePlaceOfItem(@PathVariable String itemId, @PathVariable String newPlaceId);
 
+    @PatchMapping("/moderator/{itemId}/{newAccountId}/changeBorrowerOfItem")
+    ResponseEntity<?> changeBorrowerOfItem(@PathVariable String itemId, @PathVariable Long newAccountId);
+
 }

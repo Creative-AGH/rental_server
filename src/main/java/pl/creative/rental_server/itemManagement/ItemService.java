@@ -4,16 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.creative.rental_server.entities.Account;
 import pl.creative.rental_server.entities.Item;
 import pl.creative.rental_server.entities.Place;
 import pl.creative.rental_server.entities.StatusOfItem;
-import pl.creative.rental_server.exception.notFound.CategoryNotFound;
-import pl.creative.rental_server.exception.notFound.ItemNotFound;
-import pl.creative.rental_server.exception.notFound.PlaceNotFound;
+import pl.creative.rental_server.exception.notFound.*;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
 import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 import pl.creative.rental_server.itemManagement.dto.ItemMapper;
+import pl.creative.rental_server.repository.AccountRepository;
 import pl.creative.rental_server.repository.CategoryRepository;
 import pl.creative.rental_server.repository.ItemRepository;
 import pl.creative.rental_server.repository.PlaceRepository;
@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class ItemService {
     private final CategoryRepository categoryRepository;
     private final PlaceRepository placeRepository;
     private final RandomIdHandler randomIdHandler;
+    private final AccountRepository accountRepository;
 
     @Transactional
     public GetItemDto addItem(FillItemDto fillItemDto) {
@@ -140,11 +143,30 @@ public class ItemService {
 
     public GetItemDto getItemByItemId(String itemId) {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
-        if(itemOptional.isEmpty()){
+        if (itemOptional.isEmpty()) {
             log.error("Item with id {} does not exists", itemId);
             throw new ItemNotFound(String.format("Item with such id %s does not exist", itemId));
         }
         return itemMapper.mapItemToGetItemDto(itemOptional.get());
+    }
+
+    public GetItemDto changeBorrowerOfItem(String itemId, Long newAccountId) {
+        Optional<Item> itemOptional = itemRepository.findById(itemId);
+        Optional<Account> accountOptional = accountRepository.findById(newAccountId);
+        if (itemOptional.isEmpty()) {
+            log.error("Item with id {} does not exists", itemId);
+            throw new ItemNotFound(String.format("Item with such id %s does not exist", itemId));
+        }
+        if (accountOptional.isEmpty()) {
+            log.error("Account with id {} does not exists", newAccountId);
+            throw new AccountNotFound(String.format("Item with such id %d does not exist", newAccountId));
+        }
+        if (itemOptional.get().getBorrowedBy() == null) {
+            log.error("Can not change borrower of item with id {} because this item is not borrowed by anyone", itemId);
+            throw new BorrowerException(String.format("Can not change borrower of item with with id %s because this item is not borrowed by anyone", itemId));
+        }
+        itemRepository.changeBorrowerOfItem(itemId, accountOptional.get());
+        return itemMapper.mapItemToGetItemDto(itemRepository.findById(itemId).get());
     }
 
     //TODO changeCategoriesOfItem

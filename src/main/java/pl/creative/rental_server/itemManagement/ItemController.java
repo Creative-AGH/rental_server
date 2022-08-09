@@ -82,4 +82,14 @@ public class ItemController implements ItemApi {
         return ResponseEntity.created(updatedItemUri).body(updatedItem);
     }
 
+    @Override
+    public ResponseEntity<GetItemDto> changeBorrowerOfItem(String itemId, Long newAccountId) {
+        GetItemDto updatedItem = itemService.changeBorrowerOfItem(itemId, newAccountId);
+        URI updatedItemUri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(updatedItem.getId())
+                .toUri();
+        return ResponseEntity.created(updatedItemUri).body(updatedItem);
+    }
+
 }
