@@ -121,12 +121,20 @@ public class ItemService {
 
     @Transactional
     public void deleteItem(String itemId) {
-        itemRepository.findById(itemId).ifPresentOrElse(this::removeItem,
-                () -> {
-                    log.error("You can't delete item with {} id because does not exist", itemId);
-                    throw new PlaceNotFound(String.format("You can't delete item with %s id because does not exist", itemId));
-                }
-        );
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if (optionalItem.isPresent()){
+            Item item = optionalItem.get();
+            if(item.getBorrowedBy() == null){
+                removeItem(item);
+            } else {
+                Long borrowerId = item.getBorrowedBy().getId();
+                log.error("You can't delete item with id {} because item is rented by someone with id {}", itemId, borrowerId);
+                throw new PlaceNotFound(String.format("You can't delete item with id %s because item is rented by someone with id %d", itemId, borrowerId));
+            }
+        } else {
+            log.error("You can't delete item with id {} because does not exist", itemId);
+            throw new PlaceNotFound(String.format("You can't delete item with id %s because does not exist", itemId));
+        }
     }
 
     private void removeItem(Item item) {
