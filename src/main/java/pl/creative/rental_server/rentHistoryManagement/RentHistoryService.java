@@ -9,12 +9,16 @@ import pl.creative.rental_server.entities.Item;
 import pl.creative.rental_server.entities.RentHistory;
 import pl.creative.rental_server.exception.notFound.AccountNotFound;
 import pl.creative.rental_server.exception.notFound.ItemNotFound;
+import pl.creative.rental_server.rentHistoryManagement.dto.GetRentHistoryDto;
+import pl.creative.rental_server.rentHistoryManagement.dto.RentHistoryMapper;
 import pl.creative.rental_server.repository.AccountRepository;
 import pl.creative.rental_server.repository.ItemRepository;
 import pl.creative.rental_server.repository.RentHistoryRepository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +29,7 @@ public class RentHistoryService {
     private final RentHistoryRepository rentHistoryRepository;
     private final ItemRepository itemRepository;
     private final AccountRepository accountRepository;
+    private final RentHistoryMapper rentHistoryMapper;
 
     @Transactional
     public void addRentHistory(Long accountId, String itemId) {
@@ -55,4 +60,12 @@ public class RentHistoryService {
     }
 
 
+    public List<GetRentHistoryDto> getAllRentHistory() {
+        List<GetRentHistoryDto> listOfGetRentHistoryDto = new ArrayList<>();
+        Iterable<RentHistory> listOfRentHistory = rentHistoryRepository.findAll();
+        for (RentHistory rentHistory : listOfRentHistory) {
+            listOfGetRentHistoryDto.add(rentHistoryMapper.mapRentHistoryToGetRentHistoryDto(rentHistory));
+        }
+        return listOfGetRentHistoryDto;
+    }
 }
