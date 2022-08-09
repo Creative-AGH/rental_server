@@ -13,6 +13,7 @@ import java.util.List;
 public class GetItemDto {
     private String id;
     private String name;
+    private String description;
     private LocalDateTime dateOfCreation;
     private List<GetCategoryDto> categories;
     private StatusOfItem statusOfItem;

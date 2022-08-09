@@ -26,6 +26,8 @@ public class Item {
     @NotNull
     @NotEmpty
     private String name;
+//    @Size(max = 511)
+    private String description;
 
     @ManyToOne
     @Nullable
