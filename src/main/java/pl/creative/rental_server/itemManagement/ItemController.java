@@ -28,6 +28,12 @@ public class ItemController implements ItemApi {
     }
 
     @Override
+    public ResponseEntity<GetItemDto> getItemByItemId(String itemId) {
+        GetItemDto getItemDto = itemService.getItemByItemId(itemId);
+        return ResponseEntity.ok(getItemDto);
+    }
+
+    @Override
     public List<GetItemDto> getItems() {
         return itemService.getItems();
     }

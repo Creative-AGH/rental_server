@@ -17,6 +17,9 @@ public interface ItemApi {
     @PostMapping
     ResponseEntity<GetItemDto> addItem(@RequestBody @Valid FillItemDto fillItemDto);
 
+    @GetMapping("/{itemId}")
+    ResponseEntity<GetItemDto> getItemByItemId(@PathVariable String itemId);
+
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     List<GetItemDto> getItems();

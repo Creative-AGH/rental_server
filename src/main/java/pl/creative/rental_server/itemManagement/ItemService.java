@@ -138,6 +138,15 @@ public class ItemService {
         return itemRepository.getAllByBorrowedByIsNull().stream().map(itemMapper::mapItemToGetItemDto).toList();
     }
 
+    public GetItemDto getItemByItemId(String itemId) {
+        Optional<Item> itemOptional = itemRepository.findById(itemId);
+        if(itemOptional.isEmpty()){
+            log.error("Item with id {} does not exists", itemId);
+            throw new ItemNotFound(String.format("Item with such id %s does not exist", itemId));
+        }
+        return itemMapper.mapItemToGetItemDto(itemOptional.get());
+    }
+
     //TODO changeCategoriesOfItem
     //
 
