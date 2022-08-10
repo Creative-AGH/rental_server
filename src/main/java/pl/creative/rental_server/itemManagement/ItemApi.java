@@ -30,9 +30,10 @@ public interface ItemApi {
     @ApiOperation(value = "Return all items according to given status of item")
     @GetMapping("/moderator/items")
     @ResponseStatus(HttpStatus.OK)
-    List<GetItemDto> getItemsByStatusOfItem(@RequestParam StatusOfItem statusOfItem);
+    List<GetItemDto> getItemsByStatusOfItem(@RequestParam StatusOfItem statusOfItem); ///to user
 
     @PutMapping("/moderator/{itemId}")
+///to user
     ResponseEntity<GetItemDto> updateStatusOfItem(@PathVariable String itemId,
                                                   @RequestParam StatusOfItem newStatusOfItem);
 

@@ -7,6 +7,7 @@ import pl.creative.rental_server.entities.Item;
 @Mapper(componentModel = "spring", uses = ItemMapper.class)
 public interface ItemMapper {
     @Mapping(source = "placeId", target = "id")
+    @Mapping(source = "images", target = "images", ignore = true)
     Item mapFillItemDtoToItem(FillItemDto fillItemDto);
 
     @Mapping(source = "categories", target = "categories")
