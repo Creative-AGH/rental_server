@@ -9,21 +9,17 @@ import pl.creative.rental_server.entities.Item;
 import pl.creative.rental_server.entities.Place;
 import pl.creative.rental_server.entities.StatusOfItem;
 import pl.creative.rental_server.exception.notFound.*;
+import pl.creative.rental_server.handlers.ImageService;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
 import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 import pl.creative.rental_server.itemManagement.dto.ItemMapper;
-import pl.creative.rental_server.repository.AccountRepository;
-import pl.creative.rental_server.repository.CategoryRepository;
-import pl.creative.rental_server.repository.ItemRepository;
-import pl.creative.rental_server.repository.PlaceRepository;
+import pl.creative.rental_server.repository.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +31,9 @@ public class ItemService {
     private final PlaceRepository placeRepository;
     private final RandomIdHandler randomIdHandler;
     private final AccountRepository accountRepository;
+
+    private final ImageRepository imageRepository;
+    private final ImageService imageService;
 
     @Transactional
     public GetItemDto addItem(FillItemDto fillItemDto) {
@@ -57,6 +56,7 @@ public class ItemService {
                 }
         );
         Item savedItem = itemRepository.save(itemToSave);
+        imageService.addImages(savedItem.getId(), fillItemDto.getImages());
 //        log.info("Created and saved item {}", savedItem); //logger problem
         return itemMapper.mapItemToGetItemDto(savedItem);
     }
@@ -70,7 +70,7 @@ public class ItemService {
         return listOfGetItemDto;
     }
 
-    public void replaceItem(FillItemDto fillItemDto) {
+    public void replaceItem(FillItemDto fillItemDto) { // TO WHOM that endpoint
         //TODO is it necessary? we can use changeCategoriesOfItem and changePlaceOfItem
     }
 
@@ -88,6 +88,7 @@ public class ItemService {
             newItem.setCategories(item.getCategories());
             newItem.setStatusOfItem(item.getStatusOfItem());
             newItem.setPlace(placeOptional.get()); //here we just need to change placeId
+            newItem.setImages(item.getImages());
 
 //            log.info("Editing place of item from item {} to newItem {}", item, newItem); //logger problem
             itemRepository.delete(item);
@@ -122,9 +123,11 @@ public class ItemService {
     @Transactional
     public void deleteItem(String itemId) { //FIXME we can not delete item which has the rentHistory
         Optional<Item> optionalItem = itemRepository.findById(itemId);
-        if (optionalItem.isPresent()){
+        if (optionalItem.isPresent()) {
             Item item = optionalItem.get();
-            if(item.getBorrowedBy() == null){
+            if (item.getBorrowedBy() == null) {
+                //TODO add remove images in MINIO and add remove it from DATABASE ( potential problems )
+                imageRepository.deleteAll(item.getImages());
                 removeItem(item);
             } else {
                 Long borrowerId = item.getBorrowedBy().getId();
