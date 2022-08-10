@@ -22,8 +22,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +61,9 @@ public class ItemService {
 
     public List<GetItemDto> getItems() {
         List<GetItemDto> listOfGetItemDto = new ArrayList<>();
+//        PageRequest twoElementsOfFirstPage = PageRequest.of(0, 2);
+//        Page<Item> items = itemRepository.findAll(twoElementsOfFirstPage);
+//        int totalPages = items.getTotalPages();
         Iterable<Item> items = itemRepository.findAll();
         for (Item item : items) {
             listOfGetItemDto.add(itemMapper.mapItemToGetItemDto(item));
