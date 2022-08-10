@@ -11,7 +11,6 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class StartAndTestThingsSeed {
-    private final AreaRepository areaRepository;
     private final ItemRepository itemRepository;
     private final PlaceRepository placeRepository;
     private final CategoryRepository categoryRepository;
@@ -21,7 +20,6 @@ public class StartAndTestThingsSeed {
     public void fillData() {
         createTestAccount();
         createPlace();
-        createArea();
         createTestCategory();//TODO REMOVE ALL TEST DATA BEFORE PRODUCTION
         createTestItem();
         createTestPlace();
@@ -43,12 +41,7 @@ public class StartAndTestThingsSeed {
         }
     }
 
-    private void createArea() {
-        Optional<Area> optional = areaRepository.findById(0); // Initial area
-        if (optional.isEmpty()) {
-            areaRepository.save(new Area(0));
-        }
-    }
+
 
     private void createTestCategory() {
         if (categoryRepository.count() == 0) {
