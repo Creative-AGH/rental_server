@@ -26,22 +26,21 @@ public class StartAndTestThingsSeed {
     }
 
     private void createTestPlace() {
-        if (placeRepository.count() <=1) { //<=1 because we create one place with id 0
+        if (placeRepository.count() <= 1) { //<=1 because we create one place with id 0
             placeRepository.save(new Place("place1", "placeName1", "placeDescription1"));
             placeRepository.save(new Place("string", "placeNameString", "placeDescriptionString"));
             placeRepository.save(new Place("place2", "placeName2", "placeDescription2"));
+            placeRepository.save(new Place("place3", "placeName3", "placeDescription3"));
+            placeRepository.save(new Place("place4", "placeName4", "placeDescription4"));
         }
     }
 
     private void createPlace() {
         Optional<Place> optional = placeRepository.findById("0"); // Initial abstractPlace
         if (optional.isEmpty()) {
-            placeRepository.save(new Place("0","emptyAbstractPlace","This place contains items," +
-                    " which have not assigned place (item without place)"));
+            placeRepository.save(new Place("0", "emptyAbstractPlace", "This place contains items without place"));
         }
     }
-
-
 
     private void createTestCategory() {
         if (categoryRepository.count() == 0) {
@@ -61,12 +60,13 @@ public class StartAndTestThingsSeed {
         }
     }
 
-    private void createTestAccount(){
-        if(accountRepository.count() == 0){
-            accountRepository.save(new Account(1L,"accountName1@gmial.com","name1","surname1","password1"));
-            accountRepository.save(new Account(2L,"accountName2@gmial.com","name2","surname2","password2"));
-            accountRepository.save(new Account(3L,"accountName3@gmial.com","name3","surname3","password3"));
+    private void createTestAccount() {
+        if (accountRepository.count() == 0) {
+            accountRepository.save(new Account(1L, "accountName1@gmial.com", "name1", "surname1", "password1"));
+            accountRepository.save(new Account(2L, "accountName2@gmial.com", "name2", "surname2", "password2"));
+            accountRepository.save(new Account(3L, "accountName3@gmial.com", "name3", "surname3", "password3"));
         }
     }
+
 
 }
