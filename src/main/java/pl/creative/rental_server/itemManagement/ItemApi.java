@@ -35,10 +35,11 @@ public interface ItemApi {
     @PutMapping("/moderator/{itemId}")
 ///to user
     ResponseEntity<GetItemDto> updateStatusOfItem(@PathVariable String itemId,
-                                                  @RequestParam StatusOfItem newStatusOfItem);
+                                                  @RequestParam StatusOfItem newStatusOfItem,
+                                                  @RequestBody(required = false) String commentToEvent);
 
     @DeleteMapping("/{itemId}")
-    ResponseEntity<?> deleteItem(@PathVariable String itemId);
+    ResponseEntity<?> deleteItem(@PathVariable String itemId, @RequestBody(required = false) String commentToEvent);
 
     @ApiOperation(value = "Return all borrowed items")
     @GetMapping("/moderator/items/borrowed")

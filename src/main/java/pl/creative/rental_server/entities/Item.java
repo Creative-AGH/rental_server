@@ -33,6 +33,7 @@ public class Item {
     Account borrowedBy; //if the item is not borrowed then the account is null
     @ManyToMany
     @JoinTable(name = "category_item") //the owner of relation
+    @Nullable
     private List<Category> categories = new ArrayList<>();
     //    @Enumerated(EnumType.STRING) //it is not necessary because we do that in other way
     StatusOfItem statusOfItem;
@@ -56,7 +57,7 @@ public class Item {
     @OneToMany
     List<Image> images = new ArrayList<>(); //FIXME we dont know if we will have another external service to use
     @OneToMany(mappedBy = "item") //one item can have many of histories
-    List<RentHistory> history = new ArrayList<>(); //FIXME we dont know if we do that with aspect concept of programming
+    List<ItemHistory> history = new ArrayList<>(); //FIXME we dont know if we do that with aspect concept of programming
 
     public void addCategoryToCategoryIds(Category category) {
         categories.add(category);

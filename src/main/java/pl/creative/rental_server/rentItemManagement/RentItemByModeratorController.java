@@ -1,4 +1,4 @@
-package pl.creative.rental_server.rentItem;
+package pl.creative.rental_server.rentItemManagement;
 
 
 import lombok.RequiredArgsConstructor;
@@ -11,14 +11,14 @@ public class RentItemByModeratorController implements RentItemByModeratorApi {
     private final RentItemByModeratorService rentItemByModeratorService;
 
     @Override
-    public ResponseEntity<?> rentItem(Long accountId, String itemId) {
-        rentItemByModeratorService.rentItem(accountId, itemId);
+    public ResponseEntity<?> rentItem(Long accountId, String itemId, String commentToEvent) {
+        rentItemByModeratorService.rentItem(accountId, itemId, commentToEvent);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<?> returnItem(String itemId) {
-        rentItemByModeratorService.returnItem(itemId);
+    public ResponseEntity<?> returnItem(String itemId, String commentToEvent) {
+        rentItemByModeratorService.returnItem(itemId, commentToEvent);
         return ResponseEntity.ok().build();
     }
 }

@@ -1,6 +1,7 @@
 package pl.creative.rental_server.itemManagement.dto;
 
 import lombok.Data;
+import org.springframework.lang.Nullable;
 import pl.creative.rental_server.entities.StatusOfItem;
 
 import javax.validation.constraints.NotBlank;
@@ -21,7 +22,8 @@ public class FillItemDto {
     //    @Size(max = 511, message = "Description of the item must be shorter than {max} signs")
     @Size(max = 255, message = "Description of the item must be shorter than {max} signs")
     private String description;
-    @NotNull(message = "List of category of item id may not be null")
+//    @NotNull(message = "List of category of item id may not be null")
+    @Nullable
     private List<String> categoriesId;
     //@Enumerated(EnumType.STRING) //it is not necessary because we do that in other way
     private StatusOfItem statusOfItem;

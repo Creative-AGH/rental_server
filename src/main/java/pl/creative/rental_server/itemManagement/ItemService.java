@@ -4,16 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.creative.rental_server.entities.Account;
-import pl.creative.rental_server.entities.Item;
-import pl.creative.rental_server.entities.Place;
-import pl.creative.rental_server.entities.StatusOfItem;
+import pl.creative.rental_server.entities.*;
 import pl.creative.rental_server.exception.notFound.*;
 import pl.creative.rental_server.handlers.ImageService;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
 import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 import pl.creative.rental_server.itemManagement.dto.ItemMapper;
+import pl.creative.rental_server.itemHistoryManagement.ItemHistoryService;
 import pl.creative.rental_server.repository.*;
 
 import java.time.LocalDateTime;
@@ -31,6 +29,8 @@ public class ItemService {
     private final PlaceRepository placeRepository;
     private final RandomIdHandler randomIdHandler;
     private final AccountRepository accountRepository;
+    private final ItemHistoryRepository itemHistoryRepository;
+    private final ItemHistoryService itemHistoryService;
 
     private final ImageRepository imageRepository;
     private final ImageService imageService;
@@ -41,14 +41,16 @@ public class ItemService {
         String uuid = randomIdHandler.generateUniqueIdFromTable(itemRepository);
         itemToSave.setId(uuid);
         itemToSave.setDateOfCreation(LocalDateTime.now());
-        for (String categoryId : fillItemDto.getCategoriesId()) {
-            categoryRepository.findById(categoryId).ifPresentOrElse(itemToSave::addCategoryToCategoryIds,
-                    () -> {
-                        log.error("Category with id {} is not exists", fillItemDto.getCategoriesId());
-                        throw new CategoryNotFound("Category with id " + categoryId + " is not exists");
-                    }
-            );
-        }
+            for (String categoryId : fillItemDto.getCategoriesId()) {
+                if(categoryId!=null){
+                    categoryRepository.findById(categoryId).ifPresentOrElse(itemToSave::addCategoryToCategoryIds,
+                            () -> {
+                                log.error("Category with id {} is not exists", fillItemDto.getCategoriesId());
+                                throw new CategoryNotFound("Category with id " + categoryId + " is not exists");
+                            }
+                    );
+                }
+            }
         placeRepository.findById(fillItemDto.getPlaceId()).ifPresentOrElse(itemToSave::addPlaceToPlace,
                 () -> {
                     log.error("Place with id {} is not exists", fillItemDto.getPlaceId());
@@ -56,6 +58,7 @@ public class ItemService {
                 }
         );
         Item savedItem = itemRepository.save(itemToSave);
+        itemHistoryService.addItemHistory(savedItem.getId(),"Item created" ,"Creating an item"); //TODO add commentToEvent to endpoint
         imageService.addImages(savedItem.getId(), fillItemDto.getImages());
 //        log.info("Created and saved item {}", savedItem); //logger problem
         return itemMapper.mapItemToGetItemDto(savedItem);
@@ -82,6 +85,8 @@ public class ItemService {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         Optional<Place> placeOptional = placeRepository.findById(newPlaceId);
         if (itemOptional.isPresent() && placeOptional.isPresent()) {
+//            rentHistoryService.addItemHistory(itemId,"Item updated" ,"changing place of the item"); //TODO add commentToEvent to endpoint
+//            //FIXME we can not change place of the item because of  created item history before
             Item item = itemOptional.get();
 //            log.info("Editing place of item from {} to {}", item.getPlace().getId(), newPlaceId);
 
@@ -110,9 +115,10 @@ public class ItemService {
                 .toList();
     }
 
-    public GetItemDto updateStatusOfItem(String itemId, StatusOfItem newStatusOfItem) {
+    public GetItemDto updateStatusOfItem(String itemId, StatusOfItem newStatusOfItem, String commentToEvent) {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         if (itemOptional.isPresent()) {
+            itemHistoryService.addItemHistory(itemId,"Item updated" ,commentToEvent);
             itemRepository.updateStatusOfItem(itemId, newStatusOfItem);
             GetItemDto getItemDto = itemMapper.mapItemToGetItemDto(itemOptional.get());
             getItemDto.setStatusOfItem(newStatusOfItem);
@@ -123,14 +129,20 @@ public class ItemService {
         }
     }
 
-    @Transactional
-    public void deleteItem(String itemId) { //FIXME we can not delete item which has the rentHistory
+
+    public void deleteItem(String itemId, String commentToEvent) { //FIXME we can not delete item which has the rentHistory
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isPresent()) {
             Item item = optionalItem.get();
             if (item.getBorrowedBy() == null) {
+                itemHistoryService.addDeleteHistory(itemId,"Item deleted" ,commentToEvent);
                 //TODO add remove images in MINIO and add remove it from DATABASE ( potential problems )
                 imageRepository.deleteAll(item.getImages());
+                List<ItemHistory> itemHistoryList = itemHistoryRepository.findAllByItem(item);
+                itemHistoryList.forEach(x->x.setItem(null));
+                itemHistoryRepository.saveAll(itemHistoryList);
+                //TODO here add information to renthistory with desc deleted
+                //TODO add here a logger
                 removeItem(item);
             } else {
                 Long borrowerId = item.getBorrowedBy().getId();

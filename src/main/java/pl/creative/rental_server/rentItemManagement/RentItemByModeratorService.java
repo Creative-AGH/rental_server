@@ -1,4 +1,4 @@
-package pl.creative.rental_server.rentItem;
+package pl.creative.rental_server.rentItemManagement;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import pl.creative.rental_server.exception.notFound.AccountNotFound;
 import pl.creative.rental_server.exception.notFound.BorrowerException;
 import pl.creative.rental_server.exception.notFound.ItemNotFound;
 import pl.creative.rental_server.exception.notFound.NotFoundException;
-import pl.creative.rental_server.rentHistoryManagement.RentHistoryService;
+import pl.creative.rental_server.itemHistoryManagement.ItemHistoryService;
 import pl.creative.rental_server.repository.AccountRepository;
 import pl.creative.rental_server.repository.ItemRepository;
 import pl.creative.rental_server.repository.PlaceRepository;
@@ -27,10 +27,10 @@ public class RentItemByModeratorService {
     private final ItemRepository itemRepository;
     private final AccountRepository accountRepository;
     private final PlaceRepository placeRepository;
-    private final RentHistoryService rentHistoryService;
+    private final ItemHistoryService itemHistoryService;
 
     @Transactional
-    public void rentItem(Long accountId, String itemId) {
+    public void rentItem(Long accountId, String itemId, String commentToEvent) {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         Optional<Account> accountOptional = accountRepository.findById(accountId);
         if (itemOptional.isPresent() && accountOptional.isPresent()) {
@@ -42,7 +42,7 @@ public class RentItemByModeratorService {
             itemOptional.map(Item::getPlace).map(x -> x.getItems().remove(itemOptional.get()));
             itemOptional.ifPresent(x -> x.setBorrowedBy(accountOptional.get()));
             itemOptional.ifPresent(x -> x.setPlace(null));
-            rentHistoryService.addRentHistory(accountId, itemId);
+            itemHistoryService.addRentReturnHistory(accountId,"Item rented", itemId, commentToEvent);
         } else {
             if (itemOptional.isEmpty() && accountOptional.isEmpty()) {
                 log.error("Item with id {} does not exist", itemId);
@@ -59,7 +59,7 @@ public class RentItemByModeratorService {
     }
 
     @Transactional
-    public void returnItem(String itemId) {
+    public void returnItem(String itemId, String commentToEvent) {
         itemRepository.findById(itemId).ifPresentOrElse(x -> {
             if (x.getBorrowedBy() == null) {
                 log.error("Can not return item with id {} because this item is not borrowed by anyone", itemId);
@@ -69,7 +69,7 @@ public class RentItemByModeratorService {
             x.setBorrowedBy(null);
             Optional<Place> abstractPlaceOptional = placeRepository.findById("0");
             abstractPlaceOptional.ifPresent(x::setPlace);
-            rentHistoryService.addRentHistory(oldBorrowerId, itemId);
+            itemHistoryService.addRentReturnHistory(oldBorrowerId,"Item returned", itemId, commentToEvent);
         }, () -> {
             log.error("Can not return item because item with id {} does not exist", itemId);
             throw new ItemNotFound(String.format("Can not return item with id %s does not exist", itemId));

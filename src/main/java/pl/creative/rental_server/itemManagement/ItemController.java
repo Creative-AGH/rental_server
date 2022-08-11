@@ -50,8 +50,8 @@ public class ItemController implements ItemApi {
     }
 
     @Override
-    public ResponseEntity<GetItemDto> updateStatusOfItem(String itemId, StatusOfItem newStatusOfItem) {
-        GetItemDto updatedItem = itemService.updateStatusOfItem(itemId, newStatusOfItem);
+    public ResponseEntity<GetItemDto> updateStatusOfItem(String itemId, StatusOfItem newStatusOfItem, String commentToEvent) {
+        GetItemDto updatedItem = itemService.updateStatusOfItem(itemId, newStatusOfItem, commentToEvent);
         URI updatedItemUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(updatedItem.getId())
@@ -60,8 +60,8 @@ public class ItemController implements ItemApi {
     }
 
     @Override
-    public ResponseEntity<?> deleteItem(String itemId) {
-        itemService.deleteItem(itemId);
+    public ResponseEntity<?> deleteItem(String itemId, String commentToEvent) {
+        itemService.deleteItem(itemId, commentToEvent);
         return ResponseEntity.noContent().build();
     }
 
