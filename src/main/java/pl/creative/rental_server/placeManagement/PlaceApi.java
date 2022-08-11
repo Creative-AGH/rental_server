@@ -21,7 +21,7 @@ public interface PlaceApi {
 
     @ApiOperation(value = "Deletes place based on given ID")
     @DeleteMapping("/moderator/{placeId}/delete")
-    ResponseEntity<?> deletePlace(@PathVariable String placeId);
+    ResponseEntity<?> deletePlace(@PathVariable String placeId, @RequestBody(required = false) String commentToEvent);
 
     @ApiOperation(value = "Updates existing place and return updatedPlace")
     @PutMapping("/moderator/{placeId}/update")

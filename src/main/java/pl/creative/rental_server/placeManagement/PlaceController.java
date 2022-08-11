@@ -32,8 +32,8 @@ public class PlaceController implements PlaceApi {
     }
 
     @Override
-    public ResponseEntity<?> deletePlace(String placeId) {
-        placeService.deletePlace(placeId);
+    public ResponseEntity<?> deletePlace(String placeId, String commentToEvent) {
+        placeService.deletePlace(placeId, commentToEvent);
         return ResponseEntity.noContent().build();
     }
 

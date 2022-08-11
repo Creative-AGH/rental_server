@@ -13,8 +13,7 @@ public class GetItemHistoryDto {
     private String commentToEvent;
     private LocalDateTime timeOfEvent;
 //    private GetItemDto item;
-    private String itemId;
-    private String itemName;
-    private String itemDescription;
-    private String detailsOfItemBeforeEvent;
+//    private String itemName;
+//    private String itemDescription;
+//    private String detailsOfItemBeforeEvent;
 }

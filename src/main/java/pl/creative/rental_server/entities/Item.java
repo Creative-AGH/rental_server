@@ -56,7 +56,8 @@ public class Item {
 
     @OneToMany
     List<Image> images = new ArrayList<>(); //FIXME we dont know if we will have another external service to use
-    @OneToMany(mappedBy = "item") //one item can have many of histories
+    @OneToMany//(mappedBy = "item") //one item can have many of histories
+    @JoinColumn(name="itemId") //it indicates a mapped column from Many side //foreign key in history table
     List<ItemHistory> history = new ArrayList<>(); //FIXME we dont know if we do that with aspect concept of programming
 
     public void addCategoryToCategoryIds(Category category) {

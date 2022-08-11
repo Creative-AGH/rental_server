@@ -67,14 +67,14 @@ public class ItemController implements ItemApi {
 
     @Override
     public List<GetItemDto> getBorrowedItems(boolean state) {
-        if(state)
+        if (state)
             return itemService.getBorrowedItems();
         return itemService.getNotBorrowedItems();
     }
 
     @Override
-    public ResponseEntity<?> changePlaceOfItem(String itemId, String newPlaceId) {
-        GetItemDto updatedItem = itemService.changePlaceOfItem(itemId, newPlaceId);
+    public ResponseEntity<?> updatePlaceOfItem(String itemId, String newPlaceId, String commentToEvent) {
+        GetItemDto updatedItem = itemService.updatePlaceOfItem(itemId, newPlaceId, commentToEvent);
         URI updatedItemUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(updatedItem.getId())

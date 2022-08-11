@@ -47,7 +47,8 @@ public interface ItemApi {
     List<GetItemDto> getBorrowedItems(@RequestParam boolean borrowed);
 
     @PatchMapping("/moderator/{itemId}/{newPlaceId}/changePlaceOfItem")
-    ResponseEntity<?> changePlaceOfItem(@PathVariable String itemId, @PathVariable String newPlaceId);
+    ResponseEntity<?> updatePlaceOfItem(@PathVariable String itemId, @PathVariable String newPlaceId,
+                                        @RequestBody(required = false) String commentToEvent);
 
     @PatchMapping("/moderator/{itemId}/{newAccountId}/changeBorrowerOfItem")
     ResponseEntity<?> changeBorrowerOfItem(@PathVariable String itemId, @PathVariable Long newAccountId);

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import pl.creative.rental_server.entities.Account;
 import pl.creative.rental_server.entities.Item;
+import pl.creative.rental_server.entities.Place;
 import pl.creative.rental_server.entities.StatusOfItem;
 
 import javax.transaction.Transactional;
@@ -28,4 +29,9 @@ public interface ItemRepository extends PagingAndSortingRepository<Item, String>
     @Modifying
     @Transactional
     void changeBorrowerOfItem(String itemId, Account borrowedBy);
+
+    @Query("UPDATE Item item SET item.place = :place WHERE item.id = :itemId")
+    @Modifying
+    @Transactional
+    void changePlaceOfItem(String itemId, Place place);
 }

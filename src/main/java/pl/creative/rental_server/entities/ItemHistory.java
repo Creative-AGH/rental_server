@@ -29,9 +29,10 @@ public class ItemHistory { //this entity has all the information about history l
 //    @PastOrPresent
     private LocalDateTime timeOfEvent;
 
-    @ManyToOne //the specific history can have only one item
-    @JoinColumn(name = "item_id") //the owner of relation //ItemHistory table has a record "item_id"
-    Item item;
+//    @ManyToOne //the specific history can have only one item
+//    @JoinColumn(name = "item_id") //the owner of relation //ItemHistory table has a record "item_id"
+//    Item item;
+    String itemId; //the owner o relation
 
     @Column(length = 1023) //is a JPA annotation //Varchar (1023) // it doesn't provide validations
     @Size(max = 1023, message = "String detailsOfItem is to long") //it is a Java-standard annotation

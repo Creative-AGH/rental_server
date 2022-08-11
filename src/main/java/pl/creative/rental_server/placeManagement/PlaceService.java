@@ -51,21 +51,19 @@ public class PlaceService {
     }
 
     @Transactional
-    public void deletePlace(String placeId) {
-        placeRepository.findById(placeId).ifPresentOrElse(this::removePlace,
-                () -> {
+    public void deletePlace(String placeId, String commentToEvent) {
+        Optional<Place> optionalPlace = placeRepository.findById(placeId);
+        if(optionalPlace.isPresent()){
+            Place place = optionalPlace.get();
+            List<Item> items = place.getItems();
+            for (Item item : items) {
+                itemService.updatePlaceOfItem(item.getId(),"0", commentToEvent); //changing place of items to "abstractPlace"
+            }
+            placeRepository.delete(place);
+        }else {
             log.error("You can't delete place with {} id because does not exist", placeId);
             throw new PlaceNotFound(String.format("You can't delete place with %s id because does not exist", placeId));
-        });
-    }
-
-    @Transactional
-    public void removePlace(Place place) {
-        List<Item> items = place.getItems();
-        for (Item item : items) {
-            itemService.changePlaceOfItem(item.getId(),"0"); //changing place of items to "abstractPlace"
         }
-        placeRepository.delete(place);
     }
 
     @Transactional

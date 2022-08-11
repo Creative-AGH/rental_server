@@ -41,7 +41,7 @@ public class ItemHistoryService {
             Item item = optionalItem.get();
             ItemHistory itemHistory = new ItemHistory();
             itemHistory.setAccount(account);
-            itemHistory.setItem(item);
+            itemHistory.setItemId(item.getId());
             if (commentToEvent != null)
                 itemHistory.setCommentToEvent(commentToEvent);
 
@@ -76,6 +76,7 @@ public class ItemHistoryService {
 
             String itemDetailsHistory = createItemDetailsHistory(item);
             itemHistory.setDetailsOfItemBeforeEvent(itemDetailsHistory);
+            itemHistory.setItemId(item.getId());
 
             itemHistoryRepository.save(itemHistory);
         } else {
@@ -89,7 +90,7 @@ public class ItemHistoryService {
         if (optionalItem.isPresent()) {
             Item item = optionalItem.get();
             ItemHistory itemHistory = new ItemHistory();
-            itemHistory.setItem(item);
+            itemHistory.setItemId(item.getId());
             itemHistory.setTypeOfEvent(typeOfEvent);
             itemHistory.setTimeOfEvent(LocalDateTime.now());
             if (commentToEvent != null) {
