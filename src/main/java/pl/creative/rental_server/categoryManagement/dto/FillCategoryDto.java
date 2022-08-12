@@ -9,12 +9,11 @@ import javax.validation.constraints.Size;
 
 @Data
 public class FillCategoryDto {
-    //first check if not null, then if not empty, finally check if trimmed string is not blank
-    @NotNull(message = "Name can not be null")
-    @NotEmpty(message = "Name can not be empty")
-    @NotBlank(message = "Name can not be null or empty") //check if trimmed string has more than 0 digits
-    @Size(max = 255, message = "Name of the type must be shorter than {max} signs")
+    @NotNull(message = "Category name can not be null")
+    @NotEmpty(message = "Category name can not be empty")
+    @NotBlank(message = "Category name can not be null or empty")
+    @Size(max = 255, message = "Category name must be shorter than {max} signs")
     private String categoryName;
-    @Size(max = 255, message = "Description of the type must be shorter than {max} signs")
+    @Size(max = 255, message = "Description of the category must be shorter than {max} signs")
     private String description;
 }

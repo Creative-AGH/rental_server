@@ -18,7 +18,7 @@ public class CategoryController implements CategoryApi {
 
     @Override
     public ResponseEntity<GetCategoryDto> addCategory(FillCategoryDto fillCategoryDto) {
-        GetCategoryDto savedCategory = categoryService.addItem(fillCategoryDto);
+        GetCategoryDto savedCategory = categoryService.addCategory(fillCategoryDto);
         URI savedBookUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedCategory.getId())
@@ -27,17 +27,17 @@ public class CategoryController implements CategoryApi {
     }
 
     @Override
-    public GetCategoryDto getCategoryById(String id) {
-        return categoryService.getCategoryById(id);
+    public ResponseEntity<GetCategoryDto> getCategoryById(String categoryId) {
+        return ResponseEntity.ok(categoryService.getCategoryById(categoryId));
     }
 
     @Override
-    public List<GetCategoryDto> getCategories() {
-        return categoryService.getTypesOfItem();
+    public ResponseEntity<List<GetCategoryDto>> getAllCategories() {
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     @Override
-    public ResponseEntity<List<GetItemDto>> getItemsByCategoryId(String id) {
-        return ResponseEntity.ok(categoryService.getItemsByCategoryId(id));
+    public ResponseEntity<List<GetItemDto>> getItemsByCategoryId(String categoryId) {
+        return ResponseEntity.ok(categoryService.getItemsByCategoryId(categoryId));
     }
 }
