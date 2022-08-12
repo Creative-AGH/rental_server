@@ -12,8 +12,8 @@ import pl.creative.rental_server.exception.notFound.ItemNotFound;
 import pl.creative.rental_server.itemHistoryManagement.dto.GetItemHistoryDto;
 import pl.creative.rental_server.itemHistoryManagement.dto.ItemHistoryMapper;
 import pl.creative.rental_server.repository.AccountRepository;
-import pl.creative.rental_server.repository.ItemRepository;
 import pl.creative.rental_server.repository.ItemHistoryRepository;
+import pl.creative.rental_server.repository.ItemRepository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -32,24 +32,22 @@ public class ItemHistoryService {
     private final ItemHistoryMapper itemHistoryMapper;
 
     //    public void addRecordHistory(Function<T,R>()) //TODO we can use a strategy design pattern
-    @Transactional //warning / check it
+    @Transactional
     public void addRentReturnHistory(Long accountId, String typeOfEvent, String itemId, String commentToEvent) {
+        log.info("Adding renting/returning history");
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalAccount.isPresent() && optionalItem.isPresent()) {
             Account account = optionalAccount.get();
             Item item = optionalItem.get();
+
             ItemHistory itemHistory = new ItemHistory();
-            itemHistory.setAccount(account);
             itemHistory.setItemId(item.getId());
-            if (commentToEvent != null)
-                itemHistory.setCommentToEvent(commentToEvent);
-
-            String itemDetailsHistoryString = createItemDetailsHistory(item);
-            itemHistory.setDetailsOfItemBeforeEvent(itemDetailsHistoryString);
-
             itemHistory.setTimeOfEvent(LocalDateTime.now());
             itemHistory.setTypeOfEvent(typeOfEvent);
+            itemHistory.setAccount(account);
+            itemHistory.setDetailsOfItemBeforeEvent(createItemDetailsHistory(item));
+            if (commentToEvent != null) itemHistory.setCommentToEvent(commentToEvent);
 
             itemHistoryRepository.save(itemHistory);
         } else {
@@ -63,20 +61,17 @@ public class ItemHistoryService {
     }
 
     public void addDeleteHistory(String itemId, String typeOfEvent, String commentToEvent) {
+        log.info("Adding deleting history");
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isPresent()) {
             Item item = optionalItem.get();
-            ItemHistory itemHistory = new ItemHistory();
-//            itemHistory.setItem(item); //this is not needed
-            itemHistory.setTypeOfEvent(typeOfEvent);
-            itemHistory.setTimeOfEvent(LocalDateTime.now());
-            if (commentToEvent != null) {
-                itemHistory.setCommentToEvent(commentToEvent);
-            }
 
-            String itemDetailsHistory = createItemDetailsHistory(item);
-            itemHistory.setDetailsOfItemBeforeEvent(itemDetailsHistory);
+            ItemHistory itemHistory = new ItemHistory();
             itemHistory.setItemId(item.getId());
+            itemHistory.setTimeOfEvent(LocalDateTime.now());
+            itemHistory.setTypeOfEvent(typeOfEvent);
+            itemHistory.setDetailsOfItemBeforeEvent(createItemDetailsHistory(item));
+            if (commentToEvent != null) itemHistory.setCommentToEvent(commentToEvent);
 
             itemHistoryRepository.save(itemHistory);
         } else {
@@ -86,18 +81,17 @@ public class ItemHistoryService {
     }
 
     public void addItemHistory(String itemId, String typeOfEvent, String commentToEvent) {
+        log.info("Adding item history");
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isPresent()) {
             Item item = optionalItem.get();
+
             ItemHistory itemHistory = new ItemHistory();
             itemHistory.setItemId(item.getId());
-            itemHistory.setTypeOfEvent(typeOfEvent);
             itemHistory.setTimeOfEvent(LocalDateTime.now());
-            if (commentToEvent != null) {
-                itemHistory.setCommentToEvent(commentToEvent);
-            }
-            String itemDetailsHistory = createItemDetailsHistory(item);
-            itemHistory.setDetailsOfItemBeforeEvent(itemDetailsHistory);
+            itemHistory.setTypeOfEvent(typeOfEvent);
+            itemHistory.setDetailsOfItemBeforeEvent(createItemDetailsHistory(item));
+            if (commentToEvent != null) itemHistory.setCommentToEvent(commentToEvent);
 
             itemHistoryRepository.save(itemHistory);
         } else {
@@ -107,6 +101,7 @@ public class ItemHistoryService {
     }
 
     public List<GetItemHistoryDto> getAllItemHistory() {
+        log.info("Getting all item history");
         List<GetItemHistoryDto> listOfGetItemHistoryDto = new ArrayList<>();
         Iterable<ItemHistory> listOfItemHistory = itemHistoryRepository.findAll();
         for (ItemHistory itemHistory : listOfItemHistory) {
@@ -115,21 +110,22 @@ public class ItemHistoryService {
         return listOfGetItemHistoryDto;
     }
 
-    private String createItemDetailsHistory(Item item) { //could be a problem because of length of string in database
-        ItemBuilder itemBuilder = new ItemBuilder();
-        itemBuilder.addItemId(item.getId());
+    private String createItemDetailsHistory(Item item) {
+        log.info("Creating item details history");
+        ItemDetailsBuilder itemDetailsBuilder = new ItemDetailsBuilder();
+        itemDetailsBuilder.addItemId(item.getId());
         if (item.getDescription() != null) {
-            itemBuilder.addItemDescription(item.getDescription());
+            itemDetailsBuilder.addItemDescription(item.getDescription());
         }
         if (item.getStatusOfItem() != null) {
-            itemBuilder.addItemStatusOfItem(item.getStatusOfItem().getCode());
+            itemDetailsBuilder.addItemStatusOfItem(item.getStatusOfItem().getCode());
         }
         if (item.getPlace() != null) {
-            itemBuilder.addItemPlaceId(item.getPlace().getId())
+            itemDetailsBuilder.addItemPlaceId(item.getPlace().getId())
                     .addItemPlaceName(item.getPlace().getName())
                     .addItemPlaceDescription(item.getPlace().getDescription());
         }
-        ItemDetailsHistory itemDetailsHistory = itemBuilder.build();
+        ItemDetailsHistory itemDetailsHistory = itemDetailsBuilder.build();
         return itemDetailsHistory.toString();
     }
 }
