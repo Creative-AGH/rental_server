@@ -112,7 +112,7 @@ public class FileUploader {
                             .build());
 
             log.info("Success!");
-            Image image = new Image(randomImageId, item, urlToFile);
+            Image image = new Image(randomImageId, item.getId(), urlToFile);
 
             return Optional.of(image);
         } catch (MinioException e) {

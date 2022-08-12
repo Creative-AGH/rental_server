@@ -12,6 +12,7 @@ import pl.creative.rental_server.itemHistoryManagement.ItemHistoryService;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
 import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 import pl.creative.rental_server.itemManagement.dto.ItemMapper;
+import pl.creative.rental_server.placeManagement.dto.PlaceMapper;
 import pl.creative.rental_server.repository.*;
 
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class ItemService {
     private final AccountRepository accountRepository;
     private final ItemHistoryRepository itemHistoryRepository;
     private final ItemHistoryService itemHistoryService;
+    private final PlaceMapper placeMapper;
 
     private final ImageRepository imageRepository;
     private final ImageService imageService;
@@ -100,7 +102,7 @@ public class ItemService {
             newItem.setStatusOfItem(item.getStatusOfItem());
             newItem.setPlace(place); //here we just need to change placeId
             List<Image> images = item.getImages();
-            images.forEach(x -> x.setValue(newItem));
+//            images.forEach(x -> x.setValue(newItem));
             imageRepository.saveAll(images);
             newItem.setImages(images);
             oldPlace.getItems().remove(item);
@@ -128,7 +130,11 @@ public class ItemService {
             itemRepository.changePlaceOfItem(itemId, newPlace);
 
             Optional<Item> itemToReturn = itemRepository.findById(itemId);
-            return itemMapper.mapItemToGetItemDto(itemToReturn.get());
+
+            GetItemDto getItemDto = itemMapper.mapItemToGetItemDto(itemToReturn.get());
+            getItemDto.setPlace(placeMapper.mapPlaceToGetPlaceDto(newPlace));
+            return getItemDto;
+
         } else {
             log.error("Can not change place of the item because such id does exist");
             throw new PlaceNotFound("Can not change place of the item because such id does exist");
@@ -162,6 +168,7 @@ public class ItemService {
         if (optionalItem.isPresent()) {
             Item item = optionalItem.get();
             if (item.getBorrowedBy() == null) {
+                itemHistoryService.addDeleteHistory(itemId, "Item deleted", commentToEvent);
                 //TODO add remove images in MINIO and add remove it from DATABASE ( potential problems )
                 imageRepository.deleteAll(item.getImages());
                 List<ItemHistory> itemHistoryList = itemHistoryRepository.findAllByItemId(itemId);

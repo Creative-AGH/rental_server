@@ -20,15 +20,15 @@ public class Image {
     @Id
     @NotNull
     private String id;
-    @ManyToOne
-    @NotNull
-    @JsonIgnore
-    private Item value;
 
-    @JsonProperty("itemId")
-    public String getItemId() {
-        return value.getId();
-    }
+//    @NotNull
+//    @JsonIgnore
+    String itemId; //the owner of relation
+
+//    @JsonProperty("itemId")
+//    public String getItemId() {
+//        return itemId.getId();
+//    }
 
     @NotNull
     @NotBlank
