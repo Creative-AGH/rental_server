@@ -31,20 +31,21 @@ public class PlaceService {
     private final PlaceMapper placeMapper;
     private final ItemService itemService;
     private final ItemMapper itemMapper;
-
     private final ItemRepository itemRepository;
 
     @Transactional
     public GetPlaceDto addPlace(InputPlaceDto inputPlaceDto) {
+        log.info("Adding new place");
         Place place = placeMapper.mapInputPlaceDtoToPlace(inputPlaceDto);
         String id = randomIdHandler.generateUniqueIdFromTable(placeRepository);
         place.setId(id);
         Place savedPlace = placeRepository.save(place);
-//        log.info("Created and saved place",place);
+        log.info("Successfully Created and saved place");
         return placeMapper.mapPlaceToGetPlaceDto(savedPlace);
     }
 
-    public List<GetPlaceDto> getPlaces(){
+    public List<GetPlaceDto> getAllPlaces() {
+        log.info("Getting all places");
         List<GetPlaceDto> listOfGetPlaceDto = new ArrayList<>();
         Iterable<Place> places = placeRepository.findAll();
         for (Place place : places) {
@@ -55,41 +56,44 @@ public class PlaceService {
 
     @Transactional
     public void deletePlace(String placeId, String commentToEvent) {
+        log.info("Deleting the place");
         Optional<Place> optionalPlace = placeRepository.findById(placeId);
-        if(optionalPlace.isPresent()){
+        if (optionalPlace.isPresent()) {
             Place place = optionalPlace.get();
             List<Item> items = place.getItems();
             for (Item item : items) {
-                itemService.updatePlaceOfItem(item.getId(),"0", commentToEvent); //changing place of items to "abstractPlace"
+                itemService.updatePlaceOfItem(item.getId(), "0", commentToEvent); //changing place of items to "abstractPlace"
             }
             placeRepository.delete(place);
-        }else {
-            log.error("You can't delete place with {} id because does not exist", placeId);
-            throw new PlaceNotFound(String.format("You can't delete place with %s id because does not exist", placeId));
+        } else {
+            log.error("You can't delete place with that id {} because such id does not exist", placeId);
+            throw new PlaceNotFound(String.format("You can't delete place with that id %s because such id does not exist", placeId));
         }
     }
 
     @Transactional
     public EditPlaceDto updatePlace(InputPlaceDto inputPlaceDto, String placeId) {
+        log.info("Updating the place");
         Optional<Place> place = placeRepository.findById(placeId);
-        if(place.isPresent()){
+        if (place.isPresent()) {
             String placeName = inputPlaceDto.getName();
             String placeDescription = inputPlaceDto.getDescription();
             placeRepository.updatePlace(placeId, placeName, placeDescription);
-            return new EditPlaceDto(placeId,placeName,placeDescription);
-        }else{
-            log.error("Place with id {} does not exists", placeId);
-            throw new PlaceNotFound(String.format("Place with such id %s does not exist", placeId));
+            return new EditPlaceDto(placeId, placeName, placeDescription);
+        } else {
+            log.error("Place with that id {} does not exists", placeId);
+            throw new PlaceNotFound(String.format("Place with that id %s does not exist", placeId));
         }
     }
 
     public List<GetItemDto> getItemsByPlaceId(String placeId) {
+        log.info("Getting all items by place id");
         Optional<Place> optionalPlace = placeRepository.findById(placeId);
-        if(optionalPlace.isPresent()){
+        if (optionalPlace.isPresent()) {
             return optionalPlace.get().getItems().stream().map(itemMapper::mapItemToGetItemDto).toList();
-        }else{
-            log.error("Place with id {} does not exists", placeId);
-            throw new PlaceNotFound(String.format("Place with such id %s does not exist", placeId));
+        } else {
+            log.error("Place with that id {} does not exists", placeId);
+            throw new PlaceNotFound(String.format("Place with that id %s does not exist", placeId));
         }
     }
 }

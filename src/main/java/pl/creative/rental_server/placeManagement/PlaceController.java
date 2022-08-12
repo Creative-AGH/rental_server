@@ -18,8 +18,8 @@ public class PlaceController implements PlaceApi {
     private final PlaceService placeService;
 
     @Override
-    public ResponseEntity<GetPlaceDto> addPlace(InputPlaceDto dto) {
-        GetPlaceDto savedPlace = placeService.addPlace(dto);
+    public ResponseEntity<GetPlaceDto> addPlace(InputPlaceDto inputPlaceDto) {
+        GetPlaceDto savedPlace = placeService.addPlace(inputPlaceDto);
         URI savedPlaceUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedPlace.getId())
@@ -28,8 +28,8 @@ public class PlaceController implements PlaceApi {
     }
 
     @Override
-    public List<GetPlaceDto> getPlaces() {
-        return placeService.getPlaces();
+    public ResponseEntity<List<GetPlaceDto>> getAllPlaces() {
+        return ResponseEntity.ok(placeService.getAllPlaces());
     }
 
     @Override
@@ -39,8 +39,8 @@ public class PlaceController implements PlaceApi {
     }
 
     @Override
-    public ResponseEntity<EditPlaceDto> updatePlace(InputPlaceDto dto, String placeId) {
-        EditPlaceDto editedPlace = placeService.updatePlace(dto, placeId);
+    public ResponseEntity<EditPlaceDto> updatePlace(InputPlaceDto inputPlaceDto, String placeId) {
+        EditPlaceDto editedPlace = placeService.updatePlace(inputPlaceDto, placeId);
         URI editedPlaceUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(editedPlace.getId())
