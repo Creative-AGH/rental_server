@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import pl.creative.rental_server.entities.StatusOfItem;
+import pl.creative.rental_server.itemHistoryManagement.dto.GetItemHistoryDto;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
 import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 
@@ -90,6 +91,11 @@ public class ItemController implements ItemApi {
                 .buildAndExpand(updatedItem.getId())
                 .toUri();
         return ResponseEntity.created(updatedItemUri).body(updatedItem);
+    }
+
+    @Override
+    public List<GetItemHistoryDto> getHistoryOfItem(String itemId) {
+        return itemService.getHistoryOfItem(itemId);
     }
 
 }

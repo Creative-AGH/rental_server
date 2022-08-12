@@ -74,5 +74,7 @@ public class Item {
         return categories;
     }
 
-
+    public List<ItemHistory> getHistory() {
+        return history;
+    }
 }

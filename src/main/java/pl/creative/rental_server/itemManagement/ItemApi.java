@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.creative.rental_server.entities.StatusOfItem;
+import pl.creative.rental_server.itemHistoryManagement.dto.GetItemHistoryDto;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
 import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 
@@ -52,5 +53,10 @@ public interface ItemApi {
 
     @PatchMapping("/moderator/{itemId}/{newAccountId}/changeBorrowerOfItem")
     ResponseEntity<?> changeBorrowerOfItem(@PathVariable String itemId, @PathVariable Long newAccountId);
+
+    @ApiOperation(value = "Return all items according to given status of item")
+    @GetMapping("/moderator/{itemId}/getHistoryOfItem")
+    @ResponseStatus(HttpStatus.OK)
+    List<GetItemHistoryDto> getHistoryOfItem(@PathVariable String itemId);
 
 }

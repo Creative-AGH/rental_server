@@ -9,6 +9,8 @@ import pl.creative.rental_server.exception.notFound.*;
 import pl.creative.rental_server.handlers.ImageService;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.itemHistoryManagement.ItemHistoryService;
+import pl.creative.rental_server.itemHistoryManagement.dto.GetItemHistoryDto;
+import pl.creative.rental_server.itemHistoryManagement.dto.ItemHistoryMapper;
 import pl.creative.rental_server.itemManagement.dto.FillItemDto;
 import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 import pl.creative.rental_server.itemManagement.dto.ItemMapper;
@@ -33,6 +35,7 @@ public class ItemService {
     private final ItemHistoryRepository itemHistoryRepository;
     private final ItemHistoryService itemHistoryService;
     private final PlaceMapper placeMapper;
+    private final ItemHistoryMapper itemHistoryMapper;
 
     private final ImageRepository imageRepository;
     private final ImageService imageService;
@@ -226,6 +229,19 @@ public class ItemService {
         }
         itemRepository.changeBorrowerOfItem(itemId, accountOptional.get());
         return itemMapper.mapItemToGetItemDto(itemRepository.findById(itemId).get()); //FIXME should return with new borrower id
+    }
+
+    public List<GetItemHistoryDto> getHistoryOfItem(String itemId) {
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if(optionalItem.isPresent()){
+            return optionalItem.get()
+                    .getHistory()
+                    .stream()
+                    .map(itemHistoryMapper::mapItemHistoryToGetItemHistoryDto).toList();
+        }else {
+            log.error("Item with such id {} does not exists", itemId);
+            throw new ItemNotFound(String.format("Item with such id %s does not exist", itemId));
+        }
     }
 
     //TODO changeCategoriesOfItem
