@@ -35,5 +35,7 @@ public class Place {
         this.description = description;
     }
 
-
+    public List<Item> getItems() {
+        return items;
+    }
 }

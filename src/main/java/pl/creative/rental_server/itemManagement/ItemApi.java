@@ -28,7 +28,7 @@ public interface ItemApi {
     ResponseEntity<GetItemDto> replaceItem(@RequestBody @Valid FillItemDto fillItemDto);
 
     @ApiOperation(value = "Return all items according to given status of item")
-    @GetMapping("/moderator/items")
+    @GetMapping("/moderator/items/getItemsByStatusOfItem")
     @ResponseStatus(HttpStatus.OK)
     List<GetItemDto> getItemsByStatusOfItem(@RequestParam StatusOfItem statusOfItem); ///to user
 

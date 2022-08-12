@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import pl.creative.rental_server.itemManagement.dto.GetItemDto;
 import pl.creative.rental_server.placeManagement.dto.EditPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.GetPlaceDto;
 import pl.creative.rental_server.placeManagement.dto.InputPlaceDto;
@@ -45,6 +46,11 @@ public class PlaceController implements PlaceApi {
                 .buildAndExpand(editedPlace.getId())
                 .toUri();
         return ResponseEntity.created(editedPlaceUri).body(editedPlace);
+    }
+
+    @Override
+    public ResponseEntity<List<GetItemDto>> getItemsByCategoryId(String placeId) {
+        return ResponseEntity.ok(placeService.getItemsByPlaceId(placeId));
     }
 
 }

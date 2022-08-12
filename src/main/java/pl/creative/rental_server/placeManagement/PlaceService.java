@@ -8,7 +8,12 @@ import pl.creative.rental_server.entities.Place;
 import pl.creative.rental_server.exception.notFound.PlaceNotFound;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.itemManagement.ItemService;
-import pl.creative.rental_server.placeManagement.dto.*;
+import pl.creative.rental_server.itemManagement.dto.GetItemDto;
+import pl.creative.rental_server.itemManagement.dto.ItemMapper;
+import pl.creative.rental_server.placeManagement.dto.EditPlaceDto;
+import pl.creative.rental_server.placeManagement.dto.GetPlaceDto;
+import pl.creative.rental_server.placeManagement.dto.InputPlaceDto;
+import pl.creative.rental_server.placeManagement.dto.PlaceMapper;
 import pl.creative.rental_server.repository.ItemRepository;
 import pl.creative.rental_server.repository.PlaceRepository;
 
@@ -25,6 +30,7 @@ public class PlaceService {
     private final RandomIdHandler randomIdHandler;
     private final PlaceMapper placeMapper;
     private final ItemService itemService;
+    private final ItemMapper itemMapper;
 
     private final ItemRepository itemRepository;
 
@@ -75,6 +81,15 @@ public class PlaceService {
             log.error("Place with id {} does not exists", placeId);
             throw new PlaceNotFound(String.format("Place with such id %s does not exist", placeId));
         }
+    }
 
+    public List<GetItemDto> getItemsByPlaceId(String placeId) {
+        Optional<Place> optionalPlace = placeRepository.findById(placeId);
+        if(optionalPlace.isPresent()){
+            return optionalPlace.get().getItems().stream().map(itemMapper::mapItemToGetItemDto).toList();
+        }else{
+            log.error("Place with id {} does not exists", placeId);
+            throw new PlaceNotFound(String.format("Place with such id %s does not exist", placeId));
+        }
     }
 }
