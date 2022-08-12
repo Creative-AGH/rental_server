@@ -49,7 +49,7 @@ public class PlaceController implements PlaceApi {
     }
 
     @Override
-    public ResponseEntity<List<GetItemDto>> getItemsByCategoryId(String placeId) {
+    public ResponseEntity<List<GetItemDto>> getItemsByPlaceId(String placeId) {
         return ResponseEntity.ok(placeService.getItemsByPlaceId(placeId));
     }
 

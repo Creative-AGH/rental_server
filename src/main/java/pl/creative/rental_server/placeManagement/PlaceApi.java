@@ -29,7 +29,7 @@ public interface PlaceApi {
     ResponseEntity<?> updatePlace(@RequestBody @Valid InputPlaceDto dto, @PathVariable String placeId);
 
     @ApiOperation(value = "Return all items according to the given placeId")
-    @GetMapping("/moderator/{placeId}/getItemsByCategoryId")
-    ResponseEntity<List<GetItemDto>> getItemsByCategoryId(@PathVariable String placeId);
+    @GetMapping("/moderator/{placeId}/getItemsByPlaceId")
+    ResponseEntity<List<GetItemDto>> getItemsByPlaceId(@PathVariable String placeId);
 
 }
