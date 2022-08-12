@@ -42,6 +42,11 @@ public interface ItemApi {
     @DeleteMapping("/{itemId}")
     ResponseEntity<?> deleteItem(@PathVariable String itemId, @RequestBody(required = false) String commentToEvent);
 
+    @DeleteMapping("/moderator/{itemId}/forceDeleteBorrowedItem")
+    ResponseEntity<?> forceDeleteBorrowedItem(@PathVariable String itemId,
+                                              @RequestBody(required = false) String commentToEvent,
+                                              @RequestParam(required = false, defaultValue = "false") Boolean borrowedItemForceDeleting);
+
     @ApiOperation(value = "Return all borrowed items")
     @GetMapping("/moderator/items/borrowed")
     @ResponseStatus(HttpStatus.OK)

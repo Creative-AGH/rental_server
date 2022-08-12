@@ -165,21 +165,25 @@ public class ItemService {
     }
 
 
-    public void deleteItem(String itemId, String commentToEvent) { //FIXME we can not delete item which has the rentHistory
+    public void deleteItem(String itemId, String commentToEvent, Boolean force) { //FIXME we can not delete item which has the rentHistory
         //FIXME we cant delete if item has images
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isPresent()) {
             Item item = optionalItem.get();
-            if (item.getBorrowedBy() == null) {
+            if (force || item.getBorrowedBy() == null) {
                 itemHistoryService.addDeleteHistory(itemId, "Item deleted", commentToEvent);
                 //TODO add remove images in MINIO and add remove it from DATABASE ( potential problems )
                 imageRepository.deleteAll(item.getImages());
                 List<ItemHistory> itemHistoryList = itemHistoryRepository.findAllByItemId(itemId);
                 itemHistoryList.forEach(x -> x.setItemId(null));
                 itemHistoryRepository.saveAll(itemHistoryList);
+                if(force){ //if you want to delete borrowedItem
+                    item.setBorrowedBy(null);
+                    itemRepository.save(item);
+                }
                 //TODO here add information to renthistory with desc deleted
                 //TODO add here a logger
-                removeItem(item);
+                itemRepository.delete(item);
             } else {
                 Long borrowerId = item.getBorrowedBy().getId();
                 log.error("You can't delete item with id {} because item is rented by someone with id {}", itemId, borrowerId);
@@ -189,10 +193,6 @@ public class ItemService {
             log.error("You can't delete item with id {} because does not exist", itemId);
             throw new PlaceNotFound(String.format("You can't delete item with id %s because does not exist", itemId));
         }
-    }
-
-    private void removeItem(Item item) {
-        itemRepository.delete(item);
     }
 
     public List<GetItemDto> getBorrowedItems() {
@@ -241,6 +241,34 @@ public class ItemService {
         }else {
             log.error("Item with such id {} does not exists", itemId);
             throw new ItemNotFound(String.format("Item with such id %s does not exist", itemId));
+        }
+    }
+
+    public void forceDeleteBorrowedItem(String itemId, String commentToEvent) {
+        Optional<Item> optionalItem = itemRepository.findById(itemId);
+        if (optionalItem.isPresent()) {
+            Item item = optionalItem.get();
+            if (item.getBorrowedBy() != null) { //if item is borrowed by someone
+                imageRepository.deleteAll(item.getImages());
+
+                List<ItemHistory> itemHistoryList = itemHistoryRepository.findAllByItemId(itemId);
+                itemHistoryList.forEach(x -> x.setItemId(null));
+                itemHistoryRepository.saveAll(itemHistoryList);
+
+                item.setBorrowedBy(null);
+                itemRepository.save(item);
+
+                //TODO here add information to renthistory with desc deleted
+                //TODO add here a logger
+                itemRepository.delete(item);
+            } else {
+                Long borrowerId = item.getBorrowedBy().getId();
+                log.error("You can't delete item with id {} because item is rented by someone with id {}", itemId, borrowerId);
+                throw new PlaceNotFound(String.format("You can't delete item with id %s because item is rented by someone with id %d", itemId, borrowerId));
+            }
+        } else {
+            log.error("You can't delete item with id {} because does not exist", itemId);
+            throw new PlaceNotFound(String.format("You can't delete item with id %s because does not exist", itemId));
         }
     }
 

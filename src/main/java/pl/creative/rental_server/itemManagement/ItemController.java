@@ -62,7 +62,14 @@ public class ItemController implements ItemApi {
 
     @Override
     public ResponseEntity<?> deleteItem(String itemId, String commentToEvent) {
-        itemService.deleteItem(itemId, commentToEvent);
+        itemService.deleteItem(itemId, commentToEvent, false);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<?> forceDeleteBorrowedItem(String itemId, String commentToEvent,
+                                                     Boolean borrowedItemForceDeleting) {
+        itemService.deleteItem(itemId, commentToEvent, borrowedItemForceDeleting);
         return ResponseEntity.noContent().build();
     }
 
