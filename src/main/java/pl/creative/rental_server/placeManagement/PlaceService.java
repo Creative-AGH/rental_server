@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import pl.creative.rental_server.entities.Item;
 import pl.creative.rental_server.entities.Place;
 import pl.creative.rental_server.exception.notFound.PlaceNotFound;
-import pl.creative.rental_server.handlers.AreaInsideManagement;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.itemManagement.ItemService;
 import pl.creative.rental_server.placeManagement.dto.*;
@@ -28,7 +27,6 @@ public class PlaceService {
     private final ItemService itemService;
 
     private final ItemRepository itemRepository;
-    private final AreaInsideManagement areaInsideManagement;
 
     @Transactional
     public GetPlaceDto addPlace(InputPlaceDto inputPlaceDto) {
@@ -36,8 +34,7 @@ public class PlaceService {
         String id = randomIdHandler.generateUniqueIdFromTable(placeRepository);
         place.setId(id);
         Place savedPlace = placeRepository.save(place);
-        areaInsideManagement.addPlace(place);// Area with id 0 is
-        log.info("Created and saved place",place);
+//        log.info("Created and saved place",place);
         return placeMapper.mapPlaceToGetPlaceDto(savedPlace);
     }
 
