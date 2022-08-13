@@ -65,6 +65,7 @@ public class PlaceService {
                 itemService.updatePlaceOfItem(item.getId(), "0", commentToEvent); //changing place of items to "abstractPlace"
             }
             placeRepository.delete(place);
+            log.info("Successfully deleted place");
         } else {
             log.error("You can't delete place with that id {} because such id does not exist", placeId);
             throw new PlaceNotFound(String.format("You can't delete place with that id %s because such id does not exist", placeId));
@@ -79,6 +80,7 @@ public class PlaceService {
             String placeName = inputPlaceDto.getName();
             String placeDescription = inputPlaceDto.getDescription();
             placeRepository.updatePlace(placeId, placeName, placeDescription);
+            log.info("Successfully updated place");
             return new EditPlaceDto(placeId, placeName, placeDescription);
         } else {
             log.error("Place with that id {} does not exists", placeId);

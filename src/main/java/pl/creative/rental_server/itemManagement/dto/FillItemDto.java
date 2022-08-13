@@ -13,16 +13,14 @@ import java.util.List;
 
 @Data
 public class FillItemDto {
-    //first check if not null, then if not empty, finally check if trimmed string is not blank
     @NotNull(message = "Name can not be null")
     @NotEmpty(message = "Name can not be empty")
-    @NotBlank(message = "Name can not be null or empty") //check if trimmed string has more than 0 digits
+    @NotBlank(message = "Name can not be null or empty")
     @Size(max = 255, message = "Name of the item must be shorter than {max} signs")
     private String name;
     //    @Size(max = 511, message = "Description of the item must be shorter than {max} signs")
     @Size(max = 255, message = "Description of the item must be shorter than {max} signs")
     private String description;
-//    @NotNull(message = "List of category of item id may not be null")
     @Nullable
     private List<String> categoriesId;
     //@Enumerated(EnumType.STRING) //it is not necessary because we do that in other way

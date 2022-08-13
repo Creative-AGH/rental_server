@@ -33,7 +33,7 @@ public class ItemHistoryService {
 
     //    public void addRecordHistory(Function<T,R>()) //TODO we can use a strategy design pattern
     @Transactional
-    public void addRentReturnHistory(Long accountId, String typeOfEvent, String itemId, String commentToEvent) {
+    public void addRentReturnItemHistory(Long accountId, String typeOfEvent, String itemId, String commentToEvent) {
         log.info("Adding renting/returning history");
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         Optional<Item> optionalItem = itemRepository.findById(itemId);
@@ -50,6 +50,7 @@ public class ItemHistoryService {
             if (commentToEvent != null) itemHistory.setCommentToEvent(commentToEvent);
 
             itemHistoryRepository.save(itemHistory);
+            log.info("Successfully added renting/returning history");
         } else {
             if (optionalItem.isEmpty()) {
                 log.error("Item with id {} does not exist", itemId);
@@ -60,7 +61,7 @@ public class ItemHistoryService {
         }
     }
 
-    public void addDeleteHistory(String itemId, String typeOfEvent, String commentToEvent) {
+    public void addDeleteItemHistory(String itemId, String typeOfEvent, String commentToEvent) {
         log.info("Adding deleting history");
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isPresent()) {
@@ -74,6 +75,7 @@ public class ItemHistoryService {
             if (commentToEvent != null) itemHistory.setCommentToEvent(commentToEvent);
 
             itemHistoryRepository.save(itemHistory);
+            log.info("Successfully added deleting item history");
         } else {
             log.error("Item with id {} does not exist", itemId);
             throw new ItemNotFound(String.format("Item with id %s does not exist", itemId));
@@ -94,6 +96,7 @@ public class ItemHistoryService {
             if (commentToEvent != null) itemHistory.setCommentToEvent(commentToEvent);
 
             itemHistoryRepository.save(itemHistory);
+            log.info("Successfully added item history");
         } else {
             log.error("Item with id {} does not exist", itemId);
             throw new ItemNotFound(String.format("Item with id %s does not exist", itemId));

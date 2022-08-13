@@ -63,7 +63,7 @@ public class ItemService {
                 }
         );
         Item savedItem = itemRepository.save(itemToSave);
-        itemHistoryService.addItemHistory(savedItem.getId(), "Item created", "Creating an item"); //TODO add commentToEvent to endpoint
+        itemHistoryService.addItemHistory(savedItem.getId(), "Item created", "Creating an item (with detailsOfItemBeforeEvent data!)"); //TODO add commentToEvent to endpoint
         imageService.addImages(savedItem.getId(), fillItemDto.getImages());
 //        log.info("Created and saved item {}", savedItem); //logger problem
         return itemMapper.mapItemToGetItemDto(savedItem);
@@ -96,7 +96,7 @@ public class ItemService {
             Item item = itemOptional.get();
             Place place = placeOptional.get();
             Place oldPlace = item.getPlace();
-//            log.info("Editing place of item from {} to {}", item.getPlace().getId(), newPlaceId);
+            log.info("Editing place of item");
 
             Item newItem = new Item();
             newItem.setId(item.getId());
@@ -171,7 +171,7 @@ public class ItemService {
         if (optionalItem.isPresent()) {
             Item item = optionalItem.get();
             if (force || item.getBorrowedBy() == null) {
-                itemHistoryService.addDeleteHistory(itemId, "Item deleted", commentToEvent);
+                itemHistoryService.addDeleteItemHistory(itemId, "Item deleted", commentToEvent);
                 //TODO add remove images in MINIO and add remove it from DATABASE ( potential problems )
                 imageRepository.deleteAll(item.getImages());
                 List<ItemHistory> itemHistoryList = itemHistoryRepository.findAllByItemId(itemId);
