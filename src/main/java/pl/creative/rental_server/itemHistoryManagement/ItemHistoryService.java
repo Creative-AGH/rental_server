@@ -82,6 +82,7 @@ public class ItemHistoryService {
         }
     }
 
+    @Transactional
     public void addItemHistory(String itemId, String typeOfEvent, String commentToEvent) {
         log.info("Adding item history");
         Optional<Item> optionalItem = itemRepository.findById(itemId);

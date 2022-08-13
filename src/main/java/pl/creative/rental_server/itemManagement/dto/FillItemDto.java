@@ -18,12 +18,11 @@ public class FillItemDto {
     @NotBlank(message = "Name can not be null or empty")
     @Size(max = 255, message = "Name of the item must be shorter than {max} signs")
     private String name;
-    //    @Size(max = 511, message = "Description of the item must be shorter than {max} signs")
     @Size(max = 255, message = "Description of the item must be shorter than {max} signs")
     private String description;
     @Nullable
     private List<String> categoriesId;
-    //@Enumerated(EnumType.STRING) //it is not necessary because we do that in other way
+    //@Enumerated(EnumType.STRING) //it is not necessary because we do that in other way (class StatusOfItemConverter)
     private StatusOfItem statusOfItem;
     private String placeId;
     private List<String> images = new ArrayList<>();

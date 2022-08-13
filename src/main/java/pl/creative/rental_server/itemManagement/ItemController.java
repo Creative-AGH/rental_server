@@ -35,8 +35,8 @@ public class ItemController implements ItemApi {
     }
 
     @Override
-    public List<GetItemDto> getItems() {
-        return itemService.getItems();
+    public ResponseEntity<List<GetItemDto>> getAllItems() {
+        return ResponseEntity.ok(itemService.getAllItems());
     }
 
     @Override
@@ -46,8 +46,8 @@ public class ItemController implements ItemApi {
     }
 
     @Override
-    public List<GetItemDto> getItemsByStatusOfItem(StatusOfItem statusOfItem) {
-        return itemService.getItemsByStatusOfItem(statusOfItem);
+    public ResponseEntity<List<GetItemDto>> getAllItemsByStatusOfItem(StatusOfItem statusOfItem) {
+        return ResponseEntity.ok(itemService.getAllItemsByStatusOfItem(statusOfItem));
     }
 
     @Override
@@ -74,14 +74,14 @@ public class ItemController implements ItemApi {
     }
 
     @Override
-    public List<GetItemDto> getBorrowedItems(boolean state) {
+    public ResponseEntity<List<GetItemDto>> getBorrowedItems(boolean state) {
         if (state)
-            return itemService.getBorrowedItems();
-        return itemService.getNotBorrowedItems();
+            return ResponseEntity.ok(itemService.getBorrowedItems());
+        return ResponseEntity.ok(itemService.getNotBorrowedItems());
     }
 
     @Override
-    public ResponseEntity<?> updatePlaceOfItem(String itemId, String newPlaceId, String commentToEvent) {
+    public ResponseEntity<GetItemDto> updatePlaceOfItem(String itemId, String newPlaceId, String commentToEvent) {
         GetItemDto updatedItem = itemService.updatePlaceOfItem(itemId, newPlaceId, commentToEvent);
         URI updatedItemUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -91,8 +91,8 @@ public class ItemController implements ItemApi {
     }
 
     @Override
-    public ResponseEntity<GetItemDto> changeBorrowerOfItem(String itemId, Long newAccountId) {
-        GetItemDto updatedItem = itemService.changeBorrowerOfItem(itemId, newAccountId);
+    public ResponseEntity<GetItemDto> updateBorrowerOfItem(String itemId, Long newAccountId, String commentToEvent) {
+        GetItemDto updatedItem = itemService.updateBorrowerOfItem(itemId, newAccountId, commentToEvent);
         URI updatedItemUri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(updatedItem.getId())
@@ -101,8 +101,8 @@ public class ItemController implements ItemApi {
     }
 
     @Override
-    public List<GetItemHistoryDto> getHistoryOfItem(String itemId) {
-        return itemService.getHistoryOfItem(itemId);
+    public ResponseEntity<List<GetItemHistoryDto>> getAllHistoryOfItem(String itemId) {
+        return ResponseEntity.ok(itemService.getAllHistoryOfItem(itemId));
     }
 
 }

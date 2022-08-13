@@ -42,6 +42,7 @@ public class ItemService {
 
     @Transactional
     public GetItemDto addItem(FillItemDto fillItemDto) {
+        log.info("Adding new item");
         Item itemToSave = itemMapper.mapFillItemDtoToItem(fillItemDto);
         String uuid = randomIdHandler.generateUniqueIdFromTable(itemRepository);
         itemToSave.setId(uuid);
@@ -50,26 +51,27 @@ public class ItemService {
             if (categoryId != null) {
                 categoryRepository.findById(categoryId).ifPresentOrElse(itemToSave::addCategoryToCategoryIds,
                         () -> {
-                            log.error("Category with id {} is not exists", fillItemDto.getCategoriesId());
-                            throw new CategoryNotFound("Category with id " + categoryId + " is not exists");
+                            log.error("Category with that id does not exists");
+                            throw new CategoryNotFound(String.format("Category with that does not exists"));
                         }
                 );
             }
         }
         placeRepository.findById(fillItemDto.getPlaceId()).ifPresentOrElse(itemToSave::addPlaceToPlace,
                 () -> {
-                    log.error("Place with id {} is not exists", fillItemDto.getPlaceId());
-                    throw new PlaceNotFound("Place with id " + fillItemDto.getPlaceId() + " is not exists");
+                    log.error("Place with that id does not exists");
+                    throw new PlaceNotFound("Place with that id does not exists");
                 }
         );
         Item savedItem = itemRepository.save(itemToSave);
-        itemHistoryService.addItemHistory(savedItem.getId(), "Item created", "Creating an item (with detailsOfItemBeforeEvent data!)"); //TODO add commentToEvent to endpoint
+        itemHistoryService.addItemHistory(savedItem.getId(), "Item created", "Creating an item (with detailsOfItemBeforeEvent data!)");
         imageService.addImages(savedItem.getId(), fillItemDto.getImages());
-//        log.info("Created and saved item {}", savedItem); //logger problem
+        log.info("Successfully created and saved item");
         return itemMapper.mapItemToGetItemDto(savedItem);
     }
 
-    public List<GetItemDto> getItems() {
+    public List<GetItemDto> getAllItems() {
+        log.info("Getting all items");
         List<GetItemDto> listOfGetItemDto = new ArrayList<>();
 //        PageRequest twoElementsOfFirstPage = PageRequest.of(0, 2);
 //        Page<Item> items = itemRepository.findAll(twoElementsOfFirstPage);
@@ -81,198 +83,147 @@ public class ItemService {
         return listOfGetItemDto;
     }
 
+    @Transactional
     public void replaceItem(FillItemDto fillItemDto) { // TO WHOM that endpoint
         //TODO is it necessary? we can use changeCategoriesOfItem and changePlaceOfItem
     }
 
-    @Deprecated(forRemoval = true)
     @Transactional
-    public GetItemDto changePlaceOfItem1(String itemId, String newPlaceId) {
-        Optional<Item> itemOptional = itemRepository.findById(itemId);
-        Optional<Place> placeOptional = placeRepository.findById(newPlaceId);
-        if (itemOptional.isPresent() && placeOptional.isPresent()) {
-//            rentHistoryService.addItemHistory(itemId,"Item updated" ,"changing place of the item"); //TODO add commentToEvent to endpoint
-//            //FIXME we can not change place of the item because of  created item history before
-            Item item = itemOptional.get();
-            Place place = placeOptional.get();
-            Place oldPlace = item.getPlace();
-            log.info("Editing place of item");
-
-            Item newItem = new Item();
-            newItem.setId(item.getId());
-            newItem.setName(item.getName());
-            newItem.setCategories(item.getCategories());
-            newItem.setStatusOfItem(item.getStatusOfItem());
-            newItem.setPlace(place); //here we just need to change placeId
-            List<Image> images = item.getImages();
-//            images.forEach(x -> x.setValue(newItem));
-            imageRepository.saveAll(images);
-            newItem.setImages(images);
-            oldPlace.getItems().remove(item);
-
-            item.setImages(null);
-            item.setPlace(null);
-            itemRepository.save(item);
-            placeRepository.save(oldPlace);
-//            log.info("Editing place of item from item {} to newItem {}", item, newItem); //logger problem
-            itemRepository.delete(item);
-            Item savedItem = itemRepository.save(newItem);
-            return itemMapper.mapItemToGetItemDto(savedItem);
-        } else {
-            log.error("Can not change place of the item because such id does exist");
-            throw new PlaceNotFound("Can not change place of the item because such id does exist");
-        }
-    }
-
     public GetItemDto updatePlaceOfItem(String itemId, String newPlaceId, String commentToEvent) {
+        log.info("Updating a place of the item");
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         Optional<Place> placeOptional = placeRepository.findById(newPlaceId);
         if (itemOptional.isPresent() && placeOptional.isPresent()) {
             itemHistoryService.addItemHistory(itemId, "Item place updated", commentToEvent);
             Place newPlace = placeOptional.get();
             itemRepository.changePlaceOfItem(itemId, newPlace);
+            log.info("Successfully updated a place of item");
 
             Optional<Item> itemToReturn = itemRepository.findById(itemId);
-
             GetItemDto getItemDto = itemMapper.mapItemToGetItemDto(itemToReturn.get());
             getItemDto.setPlace(placeMapper.mapPlaceToGetPlaceDto(newPlace));
             return getItemDto;
-
         } else {
-            log.error("Can not change place of the item because such id does exist");
-            throw new PlaceNotFound("Can not change place of the item because such id does exist");
+            log.error("Can not change a place of the item because such id does exist");
+            throw new PlaceNotFound("Can not change a place of the item because such id does exist");
         }
     }
 
-    public List<GetItemDto> getItemsByStatusOfItem(StatusOfItem statusOfItem) {
+    public List<GetItemDto> getAllItemsByStatusOfItem(StatusOfItem statusOfItem) {
+        log.info("Getting all items by status of the item");
         return itemRepository.getItemsByStatusOfItem(statusOfItem).stream()
                 .map(itemMapper::mapItemToGetItemDto)
                 .toList();
     }
 
+    @Transactional
     public GetItemDto updateStatusOfItem(String itemId, StatusOfItem newStatusOfItem, String commentToEvent) {
+        log.info("Updating a status of the item");
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         if (itemOptional.isPresent()) {
             itemHistoryService.addItemHistory(itemId, "Item status updated", commentToEvent);
             itemRepository.updateStatusOfItem(itemId, newStatusOfItem);
+            log.info("Successfully updated a status of the item");
             GetItemDto getItemDto = itemMapper.mapItemToGetItemDto(itemOptional.get());
             getItemDto.setStatusOfItem(newStatusOfItem);
             return getItemDto;
         } else {
-            log.error("Item with id {} does not exists", itemId);
-            throw new ItemNotFound(String.format("Item with such id %s does not exist", itemId));
+            log.error("Item with that id {} does not exists", itemId);
+            throw new ItemNotFound(String.format("Item with that id %s does not exist", itemId));
         }
     }
 
-
-    public void deleteItem(String itemId, String commentToEvent, Boolean force) { //FIXME we can not delete item which has the rentHistory
-        //FIXME we cant delete if item has images
+    @Transactional
+    public void deleteItem(String itemId, String commentToEvent, Boolean force) {
+        log.info("Deleting an item");
         Optional<Item> optionalItem = itemRepository.findById(itemId);
         if (optionalItem.isPresent()) {
             Item item = optionalItem.get();
             if (force || item.getBorrowedBy() == null) {
-                itemHistoryService.addDeleteItemHistory(itemId, "Item deleted", commentToEvent);
-                //TODO add remove images in MINIO and add remove it from DATABASE ( potential problems )
+                if (force) {
+                    itemHistoryService.addDeleteItemHistory(itemId, "Item deleted by force", commentToEvent);
+                } else {
+                    itemHistoryService.addDeleteItemHistory(itemId, "Item deleted", commentToEvent);
+                }
+                //TODO add remove images in MINIO and add remove it from DATABASE (potential problems)
                 imageRepository.deleteAll(item.getImages());
                 List<ItemHistory> itemHistoryList = itemHistoryRepository.findAllByItemId(itemId);
                 itemHistoryList.forEach(x -> x.setItemId(null));
                 itemHistoryRepository.saveAll(itemHistoryList);
-                if(force){ //if you want to delete borrowedItem
+                if (force) {
                     item.setBorrowedBy(null);
                     itemRepository.save(item);
                 }
-                //TODO here add information to renthistory with desc deleted
-                //TODO add here a logger
                 itemRepository.delete(item);
+                log.info("Successfully deleted an item with id {}", itemId);
             } else {
                 Long borrowerId = item.getBorrowedBy().getId();
-                log.error("You can't delete item with id {} because item is rented by someone with id {}", itemId, borrowerId);
-                throw new PlaceNotFound(String.format("You can't delete item with id %s because item is rented by someone with id %d", itemId, borrowerId));
+                log.error("You can't delete item with that id {} because item is rented by someone with id {}", itemId, borrowerId);
+                throw new PlaceNotFound(String.format("You can't delete item with that id %s because item is rented by someone with id %d", itemId, borrowerId));
             }
         } else {
-            log.error("You can't delete item with id {} because does not exist", itemId);
-            throw new PlaceNotFound(String.format("You can't delete item with id %s because does not exist", itemId));
+            log.error("You can't delete item with that id {} because does not exist", itemId);
+            throw new PlaceNotFound(String.format("You can't delete item with that id %s because does not exist", itemId));
         }
     }
 
     public List<GetItemDto> getBorrowedItems() {
+        log.info("Getting all borrowed items");
         return itemRepository.getAllByBorrowedByIsNotNull().stream().map(itemMapper::mapItemToGetItemDto).toList();
     }
 
     public List<GetItemDto> getNotBorrowedItems() {
+        log.info("Getting all not borrowed items");
         return itemRepository.getAllByBorrowedByIsNull().stream().map(itemMapper::mapItemToGetItemDto).toList();
     }
 
     public GetItemDto getItemByItemId(String itemId) {
+        log.info("Getting an item by id");
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         if (itemOptional.isEmpty()) {
-            log.error("Item with id {} does not exists", itemId);
-            throw new ItemNotFound(String.format("Item with such id %s does not exist", itemId));
+            log.error("Item with the id {} does not exists", itemId);
+            throw new ItemNotFound(String.format("Item with that id %s does not exist", itemId));
         }
         return itemMapper.mapItemToGetItemDto(itemOptional.get());
     }
 
-    public GetItemDto changeBorrowerOfItem(String itemId, Long newAccountId) {
+    @Transactional
+    public GetItemDto updateBorrowerOfItem(String itemId, Long newAccountId, String commentToEvent) {
+        log.info("Updating a borrower of the item");
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         Optional<Account> accountOptional = accountRepository.findById(newAccountId);
         if (itemOptional.isEmpty()) {
-            log.error("Item with id {} does not exists", itemId);
-            throw new ItemNotFound(String.format("Item with such id %s does not exist", itemId));
+            log.error("Item with that id {} does not exists", itemId);
+            throw new ItemNotFound(String.format("Item with that id %s does not exist", itemId));
         }
         if (accountOptional.isEmpty()) {
-            log.error("Account with id {} does not exists", newAccountId);
-            throw new AccountNotFound(String.format("Item with such id %d does not exist", newAccountId));
+            log.error("Account with that id {} does not exists", newAccountId);
+            throw new AccountNotFound(String.format("Item with that id %d does not exist", newAccountId));
         }
         if (itemOptional.get().getBorrowedBy() == null) {
-            log.error("Can not change borrower of item with id {} because this item is not borrowed by anyone", itemId);
-            throw new BorrowerException(String.format("Can not change borrower of item with with id %s because this item is not borrowed by anyone", itemId));
+            log.error("Can not change borrower of item with that id {} because this item is not borrowed by anyone", itemId);
+            throw new BorrowerException(String.format("Can not change borrower of item with that id %s because this item is not borrowed by anyone", itemId));
         }
+        itemHistoryService.addItemHistory(itemId, "Borrower of item updated", commentToEvent);
         itemRepository.changeBorrowerOfItem(itemId, accountOptional.get());
+        log.info("Successfully updated a borrower of the item");
         return itemMapper.mapItemToGetItemDto(itemRepository.findById(itemId).get()); //FIXME should return with new borrower id
     }
 
-    public List<GetItemHistoryDto> getHistoryOfItem(String itemId) {
+    public List<GetItemHistoryDto> getAllHistoryOfItem(String itemId) {
+        log.info("Getting history of the item");
         Optional<Item> optionalItem = itemRepository.findById(itemId);
-        if(optionalItem.isPresent()){
+        if (optionalItem.isPresent()) {
             return optionalItem.get()
                     .getHistory()
                     .stream()
                     .map(itemHistoryMapper::mapItemHistoryToGetItemHistoryDto).toList();
-        }else {
-            log.error("Item with such id {} does not exists", itemId);
-            throw new ItemNotFound(String.format("Item with such id %s does not exist", itemId));
-        }
-    }
-
-    public void forceDeleteBorrowedItem(String itemId, String commentToEvent) {
-        Optional<Item> optionalItem = itemRepository.findById(itemId);
-        if (optionalItem.isPresent()) {
-            Item item = optionalItem.get();
-            if (item.getBorrowedBy() != null) { //if item is borrowed by someone
-                imageRepository.deleteAll(item.getImages());
-
-                List<ItemHistory> itemHistoryList = itemHistoryRepository.findAllByItemId(itemId);
-                itemHistoryList.forEach(x -> x.setItemId(null));
-                itemHistoryRepository.saveAll(itemHistoryList);
-
-                item.setBorrowedBy(null);
-                itemRepository.save(item);
-
-                //TODO here add information to renthistory with desc deleted
-                //TODO add here a logger
-                itemRepository.delete(item);
-            } else {
-                Long borrowerId = item.getBorrowedBy().getId();
-                log.error("You can't delete item with id {} because item is rented by someone with id {}", itemId, borrowerId);
-                throw new PlaceNotFound(String.format("You can't delete item with id %s because item is rented by someone with id %d", itemId, borrowerId));
-            }
         } else {
-            log.error("You can't delete item with id {} because does not exist", itemId);
-            throw new PlaceNotFound(String.format("You can't delete item with id %s because does not exist", itemId));
+            log.error("Item with that id {} does not exists", itemId);
+            throw new ItemNotFound(String.format("Item with that id %s does not exist", itemId));
         }
     }
 
     //TODO changeCategoriesOfItem
-    //
 
 }
