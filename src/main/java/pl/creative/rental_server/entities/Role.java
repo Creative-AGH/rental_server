@@ -1,10 +1,25 @@
 package pl.creative.rental_server.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
+    private String name;
+
+    private String description;
+
+//    @ManyToMany(mappedBy = "roles")
+//    List<Account> account = new ArrayList<>();
 }

@@ -16,9 +16,11 @@ public class StartAndTestThingsSeed {
     private final CategoryRepository categoryRepository;
     private final RandomIdHandler randomIdHandler;
     private final AccountRepository accountRepository;
+    private final RoleRepository roleRepository;
 
     public void fillData() {
         createTestAccount();
+        createTestRole();
         createPlace();
         createTestCategory();//TODO REMOVE ALL TEST DATA BEFORE PRODUCTION
         createTestItem();
@@ -62,9 +64,17 @@ public class StartAndTestThingsSeed {
 
     private void createTestAccount() {
         if (accountRepository.count() == 0) {
-            accountRepository.save(new Account(1L, "accountName1@gmial.com", "name1", "surname1", "password1"));
-            accountRepository.save(new Account(2L, "accountName2@gmial.com", "name2", "surname2", "password2"));
-            accountRepository.save(new Account(3L, "accountName3@gmial.com", "name3", "surname3", "password3"));
+            accountRepository.save(new Account(1L, "Administrator@gmial.com", "Administrator", "Admin", "admin123"));
+            accountRepository.save(new Account(2L, "Moderator@gmial.com", "Moderator", "Mod", "mod123"));
+            accountRepository.save(new Account(3L, "User@gmial.com", "User", "User", "user123"));
+        }
+    }
+
+    private void createTestRole() {
+        if (roleRepository.count() == 0) {
+            roleRepository.save(new Role(1L, "Administrator", "desc"));
+            roleRepository.save(new Role(2L, "Moderator", "desc"));
+            roleRepository.save(new Role(3L, "User", "desc"));
         }
     }
 

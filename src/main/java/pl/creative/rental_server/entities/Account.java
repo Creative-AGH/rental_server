@@ -42,8 +42,13 @@ public class Account {
     private String password;
 
     private boolean isVerified =false;
-    @ManyToMany
-    List<Role> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "account_role",
+            joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    List<Role> roles = new ArrayList<>(); //we can use here a HashSet
 
     public Account(Long id, String email, String name, String surname, String password) {
         this.id = id;
