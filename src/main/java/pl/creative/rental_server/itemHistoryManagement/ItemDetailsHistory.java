@@ -1,17 +1,19 @@
 package pl.creative.rental_server.itemHistoryManagement;
 
 public class ItemDetailsHistory {
-    private String itemId;
-    private String itemDescription;
-    private String itemStatusOfItem;
-    private String itemDateOfCreation;
-    private String itemPlaceId;
-    private String itemPlaceName;
-    private String itemPlaceDescription;
+    private final String itemId;
+    private final String itemDescription;
+    private final String itemStatusOfItem;
+    private final String itemDateOfCreation;
+    private final String itemPlaceId;
+    private final String itemPlaceName;
+    private final String itemPlaceDescription;
+    private final String itemCategoryIds;
+    private final String itemCategoryNames;
 
     public ItemDetailsHistory(String itemId, String itemDescription, String itemStatusOfItem,
                               String itemDateOfCreation, String itemPlaceId, String itemPlaceName,
-                              String itemPlaceDescription) {
+                              String itemPlaceDescription, String itemCategoryIds, String itemCategoryNames) {
         this.itemId = itemId;
         this.itemDescription = itemDescription;
         this.itemStatusOfItem = itemStatusOfItem;
@@ -19,6 +21,8 @@ public class ItemDetailsHistory {
         this.itemPlaceId = itemPlaceId;
         this.itemPlaceName = itemPlaceName;
         this.itemPlaceDescription = itemPlaceDescription;
+        this.itemCategoryIds = itemCategoryIds;
+        this.itemCategoryNames = itemCategoryNames;
     }
 
     @Override
@@ -29,6 +33,8 @@ public class ItemDetailsHistory {
                 itemDateOfCreation + ';' +
                 itemPlaceId + ';' +
                 itemPlaceName + ';' +
-                itemPlaceDescription + ';';
+                itemPlaceDescription + ';' +
+                itemCategoryIds + ';' +
+                itemCategoryNames + ';';
     }
 }

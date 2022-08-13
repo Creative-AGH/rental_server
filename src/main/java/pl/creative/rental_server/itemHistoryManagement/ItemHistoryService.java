@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.creative.rental_server.entities.Account;
+import pl.creative.rental_server.entities.Category;
 import pl.creative.rental_server.entities.Item;
 import pl.creative.rental_server.entities.ItemHistory;
 import pl.creative.rental_server.exception.notFound.AccountNotFound;
@@ -108,6 +109,23 @@ public class ItemHistoryService {
                     .addItemPlaceName(item.getPlace().getName())
                     .addItemPlaceDescription(item.getPlace().getDescription());
         }
+
+        List<Category> categories = item.getCategories();
+        if (categories != null) {
+            StringBuilder itemCategoryIds = new StringBuilder();
+            StringBuilder itemCategoryNames = new StringBuilder();
+            for (Category category : categories) {
+                if (category != null) {
+                    itemCategoryIds.append(category.getId());
+                    itemCategoryIds.append(",");
+                    itemCategoryNames.append(category.getCategoryName());
+                    itemCategoryNames.append(",");
+                }
+            }
+            itemDetailsBuilder.addItemCategoryIds(itemCategoryIds.toString());
+            itemDetailsBuilder.addItemCategoryNames(itemCategoryNames.toString());
+        }
+
         ItemDetailsHistory itemDetailsHistory = itemDetailsBuilder.build();
         return itemDetailsHistory.toString();
     }

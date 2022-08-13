@@ -8,6 +8,8 @@ public class ItemDetailsBuilder {
     private String itemPlaceId = "-";
     private String itemPlaceName = "-";
     private String itemPlaceDescription = "-";
+    private String itemCategoryIds = "-";
+    private String itemCategoryNames = "-";
 
     public ItemDetailsBuilder addItemId(String itemId) {
         this.itemId = itemId;
@@ -44,9 +46,19 @@ public class ItemDetailsBuilder {
         return this;
     }
 
+    public ItemDetailsBuilder addItemCategoryIds(String itemCategoryIds) {
+        this.itemCategoryIds = itemCategoryIds;
+        return this;
+    }
+
+    public ItemDetailsBuilder addItemCategoryNames(String itemCategoryNames) {
+        this.itemCategoryNames = itemCategoryNames;
+        return this;
+    }
+
     public ItemDetailsHistory build() {
         return new ItemDetailsHistory(itemId, itemDescription, itemStatusOfItem,
                 itemDateOfCreation, itemPlaceId, itemPlaceName,
-                itemPlaceDescription);
+                itemPlaceDescription, itemCategoryIds, itemCategoryNames);
     }
 }
