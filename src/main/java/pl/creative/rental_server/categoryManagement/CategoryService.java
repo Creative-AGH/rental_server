@@ -68,7 +68,7 @@ public class CategoryService {
         return listOfGetCategoryDto;
     }
 
-    public List<GetItemDto> getItemsByCategoryId(String categoryId) {
+    public List<GetItemDto> getAllItemsByCategoryId(String categoryId) {
         log.info("Getting the items by category id");
         return categoryRepository.findById(categoryId)
                 .map(Category::getItems)

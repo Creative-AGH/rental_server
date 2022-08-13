@@ -37,7 +37,7 @@ public class CategoryController implements CategoryApi {
     }
 
     @Override
-    public ResponseEntity<List<GetItemDto>> getItemsByCategoryId(String categoryId) {
-        return ResponseEntity.ok(categoryService.getItemsByCategoryId(categoryId));
+    public ResponseEntity<List<GetItemDto>> getAllItemsByCategoryId(String categoryId) {
+        return ResponseEntity.ok(categoryService.getAllItemsByCategoryId(categoryId));
     }
 }

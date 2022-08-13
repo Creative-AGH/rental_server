@@ -49,8 +49,8 @@ public class PlaceController implements PlaceApi {
     }
 
     @Override
-    public ResponseEntity<List<GetItemDto>> getItemsByPlaceId(String placeId) {
-        return ResponseEntity.ok(placeService.getItemsByPlaceId(placeId));
+    public ResponseEntity<List<GetItemDto>> getAllItemsByPlaceId(String placeId) {
+        return ResponseEntity.ok(placeService.getAllItemsByPlaceId(placeId));
     }
 
 }

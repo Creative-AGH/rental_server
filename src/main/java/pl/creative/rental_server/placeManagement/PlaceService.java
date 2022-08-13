@@ -40,7 +40,7 @@ public class PlaceService {
         String id = randomIdHandler.generateUniqueIdFromTable(placeRepository);
         place.setId(id);
         Place savedPlace = placeRepository.save(place);
-        log.info("Successfully Created and saved place");
+        log.info("Successfully created and saved place");
         return placeMapper.mapPlaceToGetPlaceDto(savedPlace);
     }
 
@@ -88,7 +88,7 @@ public class PlaceService {
         }
     }
 
-    public List<GetItemDto> getItemsByPlaceId(String placeId) {
+    public List<GetItemDto> getAllItemsByPlaceId(String placeId) {
         log.info("Getting all items by place id");
         Optional<Place> optionalPlace = placeRepository.findById(placeId);
         if (optionalPlace.isPresent()) {
