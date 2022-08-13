@@ -52,7 +52,7 @@ public class ItemService {
                 categoryRepository.findById(categoryId).ifPresentOrElse(itemToSave::addCategoryToCategoryIds,
                         () -> {
                             log.error("Category with that id does not exists");
-                            throw new CategoryNotFound(String.format("Category with that does not exists"));
+                            throw new CategoryNotFound("Category with that does not exists");
                         }
                 );
             }
@@ -141,9 +141,9 @@ public class ItemService {
             Item item = optionalItem.get();
             if (force || item.getBorrowedBy() == null) {
                 if (force) {
-                    itemHistoryService.addDeleteItemHistory(itemId, "Item deleted by force", commentToEvent);
+                    itemHistoryService.addItemHistory(itemId, "Item deleted by force", commentToEvent);
                 } else {
-                    itemHistoryService.addDeleteItemHistory(itemId, "Item deleted", commentToEvent);
+                    itemHistoryService.addItemHistory(itemId, "Item deleted", commentToEvent);
                 }
                 //TODO add remove images in MINIO and add remove it from DATABASE (potential problems)
                 imageRepository.deleteAll(item.getImages());

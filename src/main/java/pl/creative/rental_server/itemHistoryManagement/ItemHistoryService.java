@@ -61,27 +61,6 @@ public class ItemHistoryService {
         }
     }
 
-    public void addDeleteItemHistory(String itemId, String typeOfEvent, String commentToEvent) {
-        log.info("Adding deleting history");
-        Optional<Item> optionalItem = itemRepository.findById(itemId);
-        if (optionalItem.isPresent()) {
-            Item item = optionalItem.get();
-
-            ItemHistory itemHistory = new ItemHistory();
-            itemHistory.setItemId(item.getId());
-            itemHistory.setTimeOfEvent(LocalDateTime.now());
-            itemHistory.setTypeOfEvent(typeOfEvent);
-            itemHistory.setDetailsOfItemBeforeEvent(createItemDetailsHistory(item));
-            if (commentToEvent != null) itemHistory.setCommentToEvent(commentToEvent);
-
-            itemHistoryRepository.save(itemHistory);
-            log.info("Successfully added deleting item history");
-        } else {
-            log.error("Item with id {} does not exist", itemId);
-            throw new ItemNotFound(String.format("Item with id %s does not exist", itemId));
-        }
-    }
-
     @Transactional
     public void addItemHistory(String itemId, String typeOfEvent, String commentToEvent) {
         log.info("Adding item history");
