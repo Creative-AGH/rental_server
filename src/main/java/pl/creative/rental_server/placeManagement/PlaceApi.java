@@ -12,9 +12,14 @@ import javax.validation.Valid;
 import java.util.List;
 
 public interface PlaceApi {
+
     @ApiOperation(value = "Adding new place")
     @PostMapping("/moderator/place/create")
     ResponseEntity<GetPlaceDto> addPlace(@RequestBody @Valid InputPlaceDto inputPlaceDto);
+
+    @ApiOperation(value = "Getting the place by given place id")
+    @GetMapping("/place/{placeId}")
+    ResponseEntity<GetPlaceDto> getPlaceById(@PathVariable String placeId);
 
     @ApiOperation(value = "Getting all places")
     @GetMapping("/moderator/places")

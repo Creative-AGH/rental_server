@@ -28,6 +28,11 @@ public class PlaceController implements PlaceApi {
     }
 
     @Override
+    public ResponseEntity<GetPlaceDto> getPlaceById(String placeId) {
+        return ResponseEntity.ok(placeService.getPlaceById(placeId));
+    }
+
+    @Override
     public ResponseEntity<List<GetPlaceDto>> getAllPlaces() {
         return ResponseEntity.ok(placeService.getAllPlaces());
     }
