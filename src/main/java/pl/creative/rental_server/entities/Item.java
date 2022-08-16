@@ -40,9 +40,7 @@ public class Item {
     @PastOrPresent
     private LocalDateTime dateOfCreation;
 
-//    @ManyToOne
-//    @JoinColumn(name = "itemTemplate_id") //the owner of relation
-//    private ItemTemplate itemTemplate;
+
 
     //    @ToString.Exclude
     @ManyToOne //the item can have only one place
