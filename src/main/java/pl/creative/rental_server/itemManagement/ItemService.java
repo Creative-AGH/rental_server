@@ -51,16 +51,16 @@ public class ItemService {
             if (categoryId != null) {
                 categoryRepository.findById(categoryId).ifPresentOrElse(itemToSave::addCategoryToCategoryIds,
                         () -> {
-                            log.error("Category with that id does not exists");
-                            throw new CategoryNotFound("Category with that does not exists");
+                            log.error("Category with that id {} does not exist");
+                            throw new CategoryNotFound(String.format("Category with that id %s does not exist", categoryId));
                         }
                 );
             }
         }
         placeRepository.findById(fillItemDto.getPlaceId()).ifPresentOrElse(itemToSave::addPlaceToPlace,
                 () -> {
-                    log.error("Place with that id does not exists");
-                    throw new PlaceNotFound("Place with that id does not exists");
+                    log.error("Place with that id does not exist");
+                    throw new PlaceNotFound("Place with that id does not exist");
                 }
         );
         Item savedItem = itemRepository.save(itemToSave);
@@ -128,7 +128,7 @@ public class ItemService {
             getItemDto.setStatusOfItem(newStatusOfItem);
             return getItemDto;
         } else {
-            log.error("Item with that id {} does not exists", itemId);
+            log.error("Item with that id {} does not exist", itemId);
             throw new ItemNotFound(String.format("Item with that id %s does not exist", itemId));
         }
     }
@@ -193,11 +193,11 @@ public class ItemService {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         Optional<Account> accountOptional = accountRepository.findById(newAccountId);
         if (itemOptional.isEmpty()) {
-            log.error("Item with that id {} does not exists", itemId);
+            log.error("Item with that id {} does not exist", itemId);
             throw new ItemNotFound(String.format("Item with that id %s does not exist", itemId));
         }
         if (accountOptional.isEmpty()) {
-            log.error("Account with that id {} does not exists", newAccountId);
+            log.error("Account with that id {} does not exist", newAccountId);
             throw new AccountNotFound(String.format("Item with that id %d does not exist", newAccountId));
         }
         if (itemOptional.get().getBorrowedBy() == null) {
@@ -219,7 +219,7 @@ public class ItemService {
                     .stream()
                     .map(itemHistoryMapper::mapItemHistoryToGetItemHistoryDto).toList();
         } else {
-            log.error("Item with that id {} does not exists", itemId);
+            log.error("Item with that id {} does not exist", itemId);
             throw new ItemNotFound(String.format("Item with that id %s does not exist", itemId));
         }
     }

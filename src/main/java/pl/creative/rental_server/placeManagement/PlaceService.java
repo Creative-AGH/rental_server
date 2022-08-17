@@ -83,7 +83,7 @@ public class PlaceService {
             log.info("Successfully updated place");
             return new EditPlaceDto(placeId, placeName, placeDescription);
         } else {
-            log.error("Place with that id {} does not exists", placeId);
+            log.error("Place with that id {} does not exist", placeId);
             throw new PlaceNotFound(String.format("Place with that id %s does not exist", placeId));
         }
     }
@@ -94,7 +94,18 @@ public class PlaceService {
         if (optionalPlace.isPresent()) {
             return optionalPlace.get().getItems().stream().map(itemMapper::mapItemToGetItemDto).toList();
         } else {
-            log.error("Place with that id {} does not exists", placeId);
+            log.error("Place with that id {} does not exist", placeId);
+            throw new PlaceNotFound(String.format("Place with that id %s does not exist", placeId));
+        }
+    }
+
+    public GetPlaceDto getPlaceById(String placeId) {
+        log.info("Getting the place by place id");
+        Optional<Place> optionalPlace = placeRepository.findById(placeId);
+        if(optionalPlace.isPresent()){
+            return placeMapper.mapPlaceToGetPlaceDto(optionalPlace.get());
+        }else {
+            log.error("Place with that id {} does not exist", placeId);
             throw new PlaceNotFound(String.format("Place with that id %s does not exist", placeId));
         }
     }
