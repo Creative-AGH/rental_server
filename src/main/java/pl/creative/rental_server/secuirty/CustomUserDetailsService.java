@@ -23,13 +23,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (accountOptional.isPresent()) {
 
             Account account = accountOptional.get();
-            String[] roles;
-            roles = account.getRoles().stream().map(Role::toString).toArray(String[]::new);//TODO CHANGE ROLE
+            Role role=account.getRole();
             return User
                     .builder()
                     .username(account.getEmail())
                     .password(account.getPassword())
-                    .roles(roles)
+                    .roles(new String[]{String.valueOf(role)})
                     .build();
 
         } else {

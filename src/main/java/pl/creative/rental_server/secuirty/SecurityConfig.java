@@ -15,10 +15,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import pl.creative.rental_server.entities.Role;
 import pl.creative.rental_server.handlers.ExpiryJwtTokenHandler;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final RestAuthenticationFailureHandler authenticationFailureHandler;
@@ -56,8 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/configuration/security",
                 "/swagger-ui.html",
                 "/webjars/**",
-                "/v2/api-docs","/h2-console/**"
-                ,"/console/*"
+                "/v2/api-docs",
+                "/h2-console/**",
+                "/console/*"
         );
     }
 
@@ -68,8 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .csrf().disable()
                     .cors().disable()
                     .authorizeRequests()
-                    .mvcMatchers("/admin/**").hasRole("ADMIN")//or has authority
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                     .and().httpBasic()
                     .and()
                     .headers().frameOptions().disable()

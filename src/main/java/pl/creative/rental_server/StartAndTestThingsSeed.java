@@ -16,11 +16,10 @@ public class StartAndTestThingsSeed {
     private final CategoryRepository categoryRepository;
     private final RandomIdHandler randomIdHandler;
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
+
 
     public void fillData() {
         createTestAccount();
-        createTestRole();
         createPlace();
         createTestCategory();//TODO REMOVE ALL TEST DATA BEFORE PRODUCTION
         createTestItem();
@@ -64,19 +63,19 @@ public class StartAndTestThingsSeed {
 
     private void createTestAccount() {
         if (accountRepository.count() == 0) {
-            accountRepository.save(new Account(1L, "admin", "Administrator", "Admin", "admin"));
-            accountRepository.save(new Account(2L, "Moderator@gmial.com", "Moderator", "Mod", "mod123"));
-            accountRepository.save(new Account(3L, "User@gmial.com", "User", "User", "user123"));
+            Account admin = new Account(1L, "admin", "Administrator", "Admin", "admin");
+            admin.setRole(Role.ADMIN);
+            accountRepository.save(admin);
+            Account moderator = new Account(2L, "Moderator@gmial.com", "Moderator", "Mod", "mod123");
+            moderator.setRole(Role.MODERATOR);
+            accountRepository.save(moderator);
+            Account user = new Account(3L, "User@gmial.com", "User", "User", "user123");
+            user.setRole(Role.USER);
+            accountRepository.save(user);
         }
     }
 
-    private void createTestRole() {
-        if (roleRepository.count() == 0) {
-            roleRepository.save(new Role(1L, "Administrator", "desc"));
-            roleRepository.save(new Role(2L, "Moderator", "desc"));
-            roleRepository.save(new Role(3L, "User", "desc"));
-        }
-    }
+
 
 
 }
