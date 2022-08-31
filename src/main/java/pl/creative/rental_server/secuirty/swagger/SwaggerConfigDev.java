@@ -1,4 +1,4 @@
-package pl.creative.rental_server.secuirty;
+package pl.creative.rental_server.secuirty.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

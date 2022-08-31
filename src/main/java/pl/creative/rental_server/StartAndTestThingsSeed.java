@@ -1,10 +1,12 @@
 package pl.creative.rental_server;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.creative.rental_server.entities.*;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.repository.*;
+import pl.creative.rental_server.secuirty.HashPasswordService;
 
 import java.util.Optional;
 
@@ -16,7 +18,7 @@ public class StartAndTestThingsSeed {
     private final CategoryRepository categoryRepository;
     private final RandomIdHandler randomIdHandler;
     private final AccountRepository accountRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
     public void fillData() {
         createTestAccount();
@@ -63,13 +65,13 @@ public class StartAndTestThingsSeed {
 
     private void createTestAccount() {
         if (accountRepository.count() == 0) {
-            Account admin = new Account(1L, "admin", "Administrator", "Admin", "admin");
+            Account admin = new Account(1L, "admin", "Administrator", "Admin", passwordEncoder.encode("admin"));
             admin.setRole(Role.ADMIN);
             accountRepository.save(admin);
-            Account moderator = new Account(2L, "Moderator@gmial.com", "Moderator", "Mod", "mod123");
+            Account moderator = new Account(2L, "Moderator@gmial.com", "Moderator", "Mod", passwordEncoder.encode("mod123"));
             moderator.setRole(Role.MODERATOR);
             accountRepository.save(moderator);
-            Account user = new Account(3L, "User@gmial.com", "User", "User", "user123");
+            Account user = new Account(3L, "User@gmial.com", "User", "User", passwordEncoder.encode("user123"));
             user.setRole(Role.USER);
             accountRepository.save(user);
         }
