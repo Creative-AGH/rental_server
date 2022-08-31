@@ -24,7 +24,7 @@ public class Account {
     private Long id;
     @NotNull
     @NotEmpty
-    @Email
+//    @Email
     private String email;
     @NotNull
     @NotEmpty
@@ -38,7 +38,7 @@ public class Account {
     List<Item> borrowedItems=new ArrayList<>();
     @NotEmpty
     @NotNull
-    @Length(min = 6 , max = 40)
+//    @Length(min = 6 , max = 40)
     private String password;
 
     private boolean isVerified =false;

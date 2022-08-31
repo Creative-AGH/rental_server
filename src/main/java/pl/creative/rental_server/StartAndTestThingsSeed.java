@@ -64,7 +64,7 @@ public class StartAndTestThingsSeed {
 
     private void createTestAccount() {
         if (accountRepository.count() == 0) {
-            accountRepository.save(new Account(1L, "Administrator@gmial.com", "Administrator", "Admin", "admin123"));
+            accountRepository.save(new Account(1L, "admin", "Administrator", "Admin", "admin"));
             accountRepository.save(new Account(2L, "Moderator@gmial.com", "Moderator", "Mod", "mod123"));
             accountRepository.save(new Account(3L, "User@gmial.com", "User", "User", "user123"));
         }
