@@ -59,7 +59,7 @@ public class RegisterService {
             TokenToRegister tokenToRegister = new TokenToRegister(generatedToken, account);
 
             try {
-//                emailService.sendMail(registerNewAccountDto, tokenToRegister);
+                emailService.sendMail(registerNewAccountDto.getEmail(), tokenToRegister.getToken());
                 accountRepository.save(account);
                 tokenToRegisterRepository.save(tokenToRegister); //TODO
             } catch (Exception e){

@@ -11,9 +11,9 @@ import javax.validation.Valid;
 
 public interface RegisterApi {
 
-    @PostMapping("/register")
+    @PostMapping("/all/register")
     ResponseEntity<?> register(@RequestBody @Valid RegisterNewAccountDto registerNewAccountDto);
 
-    @GetMapping("/validate")
+    @GetMapping("/all/validate")
     ResponseEntity<?> verifyEmail(@RequestParam String token);
 }
