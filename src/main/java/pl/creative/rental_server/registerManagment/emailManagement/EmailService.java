@@ -2,6 +2,7 @@ package pl.creative.rental_server.registerManagment.emailManagement;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -21,6 +22,8 @@ import java.io.UnsupportedEncodingException;
 @RequiredArgsConstructor
 @Slf4j
 public class EmailService {
+    @Value("${spring.mail.username}")
+    private String whoIsSendingEmail;
     private final JavaMailSenderImpl javaMailSender;
     private final TemplateEngine templateEngine;
 
@@ -28,17 +31,17 @@ public class EmailService {
         Context context = new Context();
 //        context.setVariable("user", user);
 //        context.setVariable("validateLink", frontEndLink + "/validate?token=" + token.getToken());
-//        String process = templateEngine.process("emails/registerConfirmationEmail.html", context);
+//        String emailInHtml = templateEngine.process("emails/registerConfirmationEmail.html", context); TODO uncomment that line and update register email
         log.info("Sending account veryfication to email {}",email);
         javax.mail.internet.MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
 
-        helper.setSubject("Działa ta jebana nazstowska technologia z AGH !");
-        helper.setText("Dziala !", false);
+        helper.setSubject("Zweryfikuj swoj email w sieci lokalnej Creative");
+//        helper.setText(emailInHtml, true);//TODO uncomment that line
         helper.setTo(email);
-        helper.setFrom("");
+        helper.setFrom(whoIsSendingEmail);
         javaMailSender.send(mimeMessage);
-        log.info("Send email");
+        log.info("Send email succesfully");
     }
 
 

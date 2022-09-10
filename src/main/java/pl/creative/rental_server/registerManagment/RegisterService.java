@@ -32,7 +32,7 @@ public class RegisterService {
     private final RegisterMapper registerMapper;
     private final TokenToRegisterRepository tokenToRegisterRepository;
     private final RandomIdHandler randomIdHandler;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final EmailService emailService;
 
@@ -42,8 +42,7 @@ public class RegisterService {
         boolean doesSuchAccountAlreadyExist = accountRepository.existsAccountByEmail(newAccountEmail);
         if (!doesSuchAccountAlreadyExist) {
             Account account = registerMapper.mapRegisterNewAccountDtoToAccount(registerNewAccountDto);
-//            account.setPassword(passwordEncoder.encode(registerNewAccountDto.getPassword()));
-            account.setPassword(registerNewAccountDto.getPassword()); //FIXME passwordEncoder does not work
+            account.setPassword(passwordEncoder.encode(registerNewAccountDto.getPassword()));
             List<Role> roles = new ArrayList<>();
             Optional<Role> optionalUserRole = roleRepository.findByName("USER");
             if(optionalUserRole.isEmpty()){
@@ -61,10 +60,11 @@ public class RegisterService {
             try {
                 emailService.sendMail(registerNewAccountDto.getEmail(), tokenToRegister.getToken());
                 accountRepository.save(account);
-                tokenToRegisterRepository.save(tokenToRegister); //TODO
+                tokenToRegisterRepository.save(tokenToRegister);
             } catch (Exception e){
                 accountRepository.delete(account);
-                log.error("Unable to create account");
+
+                log.error("Unable to create account due to reason {} ",e.getMessage());
             }
 
         } else {
