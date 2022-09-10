@@ -64,17 +64,17 @@ public class StartAndTestThingsSeed {
 
     private void createTestAccount() {
         if (accountRepository.count() == 0) {
-            accountRepository.save(new Account(1L, "Administrator@gmail.com", "Administrator", "Admin", "admin123"));
-            accountRepository.save(new Account(2L, "Moderator@gmail.com", "Moderator", "Mod", "mod123"));
-            accountRepository.save(new Account(3L, "User@gmail.com", "User", "User", "user123"));
+            accountRepository.save(new Account(1L, "Administrator@gmial.com", "Administrator", "Admin", "admin123"));
+            accountRepository.save(new Account(2L, "Moderator@gmial.com", "Moderator", "Mod", "mod123"));
+            accountRepository.save(new Account(3L, "User@gmial.com", "User", "User", "user123"));
         }
     }
 
     private void createTestRole() {
         if (roleRepository.count() == 0) {
-            roleRepository.save(new Role(1L, "ADMINISTRATOR", "desc"));
-            roleRepository.save(new Role(2L, "MODERATOR", "desc"));
-            roleRepository.save(new Role(3L, "USER", "desc"));
+            roleRepository.save(new Role(1L, "Administrator", "desc"));
+            roleRepository.save(new Role(2L, "Moderator", "desc"));
+            roleRepository.save(new Role(3L, "User", "desc"));
         }
     }
 
