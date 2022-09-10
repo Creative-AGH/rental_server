@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/webjars/**",
                 "/v2/api-docs",
                 "/h2-console/**",
-                "/console/*"
+                "/console/*","/**"
         );
     }
 
