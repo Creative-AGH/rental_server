@@ -1,10 +1,12 @@
 package pl.creative.rental_server;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.creative.rental_server.entities.*;
 import pl.creative.rental_server.handlers.RandomIdHandler;
 import pl.creative.rental_server.repository.*;
+import pl.creative.rental_server.secuirty.HashPasswordService;
 
 import java.util.Optional;
 
@@ -16,11 +18,10 @@ public class StartAndTestThingsSeed {
     private final CategoryRepository categoryRepository;
     private final RandomIdHandler randomIdHandler;
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void fillData() {
         createTestAccount();
-        createTestRole();
         createPlace();
         createTestCategory();//TODO REMOVE ALL TEST DATA BEFORE PRODUCTION
         createTestItem();
@@ -64,19 +65,19 @@ public class StartAndTestThingsSeed {
 
     private void createTestAccount() {
         if (accountRepository.count() == 0) {
-            accountRepository.save(new Account(1L, "Administrator@gmial.com", "Administrator", "Admin", "admin123"));
-            accountRepository.save(new Account(2L, "Moderator@gmial.com", "Moderator", "Mod", "mod123"));
-            accountRepository.save(new Account(3L, "User@gmial.com", "User", "User", "user123"));
+            Account admin = new Account(1L, "admin", "Administrator", "Admin", passwordEncoder.encode("admin"));
+            admin.setRole(Role.ADMIN);
+            accountRepository.save(admin);
+            Account moderator = new Account(2L, "Moderator@gmial.com", "Moderator", "Mod", passwordEncoder.encode("mod123"));
+            moderator.setRole(Role.MODERATOR);
+            accountRepository.save(moderator);
+            Account user = new Account(3L, "User@gmial.com", "User", "User", passwordEncoder.encode("user123"));
+            user.setRole(Role.USER);
+            accountRepository.save(user);
         }
     }
 
-    private void createTestRole() {
-        if (roleRepository.count() == 0) {
-            roleRepository.save(new Role(1L, "Administrator", "desc"));
-            roleRepository.save(new Role(2L, "Moderator", "desc"));
-            roleRepository.save(new Role(3L, "User", "desc"));
-        }
-    }
+
 
 
 }
