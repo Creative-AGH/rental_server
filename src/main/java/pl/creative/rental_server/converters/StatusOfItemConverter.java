@@ -1,4 +1,4 @@
-package pl.creative.rental_server.statusOfItemManagement;
+package pl.creative.rental_server.converters;
 
 import pl.creative.rental_server.entities.StatusOfItem;
 

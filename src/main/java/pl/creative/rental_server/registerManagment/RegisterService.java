@@ -15,7 +15,6 @@ import pl.creative.rental_server.registerManagment.dto.RegisterMapper;
 import pl.creative.rental_server.registerManagment.dto.RegisterNewAccountDto;
 import pl.creative.rental_server.registerManagment.emailManagement.EmailService;
 import pl.creative.rental_server.repository.AccountRepository;
-import pl.creative.rental_server.repository.RoleRepository;
 import pl.creative.rental_server.repository.TokenToRegisterRepository;
 
 import javax.transaction.Transactional;
@@ -33,7 +32,7 @@ public class RegisterService {
     private final TokenToRegisterRepository tokenToRegisterRepository;
     private final RandomIdHandler randomIdHandler;
     private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
+
     private final EmailService emailService;
 
     @Transactional
@@ -43,17 +42,7 @@ public class RegisterService {
         if (!doesSuchAccountAlreadyExist) {
             Account account = registerMapper.mapRegisterNewAccountDtoToAccount(registerNewAccountDto);
             account.setPassword(passwordEncoder.encode(registerNewAccountDto.getPassword()));
-            List<Role> roles = new ArrayList<>();
-            Optional<Role> optionalUserRole = roleRepository.findByName("USER");
-            if(optionalUserRole.isEmpty()){
-                log.error("USER role does not exist");
-                throw new RoleNotFound("USER role does not exist");
-            } else {
-                Role user = optionalUserRole.get();
-                roles.add(user);
-            }
-            account.setRoles(roles);
-
+            account.setRole(Role.USER);
             String generatedToken = randomIdHandler.generateUniqueIdFromTable(tokenToRegisterRepository);
             TokenToRegister tokenToRegister = new TokenToRegister(generatedToken, account);
 
@@ -61,10 +50,10 @@ public class RegisterService {
                 emailService.sendMail(registerNewAccountDto.getEmail(), tokenToRegister.getToken());
                 accountRepository.save(account);
                 tokenToRegisterRepository.save(tokenToRegister);
-            } catch (Exception e){
+            } catch (Exception e) {
                 accountRepository.delete(account);
 
-                log.error("Unable to create account due to reason {} ",e.getMessage());
+                log.error("Unable to create account due to reason {} ", e.getMessage());
             }
 
         } else {
@@ -75,16 +64,15 @@ public class RegisterService {
 
     public boolean verifyEmail(String token) {
         Optional<TokenToRegister> optionalToken = tokenToRegisterRepository.findById(token);
-        if(optionalToken.isEmpty())
-        return false;
-        else
-        {
+        if (optionalToken.isEmpty())
+            return false;
+        else {
             TokenToRegister tokenToRegister = optionalToken.get();
             Account account = tokenToRegister.getAccount();
             account.setVerified(true);
             accountRepository.save(account);
             tokenToRegisterRepository.delete(tokenToRegister);
-            log.info("Account {} now has verified email",account.getEmail());
+            log.info("Account {} now has verified email", account.getEmail());
             return true;
         }
     }
