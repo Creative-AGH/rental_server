@@ -74,6 +74,18 @@ public class RegisterService {
     }
 
     public boolean verifyEmail(String token) {
+        Optional<TokenToRegister> optionalToken = tokenToRegisterRepository.findById(token);
+        if(optionalToken.isEmpty())
         return false;
+        else
+        {
+            TokenToRegister tokenToRegister = optionalToken.get();
+            Account account = tokenToRegister.getAccount();
+            account.setVerified(true);
+            accountRepository.save(account);
+            tokenToRegisterRepository.delete(tokenToRegister);
+            log.info("Account {} now has verified email",account.getEmail());
+            return true;
+        }
     }
 }

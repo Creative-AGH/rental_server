@@ -30,7 +30,7 @@ public class EmailService {
     public void sendMail(String email, String token) throws MessagingException, UnsupportedEncodingException {
         Context context = new Context();
 //        context.setVariable("user", user);
-//        context.setVariable("validateLink", frontEndLink + "/validate?token=" + token.getToken());
+//        context.setVariable("validateLink", frontEndLink + "/validate?token=" + token);
 //        String emailInHtml = templateEngine.process("emails/registerConfirmationEmail.html", context); TODO uncomment that line and update register email
         log.info("Sending account veryfication to email {}",email);
         javax.mail.internet.MimeMessage mimeMessage = javaMailSender.createMimeMessage();
