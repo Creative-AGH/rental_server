@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class Account {
     private Long id;
     @NotNull
     @NotEmpty
-//    @Email
+    @Email
     private String email;
     @NotNull
     @NotEmpty
@@ -37,11 +38,17 @@ public class Account {
     List<Item> borrowedItems=new ArrayList<>();
     @NotEmpty
     @NotNull
-//    @Length(min = 6 , max = 40)
+    @Length(min = 6 , max = 40)
     private String password;
 
     private boolean isVerified =false;
-    Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "account_role",
+            joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    List<Role> roles = new ArrayList<>(); //we can use here a HashSet
 
     public Account(Long id, String email, String name, String surname, String password) {
         this.id = id;

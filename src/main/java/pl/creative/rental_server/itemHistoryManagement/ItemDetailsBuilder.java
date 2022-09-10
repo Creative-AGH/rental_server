@@ -4,6 +4,7 @@ public class ItemDetailsBuilder {
     private String itemId = "-";
     private String itemDescription = "-";
     private String itemStatusOfItem = "-";
+    private String itemDateOfCreation = "-";
     private String itemPlaceId = "-";
     private String itemPlaceName = "-";
     private String itemPlaceDescription = "-";
@@ -25,6 +26,10 @@ public class ItemDetailsBuilder {
         return this;
     }
 
+    public ItemDetailsBuilder addItemDateOfCreation(String itemDateOfCreation) {
+        this.itemDateOfCreation = itemDateOfCreation;
+        return this;
+    }
 
     public ItemDetailsBuilder addItemPlaceId(String itemPlaceId) {
         this.itemPlaceId = itemPlaceId;
@@ -52,7 +57,8 @@ public class ItemDetailsBuilder {
     }
 
     public ItemDetailsHistory build() {
-        return new ItemDetailsHistory(itemId, itemDescription, itemStatusOfItem ,itemPlaceId, itemPlaceName,
+        return new ItemDetailsHistory(itemId, itemDescription, itemStatusOfItem,
+                itemDateOfCreation, itemPlaceId, itemPlaceName,
                 itemPlaceDescription, itemCategoryIds, itemCategoryNames);
     }
 }
