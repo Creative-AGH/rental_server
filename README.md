@@ -67,16 +67,17 @@ Temporary feature :
 
 ### Future stage of development 
 >
-> 1. Create registration functionality with e-mail veryfication 
-> 2. Create security filter-chain with login functionality and JWT authentication 
-> 3. Refactor functionality based on authority access (Admin,Moderator,User) roles 
-> 4. Create remind password endpoint 
-> 5. Adjust Swagger-ui to spring security 
-> 6. Adjust data model to frontend demands 
-> 7. Create admin panel 
-> 8. Create docker compose to pack app with frontend , minio and database 
-> 9. At the end create Data base migration system with liquibase 
-> 10. Generate excel/PDF report of item history or present state 
+> 1. Create registration functionality with e-mail veryfication `DONE`
+> 2. Create security filter-chain with login functionality and JWT authentication `DONE`
+> 3. Refactor functionality based on authority access (Admin,Moderator,User) roles `TODO`
+> 4. Create remind password endpoint `BLOCKED`
+> 5. Adjust Swagger-ui to spring security `DONE`
+> 6. Adjust data model to frontend demands `TODO`
+> 7. Create admin panel `IN PROGRES`
+> 8. Create docker compose to pack app with frontend , minio and database `TODO`
+> 9. At the end create Data base migration system with liquibase `BLOCKED`
+> 10. Generate excel/PDF report of item history or present state `DONE`
+> 11. Update docs and version of project `TODO`
 
 ---
 ## Setup and run tutorial 
