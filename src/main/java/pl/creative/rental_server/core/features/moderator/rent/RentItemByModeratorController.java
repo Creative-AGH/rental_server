@@ -9,17 +9,17 @@ import pl.creative.rental_server.docs.moderator.RentItemByModeratorApi;
 @RestController
 @RequiredArgsConstructor
 public class RentItemByModeratorController implements RentItemByModeratorApi {
-    private final RentItemByModeratorService rentItemByModeratorService;
+    private final RentItemService rentItemService;
 
     @Override
     public ResponseEntity<?> rentItem(Long accountId, String itemId, String commentToEvent) {
-        rentItemByModeratorService.rentItem(accountId, itemId, commentToEvent);
+        rentItemService.rentItem(accountId, itemId, commentToEvent);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<?> returnItem(String itemId, String commentToEvent) {
-        rentItemByModeratorService.returnItem(itemId, commentToEvent);
+        rentItemService.returnItem(itemId, commentToEvent);
         return ResponseEntity.ok().build();
     }
 }
