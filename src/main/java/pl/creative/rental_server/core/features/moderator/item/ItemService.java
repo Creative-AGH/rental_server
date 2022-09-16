@@ -224,6 +224,18 @@ public class ItemService {
         }
     }
 
+    public List<GetItemDto> getAllItemsInDefaultPlace() {
+        log.info("Getting all items in default place");
+        String defaultPlaceId = "0";
+        Optional<Place> optionalPlace = placeRepository.findById(defaultPlaceId);
+        if (optionalPlace.isPresent()) {
+            return optionalPlace.get().getItems().stream().map(itemMapper::mapItemToGetItemDto).toList();
+        } else {
+            log.error("Place with that id {} does not exist (defaultPlace)", defaultPlaceId);
+            throw new PlaceNotFound(String.format("Place with that id -  %s does not exist (defaultPlace)", defaultPlaceId));
+        }
+    }
+
     //TODO changeCategoriesOfItem
 
 }
