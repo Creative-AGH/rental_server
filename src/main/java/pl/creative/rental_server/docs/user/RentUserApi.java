@@ -5,16 +5,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 public interface RentUserApi {
 
     @ApiOperation("Renting an item from default place by user")
     @PostMapping("/user/rent/defaultPlace/{itemId}")
-    ResponseEntity<?> rentItemForMe(@PathVariable String itemId, @RequestBody(required = false) String commentToEvent);
+    ResponseEntity<?> rentItemForMe(@PathVariable String itemId,
+                                    @RequestBody(required = false) String commentToEvent);
 
-    @ApiOperation("Returning an item by user and place it to default place (0)")
+    @ApiOperation("Returning an item by user and placing it to default place (0)")
     @PostMapping("/user/returnItem/{itemId}")
-    ResponseEntity<?> iReturnItem(@PathVariable String itemId, @RequestBody(required = false) String commentToEvent);
+    ResponseEntity<?> iReturnItem(@PathVariable String itemId,
+                                  @RequestBody(required = false) String commentToEvent);
 
+    @ApiOperation("Returning an item by user and placing it to given place id")
+    @PostMapping("/user/returnItem/{itemId}/{newPlaceId}")
+    ResponseEntity<?> iReturnItemAndPlaceItAtGivenPlace(@PathVariable String itemId,
+                                                        @PathVariable String newPlaceId,
+                                  @RequestBody(required = false) String commentToEvent);
 }

@@ -3,8 +3,7 @@ package pl.creative.rental_server.core.features.user;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.creative.rental_server.docs.user.RentUserApi;
 
 @Slf4j
@@ -26,9 +25,10 @@ public class RentUserController implements RentUserApi {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> iReturnItemAndPlaceItAtPlace(String itemId, String placeId)//TODO IMPLEMENT LOGIC
-    {
-        return ResponseEntity.noContent().build();
+    @Override
+    public ResponseEntity<?> iReturnItemAndPlaceItAtGivenPlace(String itemId, String newPlaceId, String commentToEvent) {
+        rentUserService.iReturnItemAndPlaceItAtGivenPlace(itemId, newPlaceId, commentToEvent);
+        return ResponseEntity.ok().build();
     }
 
 }
