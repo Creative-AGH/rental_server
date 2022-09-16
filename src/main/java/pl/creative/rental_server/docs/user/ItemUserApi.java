@@ -30,4 +30,8 @@ public interface ItemUserApi {
     @ApiOperation(value = "Getting all borrowed items")
     @GetMapping("/user/items/borrowed")
     ResponseEntity<List<GetItemDto>> getBorrowedItems(@RequestParam boolean borrowed);
+
+    @ApiOperation(value = "Getting all items from default place")
+    @GetMapping("/user/items/getAllItemsInDefaultPlace")
+    ResponseEntity<List<GetItemDto>> getAllItemsInDefaultPlace();
 }

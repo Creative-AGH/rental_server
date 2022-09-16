@@ -23,7 +23,7 @@ import java.util.Optional;
 @Data
 @RequiredArgsConstructor
 @Slf4j
-public class RentItemByModeratorService {
+public class RentItemService {
     private final ItemRepository itemRepository;
     private final AccountRepository accountRepository;
     private final PlaceRepository placeRepository;
