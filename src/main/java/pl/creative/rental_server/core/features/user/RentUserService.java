@@ -18,13 +18,19 @@ public class RentUserService {
     private final RentItemService rentItemService;
 
     public void rentItemForMe(String itemId, String commentToEvent) {
-        log.info("Renting an item from default place by user");
+        log.info("Renting an item by user");
         String accountEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("User account email: {}", accountEmail);
         Optional<Account> optionalAccount = accountRepository.findByEmail(accountEmail);
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();
             Long accountId = account.getId();
             rentItemService.rentItem(accountId, itemId, commentToEvent);
         }
+    }
+
+    public void iReturnItem(String itemId, String commentToEvent) {
+        log.info("Returning an item by user");
+        rentItemService.returnItem(itemId,commentToEvent);
     }
 }

@@ -20,9 +20,10 @@ public class RentUserController implements RentUserApi {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> iReturnItem(String itemId)//and place it to default place ("0")
-    {
-        return ResponseEntity.noContent().build();
+    @Override
+    public ResponseEntity<?> iReturnItem(String itemId, String commentToEvent) {
+        rentUserService.iReturnItem(itemId, commentToEvent);
+        return ResponseEntity.ok().build();
     }
 
     public ResponseEntity<?> iReturnItemAndPlaceItAtPlace(String itemId, String placeId)//TODO IMPLEMENT LOGIC
