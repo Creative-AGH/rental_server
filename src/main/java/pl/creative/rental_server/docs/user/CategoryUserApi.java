@@ -1,32 +1,24 @@
-package pl.creative.rental_server.docs;
+package pl.creative.rental_server.docs.user;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import pl.creative.rental_server.core.features.moderator.category.dto.FillCategoryDto;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import pl.creative.rental_server.core.features.moderator.category.dto.GetCategoryDto;
 import pl.creative.rental_server.core.features.moderator.item.dto.GetItemDto;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@RequestMapping("/category")
-public interface CategoryApi {
-
-    @ApiOperation(value = "Adding new category")
-    @PostMapping
-    ResponseEntity<GetCategoryDto> addCategory(@RequestBody @Valid FillCategoryDto fillCategoryDto);
-
+public interface CategoryUserApi {
     @ApiOperation(value = "Getting category by given category id")
-    @GetMapping("/{categoryId}")
+    @GetMapping("/user/category/{categoryId}")
     ResponseEntity<GetCategoryDto> getCategoryById(@PathVariable String categoryId);
 
     @ApiOperation(value = "Getting all categories")
-    @GetMapping()
+    @GetMapping("/user/category/all")//FORUSER
     ResponseEntity<List<GetCategoryDto>> getAllCategories();
 
     @ApiOperation(value = "Getting all items by given category id")
-    @GetMapping("/{categoryId}/items")
+    @GetMapping("user/category/{categoryId}/items")
     ResponseEntity<List<GetItemDto>> getAllItemsByCategoryId(@PathVariable String categoryId);
-
 }

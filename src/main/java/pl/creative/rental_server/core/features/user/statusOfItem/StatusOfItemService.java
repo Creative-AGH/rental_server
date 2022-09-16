@@ -1,11 +1,11 @@
-package pl.creative.rental_server.core.features.moderator.statusOfItem;
+package pl.creative.rental_server.core.features.user.statusOfItem;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.creative.rental_server.core.features.user.statusOfItem.dto.GetStatusOfItemDto;
+import pl.creative.rental_server.core.features.user.statusOfItem.dto.StatusOfItemMapper;
 import pl.creative.rental_server.db.entities.StatusOfItem;
-import pl.creative.rental_server.core.features.moderator.statusOfItem.dto.GetStatusOfItemDto;
-import pl.creative.rental_server.core.features.moderator.statusOfItem.dto.StatusOfItemMapper;
 
 import java.util.ArrayList;
 import java.util.List;

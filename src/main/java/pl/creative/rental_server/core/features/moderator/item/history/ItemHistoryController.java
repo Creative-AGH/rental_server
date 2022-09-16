@@ -3,8 +3,8 @@ package pl.creative.rental_server.core.features.moderator.item.history;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import pl.creative.rental_server.docs.ItemHistoryApi;
 import pl.creative.rental_server.core.features.moderator.item.history.dto.GetItemHistoryDto;
+import pl.creative.rental_server.docs.moderator.ItemHistoryApi;
 
 import java.util.List;
 

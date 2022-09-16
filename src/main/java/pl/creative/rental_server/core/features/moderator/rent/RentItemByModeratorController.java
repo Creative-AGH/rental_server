@@ -4,7 +4,7 @@ package pl.creative.rental_server.core.features.moderator.rent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import pl.creative.rental_server.docs.RentItemByModeratorApi;
+import pl.creative.rental_server.docs.moderator.RentItemByModeratorApi;
 
 @RestController
 @RequiredArgsConstructor
