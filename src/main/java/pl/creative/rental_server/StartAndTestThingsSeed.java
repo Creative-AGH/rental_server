@@ -3,10 +3,9 @@ package pl.creative.rental_server;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import pl.creative.rental_server.entities.*;
-import pl.creative.rental_server.handlers.RandomIdHandler;
-import pl.creative.rental_server.repository.*;
-import pl.creative.rental_server.secuirty.HashPasswordService;
+import pl.creative.rental_server.db.entities.*;
+import pl.creative.rental_server.core.global.handlersAndUtils.RandomIdHandler;
+import pl.creative.rental_server.db.repository.*;
 
 import java.util.Optional;
 
