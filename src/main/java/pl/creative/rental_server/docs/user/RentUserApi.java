@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 public interface RentUserApi {
@@ -24,5 +23,5 @@ public interface RentUserApi {
     @PostMapping("/user/returnItem/{itemId}/{newPlaceId}")
     ResponseEntity<?> iReturnItemAndPlaceItAtGivenPlace(@PathVariable String itemId,
                                                         @PathVariable String newPlaceId,
-                                  @RequestBody(required = false) String commentToEvent);
+                                                        @RequestBody(required = false) String commentToEvent);
 }
