@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import pl.creative.rental_server.core.global.handlersAndUtils.ExpiryJwtTokenHandler;
+import pl.creative.rental_server.db.entities.Role;
 
 @Configuration
 @EnableWebSecurity
@@ -59,7 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/webjars/**",
                 "/v2/api-docs",
                 "/h2-console/**",
-                "/console/*","/**"
+                "/console/*"
+//                ,"/**" // COMENT THIS when you want to use with user restrictions
         );
     }
 
@@ -70,12 +72,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .csrf().disable()
                     .cors().disable()
                     .authorizeRequests()
+//                    .mvcMatchers("/all/**").permitAll()//UNCOMENT THIS when you want to use with user restrictions
+//                    .mvcMatchers("/user/**").hasRole(Role.USER.getCode())
+//                    .mvcMatchers("/moderator/**").hasRole(Role.MODERATOR.getCode())
+//                    .mvcMatchers("/admin/**").hasRole(Role.ADMIN.getCode())
                     .anyRequest().permitAll()
                     .and().httpBasic()
                     .and()
                     .headers().frameOptions().disable()
                     .and()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 1
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                     .addFilter(authenticationFilter())
                     .addFilter(new JwtAuthorizationFilter(authenticationManager(), userDetailsService, secret, expiryJwtTokenHandler)) // 2

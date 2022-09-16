@@ -49,4 +49,8 @@ public class ItemUserController implements ItemUserApi {
             return ResponseEntity.ok(itemService.getBorrowedItems());
         return ResponseEntity.ok(itemService.getNotBorrowedItems());
     }
+    public ResponseEntity<?> getAllItemsInDefaultPlace() //TODO IMPLEMENT LOGIC
+    {
+        return ResponseEntity.noContent().build();
+    }
 }
