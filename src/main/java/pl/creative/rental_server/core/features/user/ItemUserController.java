@@ -51,7 +51,7 @@ public class ItemUserController implements ItemUserApi {
     }
 
     @Override
-    public ResponseEntity<List<GetItemDto>> getAllItemsInDefaultPlace() { //TODO IMPLEMENT LOGIC //DONE
+    public ResponseEntity<List<GetItemDto>> getAllItemsInDefaultPlace() {
         return ResponseEntity.ok(itemService.getAllItemsInDefaultPlace());
     }
 }
