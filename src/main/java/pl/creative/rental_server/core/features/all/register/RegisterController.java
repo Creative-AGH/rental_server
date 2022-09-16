@@ -3,8 +3,8 @@ package pl.creative.rental_server.core.features.all.register;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import pl.creative.rental_server.docs.RegisterApi;
 import pl.creative.rental_server.core.features.all.register.dto.RegisterNewAccountDto;
+import pl.creative.rental_server.docs.all.RegisterApi;
 
 @RestController
 @RequiredArgsConstructor

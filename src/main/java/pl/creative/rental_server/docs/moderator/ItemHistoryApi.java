@@ -1,4 +1,4 @@
-package pl.creative.rental_server.docs;
+package pl.creative.rental_server.docs.moderator;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;

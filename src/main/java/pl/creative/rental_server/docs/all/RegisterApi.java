@@ -1,4 +1,4 @@
-package pl.creative.rental_server.docs;
+package pl.creative.rental_server.docs.all;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
