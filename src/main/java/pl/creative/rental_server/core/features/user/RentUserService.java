@@ -17,7 +17,7 @@ public class RentUserService {
     private final AccountRepository accountRepository;
     private final RentItemService rentItemService;
 
-    public void rentForMeFromDefaultPlace(String itemId, String commentToEvent) {
+    public void rentItemForMe(String itemId, String commentToEvent) {
         log.info("Renting an item from default place by user");
         String accountEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<Account> optionalAccount = accountRepository.findByEmail(accountEmail);

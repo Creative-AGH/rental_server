@@ -9,6 +9,6 @@ public interface RentUserApi {
 
     @ApiOperation("Renting an item from default place by user")
     @PostMapping("/user/rent/defaultPlace/{itemId}")
-    ResponseEntity<?> rentForMeFromDefaultPlace(String itemId, String commentToEvent);
+    ResponseEntity<?> rentItemForMe(String itemId, String commentToEvent);
 
 }
