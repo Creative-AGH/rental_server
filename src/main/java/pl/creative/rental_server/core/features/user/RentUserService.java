@@ -20,9 +20,8 @@ public class RentUserService {
     private final ItemService itemService;
 
     public void rentItemForMe(String itemId, String commentToEvent) {
-        log.info("Renting an item by user");
         String accountEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info("User account email: {}", accountEmail);
+        log.info("Renting an item with id {} by user account email: {}", itemId,accountEmail);
         Optional<Account> optionalAccount = accountRepository.findByEmail(accountEmail);
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();

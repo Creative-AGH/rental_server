@@ -224,7 +224,7 @@ public class ItemService {
         }
     }
 
-    public List<GetItemDto> getAllItemsInDefaultPlace() {
+    public List<GetItemDto> getAllItemsFromDefaultPlace() {
         log.info("Getting all items in default place");
         String defaultPlaceId = "0";
         Optional<Place> optionalPlace = placeRepository.findById(defaultPlaceId);
