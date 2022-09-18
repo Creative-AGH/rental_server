@@ -9,6 +9,7 @@ import pl.creative.rental_server.db.repository.ImageRepository;
 import pl.creative.rental_server.db.repository.ItemRepository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,21 @@ public class ImageService {
                 .append(imageId)
                 .append(".jpg").toString();
     }
+    @Transactional
+    public void deleteExistingFolderWithImages(String itemId)
+    {
+        Optional<Item> itemOptional = itemRepository.findById(itemId);
+        if(itemOptional.isPresent())
+        {
+            Item item = itemOptional.get();
+            List<Image> images = item.getImages();
+            List<String> linksToItem = images.stream().map(Image::getLink).toList();
+            fileUploader.removeImages(linksToItem);
+            imageRepository.deleteAll(images);
+            item.setImages(new ArrayList<>());
 
+        }
+    }
     @Transactional
     public void addImages(String itemId, List<String> images) {
         Optional<Item> itemOptional = itemRepository.findById(itemId);

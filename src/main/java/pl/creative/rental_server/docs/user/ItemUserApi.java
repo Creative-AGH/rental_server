@@ -33,5 +33,5 @@ public interface ItemUserApi {
 
     @ApiOperation(value = "Getting all items from default place")
     @GetMapping("/user/items/getAllItemsInDefaultPlace")
-    ResponseEntity<List<GetItemDto>> getAllItemsInDefaultPlace();
+    ResponseEntity<List<GetItemDto>> getAllItemsFromDefaultPlace();
 }

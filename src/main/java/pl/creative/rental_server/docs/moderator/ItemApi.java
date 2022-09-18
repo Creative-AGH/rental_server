@@ -4,7 +4,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.creative.rental_server.core.features.moderator.item.dto.FillItemDto;
+import pl.creative.rental_server.core.features.moderator.item.dto.FillItemWithOutPlaceDto;
 import pl.creative.rental_server.core.features.moderator.item.dto.GetItemDto;
+import pl.creative.rental_server.core.features.moderator.item.dto.ReplaceItemDto;
 import pl.creative.rental_server.core.features.moderator.item.history.dto.GetItemHistoryDto;
 
 import javax.validation.Valid;
@@ -12,14 +14,18 @@ import java.util.List;
 
 public interface ItemApi {
 
-    @ApiOperation(value = "Adding new item")
-    @PostMapping("/moderator/item/create")
+    @ApiOperation(value = "Adding new item and place it in to given place")
+    @PostMapping("/moderator/item/createWithPlace")
     ResponseEntity<GetItemDto> addItem(@RequestBody @Valid FillItemDto fillItemDto);
+    @ApiOperation(value = "Adding new item and place it to default place ")
+    @PostMapping("/moderator/item/createToDefaultPlace")
+    ResponseEntity<GetItemDto> addItemToDefaultPlace(@RequestBody FillItemWithOutPlaceDto fillItemWithOutPlaceDto);
+
 
 
     @ApiOperation(value = "Replacing an item")
     @PutMapping("/moderator/item/replace")
-    ResponseEntity<GetItemDto> replaceItem(@RequestBody @Valid FillItemDto fillItemDto);
+    ResponseEntity<GetItemDto> replaceItem(@RequestBody @Valid ReplaceItemDto replaceItemDto);
 
     @ApiOperation(value = "Deleting the item by given item id")
     @DeleteMapping("/moderator/item/delete/{itemId}")
