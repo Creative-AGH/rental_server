@@ -48,13 +48,27 @@ public class ImageService {
         }
     }
     @Transactional
+    public void deleteExistingFolderWithImages(String itemId) {
+        Optional<Item> itemOptional = itemRepository.findById(itemId);
+        if (itemOptional.isPresent()) {
+            Item item = itemOptional.get();
+            List<Image> images = item.getImages();
+            List<String> linksToItem = images.stream().map(Image::getLink).toList();
+            fileUploader.removeImages(linksToItem);
+            imageRepository.deleteAll(images);
+            item.setImages(new ArrayList<>());
+
+        }
+    }
+
+    @Transactional
     public void addImages(String itemId, List<String> images) {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         if (itemOptional.isPresent())
             for (String image : images) {
                 String uniqueUrlId = randomIdHandler.generateUniqueIdFromTable(imageRepository);
                 String urlToItemInMinio = ImageService.buildMinioLinkForItemImage(itemId, uniqueUrlId);
-                Optional<Image> urlToItem = fileUploader.uploadFile(image, urlToItemInMinio, itemOptional.get(), uniqueUrlId);
+                Optional<Image> urlToItem = fileUploader.uploadImage(image, urlToItemInMinio, itemOptional.get(), uniqueUrlId);
 
 
                 urlToItem.ifPresentOrElse((toItem) -> {

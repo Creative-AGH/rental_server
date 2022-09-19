@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import pl.creative.rental_server.core.global.exception.NotSentException;
 import pl.creative.rental_server.db.entities.Image;
 import pl.creative.rental_server.db.entities.Item;
 
@@ -65,7 +66,7 @@ public class FileUploader {
 
     }
 
-    public void uploadFile(String stringToDecode) {
+    public void uploadImage(String stringToDecode) {
 //https://pastebin.com/HCX3cASb
         byte[] bytesFromEncodedFile = stringToDecode.getBytes();
         byte[] decodeBase64 = Base64.decodeBase64(bytesFromEncodedFile);
@@ -116,7 +117,38 @@ public class FileUploader {
         throw new RuntimeException("MINIO NOT FOUND EXCEPTION");
     }
 
-    public Optional<Image> uploadFile(String stringToDecode, String urlToFile, Item item, String randomImageId) {
+    public void uploadBuildingPlan(String stringToDecode, String linkToBuildingPlan) {
+        byte[] bytesFromEncodedFile = stringToDecode.getBytes();
+        byte[] decodeBase64 = Base64.decodeBase64(bytesFromEncodedFile);
+        File fileFromRest = new File(linkToBuildingPlan.split("/")[linkToBuildingPlan.split("/").length - 1]);
+        try (
+                FileOutputStream restOutput = new FileOutputStream(fileFromRest)
+        ) {
+            restOutput.write(decodeBase64);
+            minioClient.uploadObject(
+                    UploadObjectArgs
+                            .builder()
+                            .bucket(bucketName)
+                            .object(linkToBuildingPlan)
+                            .filename(fileFromRest.getName())
+                            .build());
+
+        } catch (MinioException e) {
+
+            log.error("HTTP trace: {} ", e.httpTrace());
+            log.error("Sth went wrong with sending image to MinIO");
+            throw new NotSentException("Unfortunately the file was not sent");
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException e) {
+            log.error(e.getMessage());
+            log.error("Sth went wrong with sending image to MinIO");
+            throw new NotSentException("Unfortunately the file was not sent");
+        } finally {
+            fileFromRest.delete();
+        }
+
+    }
+
+    public Optional<Image> uploadImage(String stringToDecode, String urlToFile, Item item, String randomImageId) {
 //https://pastebin.com/HCX3cASb
         byte[] bytesFromEncodedFile = stringToDecode.getBytes();
         byte[] decodeBase64 = Base64.decodeBase64(bytesFromEncodedFile);
