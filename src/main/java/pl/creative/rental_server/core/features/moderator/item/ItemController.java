@@ -5,8 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import pl.creative.rental_server.core.features.moderator.item.dto.FillItemDto;
-import pl.creative.rental_server.core.features.moderator.item.dto.GetItemDto;
+import pl.creative.rental_server.core.features.moderator.item.dto.*;
 import pl.creative.rental_server.core.features.moderator.item.history.dto.GetItemHistoryDto;
 import pl.creative.rental_server.docs.moderator.ItemApi;
 
@@ -17,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemController implements ItemApi {
     private final ItemService itemService;
+    private final ItemMapper itemMapper;
 
     @Override
     public ResponseEntity<GetItemDto> addItem(@RequestBody FillItemDto fillItemDto) {
@@ -28,12 +28,23 @@ public class ItemController implements ItemApi {
         return ResponseEntity.created(savedItemUri).body(savedItem);
     }
 
+    @Override
+    public ResponseEntity<GetItemDto> addItemToDefaultPlace(@RequestBody FillItemWithOutPlaceDto fillItemWithOutPlaceDto) {
+        FillItemDto fillItemDto = itemMapper.mapFillItemWithOutPlaceDtoToFillItemDto(fillItemWithOutPlaceDto);
+        fillItemDto.setPlaceId("0");
+        GetItemDto savedItem = itemService.addItem(fillItemDto);
+
+        URI savedItemUri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedItem.getId())
+                .toUri();
+        return ResponseEntity.created(savedItemUri).body(savedItem);
+    }
+
 
     @Override
-    @Deprecated(forRemoval = true)
-    public ResponseEntity<GetItemDto> replaceItem(FillItemDto fillItemDto) {
-        itemService.replaceItem(fillItemDto);
-        return null;
+    public ResponseEntity<GetItemDto> replaceItem(ReplaceItemDto replaceItemDto) {
+        return ResponseEntity.ok(itemService.replaceItem(replaceItemDto));
     }
 
 

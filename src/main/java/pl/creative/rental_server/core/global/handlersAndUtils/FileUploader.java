@@ -1,10 +1,9 @@
 package pl.creative.rental_server.core.global.handlersAndUtils;
 
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.UploadObjectArgs;
-import io.minio.errors.MinioException;
+import io.minio.*;
+import io.minio.errors.*;
+import io.minio.messages.DeleteError;
+import io.minio.messages.DeleteObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -19,7 +18,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
@@ -92,6 +93,27 @@ public class FileUploader {
         } finally {
             fileFromRest.delete();
         }
+    }
+
+    public void removeImages(List<String> names) {
+        List<DeleteObject> imagesToDelete = names.stream().map(DeleteObject::new).toList();
+
+        Iterable<Result<DeleteError>> errors = minioClient.removeObjects(RemoveObjectsArgs.builder().bucket(bucketName).objects(imagesToDelete).build());
+        StreamSupport.stream(errors.spliterator(), false)
+                .map(this::unpackDeleteError)
+                .forEach(e -> log.error("Error in deleting object " + e.objectName() + "; " + e.message()));
+
+    }
+
+    private DeleteError unpackDeleteError(Result<DeleteError> result) {
+        try {
+            return result.get();
+        } catch (ServerException | InsufficientDataException | ErrorResponseException | IOException |
+                 NoSuchAlgorithmException | InvalidKeyException | InvalidResponseException | XmlParserException |
+                 InternalException e) {
+            log.error(e.getMessage());
+        }
+        throw new RuntimeException("MINIO NOT FOUND EXCEPTION");
     }
 
     public Optional<Image> uploadFile(String stringToDecode, String urlToFile, Item item, String randomImageId) {

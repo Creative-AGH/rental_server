@@ -60,7 +60,7 @@ public class ExcelUtilities {
 
         for (int i = 0; i < values.length; i++) {
             Cell headerCell = row.createCell(i + cellIndex);
-            headerCell.setCellValue(values[i]);
+            headerCell.setCellValue(values[i] != null ? values[i] : "-");
             headerCell.setCellStyle(rowStyles[i % rowStyles.length]);
         }
     }

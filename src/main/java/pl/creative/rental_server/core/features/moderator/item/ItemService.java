@@ -4,17 +4,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.creative.rental_server.db.entities.*;
-import pl.creative.rental_server.core.global.exception.notFound.*;
-import pl.creative.rental_server.core.global.handlersAndUtils.ImageService;
-import pl.creative.rental_server.core.global.handlersAndUtils.RandomIdHandler;
-import pl.creative.rental_server.core.features.moderator.item.history.ItemHistoryService;
-import pl.creative.rental_server.core.features.moderator.item.history.dto.GetItemHistoryDto;
-import pl.creative.rental_server.core.features.moderator.item.history.dto.ItemHistoryMapper;
 import pl.creative.rental_server.core.features.moderator.item.dto.FillItemDto;
 import pl.creative.rental_server.core.features.moderator.item.dto.GetItemDto;
 import pl.creative.rental_server.core.features.moderator.item.dto.ItemMapper;
+import pl.creative.rental_server.core.features.moderator.item.dto.ReplaceItemDto;
+import pl.creative.rental_server.core.features.moderator.item.history.ItemHistoryService;
+import pl.creative.rental_server.core.features.moderator.item.history.dto.GetItemHistoryDto;
+import pl.creative.rental_server.core.features.moderator.item.history.dto.ItemHistoryMapper;
 import pl.creative.rental_server.core.features.moderator.place.dto.PlaceMapper;
+import pl.creative.rental_server.core.global.exception.notFound.*;
+import pl.creative.rental_server.core.global.handlersAndUtils.ImageService;
+import pl.creative.rental_server.core.global.handlersAndUtils.RandomIdHandler;
+import pl.creative.rental_server.db.entities.*;
 import pl.creative.rental_server.db.repository.*;
 
 import java.time.LocalDateTime;
@@ -42,27 +43,17 @@ public class ItemService {
 
     @Transactional
     public GetItemDto addItem(FillItemDto fillItemDto) {
-        log.info("Adding new item");
+        log.info("Adding new item - {}",fillItemDto.getName());
         Item itemToSave = itemMapper.mapFillItemDtoToItem(fillItemDto);
         String uuid = randomIdHandler.generateUniqueIdFromTable(itemRepository);
         itemToSave.setId(uuid);
         itemToSave.setDateOfCreation(LocalDateTime.now());
         for (String categoryId : fillItemDto.getCategoriesId()) {
             if (categoryId != null) {
-                categoryRepository.findById(categoryId).ifPresentOrElse(itemToSave::addCategoryToCategoryIds,
-                        () -> {
-                            log.error("Category with that id {} does not exist");
-                            throw new CategoryNotFound(String.format("Category with that id %s does not exist", categoryId));
-                        }
-                );
+                addCategoryToItem(itemToSave,categoryId);
             }
         }
-        placeRepository.findById(fillItemDto.getPlaceId()).ifPresentOrElse(itemToSave::addPlaceToPlace,
-                () -> {
-                    log.error("Place with that id does not exist");
-                    throw new PlaceNotFound("Place with that id does not exist");
-                }
-        );
+        addPlaceToItem(fillItemDto.getPlaceId(),itemToSave);
         Item savedItem = itemRepository.save(itemToSave);
         itemHistoryService.addItemHistory(savedItem.getId(), "Item created", "Creating an item (with detailsOfItemBeforeEvent data!)");
         imageService.addImages(savedItem.getId(), fillItemDto.getImages());
@@ -84,8 +75,40 @@ public class ItemService {
     }
 
     @Transactional
-    public void replaceItem(FillItemDto fillItemDto) { // TO WHOM that endpoint
-        //TODO is it necessary? we can use changeCategoriesOfItem and changePlaceOfItem
+    public GetItemDto replaceItem(ReplaceItemDto replaceItemDto) { // TO WHOM that endpoint
+        log.info("Edit item");
+        Item itemToSave = itemMapper.mapReplaceItemDtoToItem(replaceItemDto);
+        for (String categoryId : replaceItemDto.getCategoriesId()) {
+            addCategoryToItem(itemToSave, categoryId);
+        }
+        addPlaceToItem(replaceItemDto.getPlaceId(), itemToSave);
+
+        imageService.deleteExistingFolderWithImages(itemToSave.getId());
+        Item savedItem = itemRepository.save(itemToSave);
+        itemHistoryService.addItemHistory(savedItem.getId(), "Item edited", "Editing item");
+        imageService.addImages(savedItem.getId(), replaceItemDto.getImages());
+        log.info("Successfully edited and saved item");
+        return itemMapper.mapItemToGetItemDto(savedItem);
+    }
+
+    private void addPlaceToItem(String placeId, Item itemToSave) {
+        placeRepository.findById(placeId).ifPresentOrElse(itemToSave::addPlaceToPlace,
+                () -> {
+                    log.error("Place with {} id does not exist",placeId);
+                    throw new PlaceNotFound(String.format("Place with that %s does not exist",placeId));
+                }
+        );
+    }
+
+    private void addCategoryToItem(Item itemToSave, String categoryId) {
+        if (categoryId != null) {
+            categoryRepository.findById(categoryId).ifPresentOrElse(itemToSave::addCategoryToCategoryIds,
+                    () -> {
+                        log.error("Category with that id {} does not exist", categoryId);
+                        throw new CategoryNotFound(String.format("Category with that id %s does not exist", categoryId));
+                    }
+            );
+        }
     }
 
     @Transactional
@@ -145,7 +168,7 @@ public class ItemService {
                 } else {
                     itemHistoryService.addItemHistory(itemId, "Item deleted", commentToEvent);
                 }
-                //TODO add remove images in MINIO and add remove it from DATABASE (potential problems)
+                imageService.deleteExistingFolderWithImages(itemId);
                 imageRepository.deleteAll(item.getImages());
                 List<ItemHistory> itemHistoryList = itemHistoryRepository.findAllByItemId(itemId);
                 itemHistoryList.forEach(x -> x.setItemId(null));
