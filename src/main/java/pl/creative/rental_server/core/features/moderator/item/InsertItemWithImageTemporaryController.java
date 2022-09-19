@@ -48,7 +48,7 @@ public class InsertItemWithImageTemporaryController {
     @PostMapping("/upload/imageFromString")
     public ResponseEntity<?> insertItemWithImageFromString(@RequestBody String base64EncodedFile) {
 
-        fileUploader.uploadFile(base64EncodedFile);
+        fileUploader.uploadImage(base64EncodedFile);
         return ResponseEntity.ok().build();
     }
 
