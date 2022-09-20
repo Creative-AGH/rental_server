@@ -33,21 +33,6 @@ public class ImageService {
                 .append(".jpg").toString();
     }
     @Transactional
-    public void deleteExistingFolderWithImages(String itemId)
-    {
-        Optional<Item> itemOptional = itemRepository.findById(itemId);
-        if(itemOptional.isPresent())
-        {
-            Item item = itemOptional.get();
-            List<Image> images = item.getImages();
-            List<String> linksToItem = images.stream().map(Image::getLink).toList();
-            fileUploader.removeImages(linksToItem);
-            imageRepository.deleteAll(images);
-            item.setImages(new ArrayList<>());
-
-        }
-    }
-    @Transactional
     public void deleteExistingFolderWithImages(String itemId) {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         if (itemOptional.isPresent()) {
