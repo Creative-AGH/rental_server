@@ -69,7 +69,6 @@ class CategoryServiceTest {
         FillCategoryDto fillCategoryDto = new FillCategoryDto(categoryName, "description");
         Category category = new Category("categoryId", categoryName, "description");
         given(categoryRepository.findCategoryByCategoryName(anyString())).willReturn(Optional.of(category)); //the category already exists
-//        given(categoryMapper.mapFillCategoryDtoToCategory(fillCategoryDto)).willReturn(category); //this line is unnecessary!
         // when
         // then
         assertThatThrownBy(() -> underTest.addCategory(fillCategoryDto))
