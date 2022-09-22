@@ -24,9 +24,12 @@ public class Place {
     private String name;
     private String description;
 
-//    @ToString.Exclude
+    //    @ToString.Exclude
     @OneToMany(mappedBy = "place") //one place can have many items
     private List<Item> items = new ArrayList<>();
+
+    @ElementCollection
+    private List<Double> placeCoordinates;
 
     public Place(String id, String name, String description) {
         this.id = id;
