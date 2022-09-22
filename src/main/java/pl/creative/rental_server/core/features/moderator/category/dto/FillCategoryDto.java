@@ -1,5 +1,6 @@
 package pl.creative.rental_server.core.features.moderator.category.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
+@AllArgsConstructor
 public class FillCategoryDto {
     @NotNull(message = "Category name can not be null")
     @NotEmpty(message = "Category name can not be empty")
