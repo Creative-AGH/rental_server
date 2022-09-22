@@ -53,7 +53,7 @@ public class CategoryService {
                 .map(categoryMapper::mapCategoryToGetCategoryDto)
                 .orElseThrow(() -> {
                     log.error("Category with that id {} does not exists", categoryId);
-                    return new CategoryNotFound(String.format("Category with that id %s does not exists", categoryId));
+                    return new CategoryNotFound(String.format("Category with that id %s does not exist", categoryId));
                 });
     }
 
@@ -73,7 +73,7 @@ public class CategoryService {
                 .map(Category::getItems)
                 .orElseThrow(() -> {
                     log.error("Category with that id {} does not exists", categoryId);
-                    return new CategoryNotFound(String.format("Category with that id %s does not exists", categoryId));
+                    return new CategoryNotFound(String.format("Category with that id %s does not exist", categoryId));
                 })
                 .stream()
                 .map(itemMapper::mapItemToGetItemDto)
