@@ -7,7 +7,6 @@ import pl.creative.rental_server.db.entities.Place;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Mapper(componentModel = "spring", uses = PlaceMapper.class)
 public interface PlaceMapper {
@@ -16,7 +15,10 @@ public interface PlaceMapper {
 
     default List<Double> mapPointDtoToDouble(List<PointDto> placeCoordinatesDto) {
         List<Double> doubleList = new ArrayList<>();
-        placeCoordinatesDto.stream().filter(Objects::nonNull).forEach(p -> {
+        if (placeCoordinatesDto.contains(null)) {
+            throw new PlaceException("The coordinate can not be null!");
+        }
+        placeCoordinatesDto.forEach(p -> {
             if (p.getX() == null || p.getY() == null) {
                 throw new PlaceException("The value of coordinate can not be null!");
             }
@@ -34,7 +36,7 @@ public interface PlaceMapper {
         List<Double> doubleX = new ArrayList<>();
         List<Double> doubleY = new ArrayList<>();
         for (int i = 0; i < placeCoordinates.size(); i++) {
-            if (i % 2 != 0) {
+            if (i % 2 == 0) {
                 doubleX.add(placeCoordinates.get(i));
             } else {
                 doubleY.add(placeCoordinates.get(i));
