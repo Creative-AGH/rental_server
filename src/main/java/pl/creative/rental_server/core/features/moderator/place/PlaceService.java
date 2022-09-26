@@ -3,10 +3,6 @@ package pl.creative.rental_server.core.features.moderator.place;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.creative.rental_server.db.entities.Item;
-import pl.creative.rental_server.db.entities.Place;
-import pl.creative.rental_server.core.global.exception.notFound.PlaceNotFound;
-import pl.creative.rental_server.core.global.handlersAndUtils.RandomIdHandler;
 import pl.creative.rental_server.core.features.moderator.item.ItemService;
 import pl.creative.rental_server.core.features.moderator.item.dto.GetItemDto;
 import pl.creative.rental_server.core.features.moderator.item.dto.ItemMapper;
@@ -14,6 +10,10 @@ import pl.creative.rental_server.core.features.moderator.place.dto.EditPlaceDto;
 import pl.creative.rental_server.core.features.moderator.place.dto.GetPlaceDto;
 import pl.creative.rental_server.core.features.moderator.place.dto.InputPlaceDto;
 import pl.creative.rental_server.core.features.moderator.place.dto.PlaceMapper;
+import pl.creative.rental_server.core.global.exception.notFound.PlaceNotFound;
+import pl.creative.rental_server.core.global.handlersAndUtils.RandomIdHandler;
+import pl.creative.rental_server.db.entities.Item;
+import pl.creative.rental_server.db.entities.Place;
 import pl.creative.rental_server.db.repository.ItemRepository;
 import pl.creative.rental_server.db.repository.PlaceRepository;
 
@@ -102,9 +102,9 @@ public class PlaceService {
     public GetPlaceDto getPlaceById(String placeId) {
         log.info("Getting the place by place id");
         Optional<Place> optionalPlace = placeRepository.findById(placeId);
-        if(optionalPlace.isPresent()){
+        if (optionalPlace.isPresent()) {
             return placeMapper.mapPlaceToGetPlaceDto(optionalPlace.get());
-        }else {
+        } else {
             log.error("Place with that id {} does not exist", placeId);
             throw new PlaceNotFound(String.format("Place with that id %s does not exist", placeId));
         }
