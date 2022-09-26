@@ -33,17 +33,8 @@ public interface PlaceMapper {
 
     default List<PointDto> mapDoubleToPointDto(List<Double> placeCoordinates) {
         List<PointDto> pointDtos = new ArrayList<>();
-        List<Double> doubleX = new ArrayList<>();
-        List<Double> doubleY = new ArrayList<>();
-        for (int i = 0; i < placeCoordinates.size(); i++) {
-            if (i % 2 == 0) {
-                doubleX.add(placeCoordinates.get(i));
-            } else {
-                doubleY.add(placeCoordinates.get(i));
-            }
-        }
-        for (int i = 0; i < doubleX.size(); i++) {
-            pointDtos.add(new PointDto(doubleX.get(i), doubleY.get(i)));
+        for (int i = 0; i < placeCoordinates.size(); i+=2) {
+            pointDtos.add(new PointDto(placeCoordinates.get(i),placeCoordinates.get(i+1)));
         }
         return pointDtos;
     }
