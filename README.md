@@ -5,7 +5,6 @@ We are motivated to gain new skills, and we are going to improve ourselves as so
 ### Current development stage 
 We have created currently server site application with connection to database and Minio local storage .
 
-[//]: # (DO edycji)
 Current project authors are :
 1) Server Side:
 - [Adam Wasylewicz](https://github.com/adwas3213)
@@ -74,7 +73,6 @@ many people can own it and rent from system.
 - Expiring JWT tokens
 - Inserting to Cloud Storage multiple maps as like building plans or area shapes 
 
-  [//]: # (DO usunecia)
 Temporary feature : 
 - change file or image to base 64 encoding
 - send image encoded in base 64 endpoint 
@@ -87,14 +85,14 @@ Temporary feature :
 > 1. Create registration functionality with e-mail verification `DONE`
 > 2. Create security filter-chain with login functionality and JWT authentication `DONE`
 > 3. Refactor functionality based on authority access (Admin,Moderator,User) roles `DONE`
-> 4. Create remind password endpoint `BLOCKED`
+> 4. Create remind password endpoint `SHIFTED TO VERSION 1.0 RELASE`
 > 5. Adjust Swagger-ui to spring security `DONE`
 > 6. Adjust data model to frontend demands `TODO`
 > 7. Create admin panel `DONE`
 > 8. Create docker compose to pack app with frontend , minio and database `TODO`
-> 9. At the end create Data base migration system with liquibase `BLOCKED`
+> 9. At the end create Data base migration system with liquibase `SHIFTED TO VERSION 1.0 RELASE`
 > 10. Generate excel/PDF report of item history or present state `DONE`
-> 11. Update docs and version of project `IN PROGRES`
+> 11. Update docs and version of project `DONE`
 
 ---
 ## Setup and run tutorial 
