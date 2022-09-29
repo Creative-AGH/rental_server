@@ -5,11 +5,15 @@ We are motivated to gain new skills, and we are going to improve ourselves as so
 ### Current development stage 
 We have created currently server site application with connection to database and Minio local storage .
 
-[//]: # (DO edycji)
 Current project authors are :
+1) Server Side:
 - [Adam Wasylewicz](https://github.com/adwas3213)
 - [Patryk Janas](https://github.com/PatrykJanas27)
-
+2) Client Side:
+- [Przemysław Matraj](https://github.com/przemyslawmatraj)
+- [Adam Jasiński](https://github.com/jasinskiadam)
+3) Devops:
+- [Anna Gołda](https://github.com/annagolda)
 
 ---
 ## Main goal
@@ -23,6 +27,7 @@ many people can own it and rent from system.
 - Problem with usurpation somebody whose item it is .
 - Problem with control about item flow in e.g. laboratory
 - Generate reports about item state at periodicity of time 
+- Lack of management items in different places 
 ---
 ## Current technology that we are using :
 - Java 17
@@ -39,16 +44,19 @@ many people can own it and rent from system.
 - Java Mail Api 
 - ThyMeLeaf
 - Docker
+- Apache POI
 ---
-## Version - 0.5 alpha
->At present time we have main functionalities with item (including history and sending images to localstorage) categories and places . 
+## Version - 0.8 Beta
+>At present time we have almost everything features for application . For further development we left not mandatory features .
+>Next stage of development is to connect backend with frontend . Create development and production environment with pack it to docker compose .
+>We will decide if pushing docker image of backend is necessary and do it for beta version of backend to improve portable of our app.
 
 ### Features
 
 - Create unique place 
 - Create item with unique id 
 - Assign items to categories and create new categories 
-- Receive and transfer images to localstorage
+- Receive and transfer images to Minio Cloud Storage
 - 2 dedicated profiles developer and production 
 - Tracking history of item 
 - Add test and start data to DB 
@@ -56,8 +64,15 @@ many people can own it and rent from system.
 - Swagger UI for development 
 - Save application logs in dedicated file 
 - Adding item status
+- Generating Excel raport about all items at storage
+- Generating Excel report for single item history records 
+- Register with email validation
+- Password Encryption 
+- Swagger ui adapted to Spring Security JWT authentication 
+- Login with JWT token
+- Expiring JWT tokens
+- Inserting to Cloud Storage multiple maps as like building plans or area shapes 
 
-  [//]: # (DO usunecia)
 Temporary feature : 
 - change file or image to base 64 encoding
 - send image encoded in base 64 endpoint 
@@ -67,17 +82,17 @@ Temporary feature :
 
 ### Future stage of development 
 >
-> 1. Create registration functionality with e-mail veryfication `DONE`
+> 1. Create registration functionality with e-mail verification `DONE`
 > 2. Create security filter-chain with login functionality and JWT authentication `DONE`
-> 3. Refactor functionality based on authority access (Admin,Moderator,User) roles `TODO`
-> 4. Create remind password endpoint `BLOCKED`
+> 3. Refactor functionality based on authority access (Admin,Moderator,User) roles `DONE`
+> 4. Create remind password endpoint `SHIFTED TO VERSION 1.0 RELASE`
 > 5. Adjust Swagger-ui to spring security `DONE`
 > 6. Adjust data model to frontend demands `TODO`
-> 7. Create admin panel `IN PROGRES`
+> 7. Create admin panel `DONE`
 > 8. Create docker compose to pack app with frontend , minio and database `TODO`
-> 9. At the end create Data base migration system with liquibase `BLOCKED`
+> 9. At the end create Data base migration system with liquibase `SHIFTED TO VERSION 1.0 RELASE`
 > 10. Generate excel/PDF report of item history or present state `DONE`
-> 11. Update docs and version of project `TODO`
+> 11. Update docs and version of project `DONE`
 
 ---
 ## Setup and run tutorial 
