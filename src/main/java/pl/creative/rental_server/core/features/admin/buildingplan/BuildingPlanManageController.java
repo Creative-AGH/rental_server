@@ -14,7 +14,7 @@ public class BuildingPlanManageController {
 
     @PostMapping("/admin/buildingPlan/insert")
     public ResponseEntity<?> insertBuildingPlan(@RequestBody BuildPlanDto buildPlanDto) {
-        return ResponseEntity.ok(buildingPlanService.createBuildingPlan(buildPlanDto.getPlanEncodedBase64(), buildPlanDto.getFileExtension()));
+        return ResponseEntity.ok(buildingPlanService.createBuildingPlan(buildPlanDto.getPlanEncodedBase64(), buildPlanDto.getFileName()));
 
     }
 }

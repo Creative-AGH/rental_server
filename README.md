@@ -87,9 +87,9 @@ Temporary feature :
 > 3. Refactor functionality based on authority access (Admin,Moderator,User) roles `DONE`
 > 4. Create remind password endpoint `SHIFTED TO VERSION 1.0 RELASE`
 > 5. Adjust Swagger-ui to spring security `DONE`
-> 6. Adjust data model to frontend demands `TODO`
+> 6. Adjust data model to frontend demands `DONE`
 > 7. Create admin panel `DONE`
-> 8. Create docker compose to pack app with frontend , minio and database `TODO`
+> 8. Create docker compose to pack app with frontend , minio and database `IN PROGRES`
 > 9. At the end create Data base migration system with liquibase `SHIFTED TO VERSION 1.0 RELASE`
 > 10. Generate excel/PDF report of item history or present state `DONE`
 > 11. Update docs and version of project `DONE`

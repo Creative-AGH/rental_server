@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class BuildPlanDto {
     private final String planEncodedBase64;
-    private final String fileExtension;
+    private final String fileName;
 }
