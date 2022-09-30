@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pl" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <style style="display: none">
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            display: block;
+        }
+    </style>
+    <style style="display: none">
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    </style>
+</head>
+<body>
+<div style="width: 100%; font-family: 'Poppins', sans-serif; background-color: #e5e5e5">
+    <img src="https://i.imgur.com/AybDjti.png" alt="Zdjęcie w banerze"
+         style="margin: 0 auto; max-width: 600px; width:100%; height: 100%; object-fit: cover"/>
+    <div style="max-width: 600px; margin: 0 auto; padding: 30px 40px; background-color: #fff">
+        <h1 style="width: 100%; line-height: 36px; font-size: 24px; font-weight: 700; padding: 40px 0">Witamy w aplikacji RentMe oraz Creative AGH</h1>
+        <p style="font-weight: 400; font-size: 18px; line-height: 27px; margin-bottom: 60px; width: 100%">
+            Cieszymy się, że zarejestrowales sie do naszej aplikacji RentMe .
+        </p>
+        <p style="font-weight: 400; font-size: 18px; line-height: 27px; margin-bottom: 60px; width: 100%">
+            Wraz z potwierdzeniem twojego konta w sieci akademickiej AGH zyskasz możliwość do wypożyczania i przenoszenia przedmiotów :) .
+        </p>
+        <p style="font-weight: 400; font-size: 18px; line-height: 27px; margin-bottom: 60px; width: 100%">
+            Dziekujemy i życzymy dobrych wrażeń w korzystaniu z naszej aplikacji .
+        </p>
+        <div style="padding: 40px 30px; margin-bottom: 70px; width: 100%; background: #8b0000; font-size: 18px">
+            <h2 style="font-weight: 700; font-size: 18px; text-transform: capitalize; width: 100%; margin-bottom: 40px; color: white">
+                Twoje dane:
+            </h2>
+            <p style="width: 100%; margin-bottom: 20px">
+                <span style="color: white; font-weight: 600; width: 100%">Adres email:</span>
+                <span th:text="${user.getEmail()}" style="color: #fff; width: 100%">Email</span>
+            </p>
+            <p style="width: 100%; color: #85bd4b; margin-bottom: 20px">
+                <span style="color: white; font-weight: 600; width: 100%">Imie i nazwisko:</span>
+                <span th:text="${user.getName()+' '+user.getSurname()}"
+                      style="color: #fff; width: 100%">Imie i nazwisko<br/>
+              Anna Nowak</span>
+            </p>
+
+        </div>
+        <h1 style="line-height: 36px; font-size: 24px; font-weight: 700; text-align: center; width: 100%; margin-bottom: 40px">
+            Potwierdź swój adres email !
+        </h1>
+        <p style="font-weight: 400; font-size: 18px; text-align: center; line-height: 27px; margin-bottom: 60px; width: 100%">
+            Potwierdź adres email klikając w link poniżej:
+        </p>
+        <div style="width: 100%; display: flex; justify-content: center">
+            <a th:href="${validateLink}" href="#link"
+               style="
+              text-decoration: none;
+              color: white;
+              font-weight: 700;
+              font-size: 18px;
+              padding: 10px;
+              text-transform: uppercase;
+              background-color: #8b0000;
+              width: fit-content;
+              margin: 0 auto 70px;
+            ">Potwierdź e-mail</a>
+        </div>
+        <p style="font-weight: 400; font-size: 16px; line-height: 27px; margin-bottom: 1em; width: 100%">
+            Jeśli powyższy przycisk nie działa, prosimy wejść w link ponizej:
+        </p>
+        <a th:href="${validateLink}" th:text="${validateLink}" href=""
+           style="color: darkblue; font-weight: 400; font-size: 16px; margin-bottom: 75px"
+        >https://loremipsum.pl/auth?=e2342e23d2d232dd222</a>
+        <hr/>
+        <p style="font-weight: 400; font-size: 14px; line-height: 27px; margin-block: 25px 40px; width: 100%; color: darkblue">
+
+            Email koła naukowego: creative@agh.edu.pl<br/>
+            Email opiekuna koła naukowego: pkustra@agh.edu.pl<br/>
+            Fanpage na Facebooku :<a href="https://www.facebook.com/skn.creative.agh">https://www.facebook.com/skn.creative.agh</a><br/>
+            Grupa na Facebooku :<a href="https://www.facebook.com/groups/1001925466946542">https://www.facebook.com/groups/1001925466946542</a><br/>
+            Strona internetowa koła : <a href="http://creative.agh.edu.pl/">http://creative.agh.edu.pl/</a><br/>
+            <img src="https://i.imgur.com/AybDjti.png" alt="logo" style="width:200px"></p>
+    </div>
+</div>
+</body>
+</html>
