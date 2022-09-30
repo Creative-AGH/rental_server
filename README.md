@@ -1,19 +1,19 @@
 # Item rent and management application
 ## About
-The project was created for science club - [CREATIVE AGH] (http://creative.agh.edu.pl/) to resolve real live problems.
+The project was created for science club - [CREATIVE AGH](http://creative.agh.edu.pl/) to resolve real live problems.
 We are strongly motivated to gain new skills, and we are going to improve ourselves as software developers.
 ### Current development stage 
 Currently, we have created a server site application with connection to database and Minio local storage.
 
 Current project authors are:
 1) Server Side:
-- [Adam Wasylewicz] (https://github.com/adwas3213)
-- [Patryk Janas] (https://github.com/PatrykJanas27)
+- [Adam Wasylewicz](https://github.com/adwas3213)
+- [Patryk Janas](https://github.com/PatrykJanas27)
 2) Client Side:
-- [Przemysław Matraj] (https://github.com/przemyslawmatraj)
-- [Adam Jasiński] (https://github.com/jasinskiadam)
+- [Przemysław Matraj](https://github.com/przemyslawmatraj)
+- [Adam Jasiński](https://github.com/jasinskiadam)
 3) DevOps:
-- [Anna Gołda] (https://github.com/annagolda)
+- [Anna Gołda](https://github.com/annagolda)
 
 ---
 ## Main goal
