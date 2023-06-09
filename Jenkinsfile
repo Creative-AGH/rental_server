@@ -22,6 +22,9 @@ pipeline {
                 script {
                     def appImage = docker.image("my-app:${env.BUILD_ID}")
                     def appContainer = appImage.run('-d')
+                    sh "docker exec ${appContainer.id} apt-get update && \
+                                                           apt-get install -y maven && \
+                                                           rm -rf /var/lib/apt/lists/*"
                     sh "docker exec ${appContainer.id} mvn test"
                 }
             }
