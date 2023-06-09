@@ -20,21 +20,18 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    def appImage = docker.build("my-app:${env.BUILD_ID}")
+                    def appImage = docker.image("my-app:${env.BUILD_ID}")
                     def appContainer = appImage.run('-d')
-                    sh "docker logs -f ${appContainer.id}"
+                    sh "docker exec ${appContainer.id} mvn test"
                 }
             }
         }
-
-
-
 
         stage('Push Docker Image') {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        sh "docker push my-app:${env.BUILD_ID}"
+                        docker.image("my-app:${env.BUILD_ID}").push()
                     }
                 }
             }
