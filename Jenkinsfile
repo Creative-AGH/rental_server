@@ -20,11 +20,13 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    def appContainer = docker.run("my-app:${env.BUILD_ID}")
+                    def appImage = docker.build("my-app:${env.BUILD_ID}")
+                    def appContainer = appImage.run()
                     sh "docker exec ${appContainer.id} mvn test"
                 }
             }
         }
+
 
         stage('Push Docker Image') {
             steps {
